@@ -47,7 +47,7 @@ public class Generator : MonoBehaviour {
     // Use this for initialization
     void Start () {
         createDungeon(50, 50, 1);
-        System.IO.File.WriteAllText(@"C:\Users\Mats\Desktop\PCG\PCGProject\DungeonGenerator\Assets\TextMaps\WriteText.txt", showDungeon());
+        System.IO.File.WriteAllText(@"C:\Users\Mats\Desktop\PCG\PCGProject\DungeonGenerator\Assets\TextMaps\MapTest.txt", showDungeon());
       //  print(showDungeon());
 	}
 	
@@ -106,7 +106,7 @@ public class Generator : MonoBehaviour {
 
         // start with making a room in the middle, which we can start building
         // upon
-        makeRoom(xsize / 2, ysize / 2, 8, 6, getRand(0, 3)); // startx, starty,
+        makeRoom(xsize / 2, ysize / 2, 10, 10, getRand(0, 3)); // startx, starty,
                                                              // lenghtx,
                                                              // lengthy,
                                                              // direction
@@ -328,8 +328,8 @@ public class Generator : MonoBehaviour {
 
         // define the dimensions of the room, it should be at least 4x4 tiles
         // (2x2 for walking on, the rest is walls)
-        int xlen = getRand(4, xlength);
-        int ylen = getRand(4, ylength);
+        int xlen = xlength;//getRand(4, xlength);
+        int ylen = ylength;// getRand(4, ylength);
 
         // the tile type it's going to be filled with
         int floor = tileFloor; // jordgolv..
