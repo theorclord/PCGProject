@@ -7,6 +7,7 @@ public class Board {
     int pieceXSize;
     int pieceYSize;
 
+    Piece[][] board;
     public Board(int xs, int ys, int px, int py)
     {
         this.xSize = xs;
