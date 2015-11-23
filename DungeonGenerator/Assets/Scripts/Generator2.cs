@@ -15,6 +15,16 @@ public class Generator2 : MonoBehaviour
         
 
 	}
+
+	/*
+		Create a door somewhere in every room
+
+		when a corridor is connected to a room, start at door posision
+
+		Create corridor from Room's door -> when creating, do random for direction and check if possible.
+
+	 */
+
     void Start()
     {
         board = new Board(30, 30, 1, 1); // Size of the board is 30x30, and the tile size is 1x1
