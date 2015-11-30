@@ -28,7 +28,7 @@ public class Board {
         this.pieceXSize = px;
         this.pieceYSize = py;
         board = new Piece[xsize * ysize];
-        map = new int[xsize * ysize];
+        refMap = new MAP_REF[xsize * ysize];
         setEmptyBoard();
     }
 
@@ -89,7 +89,7 @@ public class Board {
                     {
                         if (xtemp < 0 || xtemp > xsize)
                             return false;
-                        if (getCell(xtemp, ytemp) != -1)
+                        if (getCell(xtemp, ytemp) != MAP_REF.UNUSED)
                             return false; // no space left...
                     }
                 }
@@ -126,7 +126,7 @@ public class Board {
                     {
                         if (xtemp < 0 || xtemp > xsize)
                             return false;
-                        if (getCell(xtemp, ytemp) != -1)
+                        if (getCell(xtemp, ytemp) != MAP_REF.UNUSED)
                             return false;
                     }
                 }
@@ -160,7 +160,7 @@ public class Board {
                     {
                         if (xtemp < 0 || xtemp > xsize)
                             return false;
-                        if (getCell(xtemp, ytemp) != -1)
+                        if (getCell(xtemp, ytemp) != MAP_REF.UNUSED)
                             return false;
                     }
                 }
@@ -194,7 +194,7 @@ public class Board {
                     {
                         if (xtemp < 0 || xtemp > xsize)
                             return false;
-                        if (getCell(xtemp, ytemp) != -1)
+                        if (getCell(xtemp, ytemp) != MAP_REF.UNUSED)
                             return false;
                     }
                 }
@@ -249,15 +249,15 @@ public class Board {
     {
         refMap[x + xsize * y] = mr;
     }
-    private int getCell(int x, int y)
+    private MAP_REF getCell(int x, int y)
     {
-        return map[x + xsize * y];
+        return refMap[x + xsize * y];
     }
-    public void setCell(Vector2 v, int ct)
+    public void setCell(Vector2 v, MAP_REF ct)
     {
         int x = (int)v.x;
         int y = (int)v.x;
-        map[x + xsize * y] = ct;
+        refMap[x + xsize * y] = ct;
     }
 
     string showDungeon()
@@ -271,28 +271,25 @@ public class Board {
             {
                 switch (getCell(x, y))
                 {
-                    case -1:
+                    case MAP_REF.UNUSED:
                         dungeonMap += "-";
                         break;
-                    case 0:
+                    case MAP_REF.FLOOR:
                         dungeonMap += "@";
                         break;
-                    case 1:
+                    case MAP_REF.WALL:
                         dungeonMap += ".";
                         break;
                     //  case tileBLOCKER:
                     //    dungeonMap += "\"";
                     //  break;
-                    case 2:
+                    case MAP_REF.DOOR:
                         dungeonMap += "#";
                         break;
-                    case 3:
-                        dungeonMap += ".";
-                        break;
-                    case 4:
+                    case MAP_REF.START:
                         dungeonMap += "S";
                         break;
-                    case 5:
+                    case MAP_REF.END:
                         dungeonMap += "E";
                         break;
                         // case tileChest:
@@ -338,7 +335,7 @@ public class Board {
 			{
 				if (ytemp < 0 || ytemp > ysize)
 					return false; // oh boho, it was!
-				if (getCell(xtemp, ytemp) != -1)
+				if (getCell(xtemp, ytemp) != MAP_REF.UNUSED)
 					return false;
 			}
 			
@@ -356,7 +353,7 @@ public class Board {
 			{
 				if (xtemp < 0 || xtemp > xsize)
 					return false;
-				if (getCell(xtemp, ytemp) != -1)
+				if (getCell(xtemp, ytemp) != MAP_REF.UNUSED)
 					return false;
 			}
 			
@@ -373,7 +370,7 @@ public class Board {
 			{
 				if (ytemp < 0 || ytemp > ysize)
 					return false;
-				if (getCell(xtemp, ytemp) != -1)
+				if (getCell(xtemp, ytemp) != MAP_REF.UNUSED)
 					return false;
 			}
 			
@@ -390,7 +387,7 @@ public class Board {
 			{
 				if (xtemp < 0 || xtemp > xsize)
 					return false;
-				if (getCell(xtemp, ytemp) != -1)
+				if (getCell(xtemp, ytemp) != MAP_REF.UNUSED)
 					return false;
 			}
 			
