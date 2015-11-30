@@ -11,6 +11,13 @@ public class Board {
         START,
         END
     }
+    public enum DIR
+    {
+        NORTH,
+        EAST,
+        SOUTH,
+        WEST
+    }
     public int xsize, ysize;
     public int pieceXSize;
     public int pieceYSize;
@@ -49,7 +56,7 @@ public class Board {
 
     public void placeRoom(Room r)
     {
-        makeRoom(r.startX, r.startY, r.xLength, r.yLength, 3, r);
+        makeRoom(r.startX, r.startY, r.xLength, r.yLength, 0, r);
 		rooms.Add (r);
         Debug.Log(showDungeon());
     }
@@ -72,8 +79,8 @@ public class Board {
 		// Needs a door somewhere
 		int numDoors = 1;
 		int setDoors = 0;
-		//Q: How should we place the doors? Randomly on any wall, or set as parameter?
-
+        //Q: How should we place the doors? Randomly on any wall, or set as parameter?
+        int doorWall = 3;// Random.Range(0, 3);
         // choose the way it's pointing at
         int dir = 0;
         if (direction > 0 && direction < 4)
@@ -83,7 +90,7 @@ public class Board {
         {
 
             case 0: // north
-
+                Debug.Log("North Facing room");
                 // Check if there's enough space left for it
                 for (int ytemp = y; ytemp > (y - ylen); ytemp--)
                 {
@@ -103,25 +110,59 @@ public class Board {
                 {
                     for (int xtemp = (x - xlen / 2); xtemp < (x + (xlen + 1) / 2); xtemp++)
                     {
+
                         // start with the walls
-                        if (xtemp == (x - xlen / 2))
+                        if (xtemp == (x - xlen / 2))//West
                             setCell(xtemp, ytemp, MAP_REF.WALL);
-                        else if (xtemp == (x + (xlen - 1) / 2))
+                        else if (xtemp == (x + (xlen - 1) / 2))//East
                             setCell(xtemp, ytemp, MAP_REF.WALL);
-                        else if (ytemp == y)
+                        else if (ytemp == y)//south
                             setCell(xtemp, ytemp, MAP_REF.WALL);
-                        else if (ytemp == (y - ylen + 1))
+                        else if (ytemp == (y - ylen + 1))// North
                             setCell(xtemp, ytemp, MAP_REF.WALL);
                         // and then fill with the floor
                         else
                             setCell(xtemp, ytemp, MAP_REF.FLOOR);
+
+                        switch (doorWall)
+                        {
+                            case 0:
+                                //North
+                                if (xtemp == x && ytemp == y-ylen+1)
+                                {
+                                    Debug.Log("Creating N");
+                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                                }
+                                break;
+                            case 1://east
+                                if (xtemp == x + (xlen) / 2 && ytemp == y - ylen / 2)
+                                {
+                                    Debug.Log("Creating E");
+                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                                }
+                                break;
+                            case 2://south
+                                if (xtemp == x && ytemp == y)
+                                {
+                                    Debug.Log("Creating S");
+                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                                }
+                                break;
+                            case 3://west
+                                if (xtemp == x - xlen / 2 && ytemp == y - ylen / 2)
+                                {
+                                    Debug.Log("Creating W");
+                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                                }
+                                break;
+                        }
                     }
                 }
-
+                //makeRandomDoorInRoom(r, 0);
                 break;
 
             case 1: // east
-
+                Debug.Log("East Facing room");
                 for (int ytemp = (y - ylen / 2); ytemp < (y + (ylen + 1) / 2); ytemp++)
                 {
                     if (ytemp < 0 || ytemp > ysize)
@@ -139,9 +180,9 @@ public class Board {
                 {
                     for (int xtemp = x; xtemp < (x + xlen); xtemp++)
                     {
-                        if (xtemp == x)
+                        if (xtemp == x)//west
                             setCell(xtemp, ytemp, MAP_REF.WALL);
-                        else if (xtemp == (x + xlen - 1))
+                        else if (xtemp == (x + xlen - 1))//east
                             setCell(xtemp, ytemp, MAP_REF.WALL);
                         else if (ytemp == (y - ylen / 2))
                             setCell(xtemp, ytemp, MAP_REF.WALL);
@@ -149,13 +190,46 @@ public class Board {
                             setCell(xtemp, ytemp, MAP_REF.WALL);
                         else
                             setCell(xtemp, ytemp, MAP_REF.FLOOR);
+
+                        switch (doorWall)
+                        {
+                            case 0:
+                                //North
+                                if (xtemp == x+xlen/2 && ytemp == (y - ylen / 2))
+                                {
+                                    Debug.Log("Creating N");
+                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                                }
+                                break;
+                            case 1://east
+                                if (xtemp == x + (xlen-1) && ytemp == y)
+                                {
+                                    Debug.Log("Creating E");
+                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                                }
+                                break;
+                            case 2://south
+                                if (xtemp == x+xlen/2 && ytemp == (y + (ylen+1) / 2)-1)
+                                {
+                                    Debug.Log("Creating S");
+                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                                }
+                                break;
+                            case 3://west
+                                if (xtemp == x && ytemp == y)
+                                {
+                                    Debug.Log("Creating W");
+                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                                }
+                                break;
+                        }
                     }
                 }
-
+                //makeRandomDoorInRoom(r,1);
                 break;
 
             case 2: // south
-
+                Debug.Log("South Facing room");
                 for (int ytemp = y; ytemp < (y + ylen); ytemp++)
                 {
                     if (ytemp < 0 || ytemp > ysize)
@@ -183,13 +257,46 @@ public class Board {
                             setCell(xtemp, ytemp, MAP_REF.WALL);
                         else
                             setCell(xtemp, ytemp, MAP_REF.FLOOR);
+
+                        switch (doorWall)
+                        {
+                            case 0:
+                                //North
+                                if (xtemp == x && ytemp == y)
+                                {
+                                    Debug.Log("Creating N");
+                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                                }
+                                break;
+                            case 1://east
+                                if (xtemp == x + (xlen) / 2 && ytemp == y + ylen / 2)
+                                {
+                                    Debug.Log("Creating E");
+                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                                }
+                                break;
+                            case 2://south
+                                if (xtemp == x && ytemp == (y + ylen - 1))
+                                {
+                                    Debug.Log("Creating S");
+                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                                }
+                                break;
+                            case 3://west
+                                if (xtemp == x - xlen / 2 && ytemp == y + ylen / 2)
+                                {
+                                    Debug.Log("Creating W");
+                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                                }
+                                break;
+                        }
                     }
                 }
-
+               // makeRandomDoorInRoom(r,2);
                 break;
 
             case 3: // west
-
+                Debug.Log("West Facing room");
                 for (int ytemp = (y - ylen / 2); ytemp < (y + (ylen + 1) / 2); ytemp++)
                 {
                     if (ytemp < 0 || ytemp > ysize)
@@ -215,16 +322,17 @@ public class Board {
 							setCell(xtemp, ytemp, MAP_REF.WALL);
 						}
                         else if (ytemp == (y - ylen / 2)){ // top
-							if(xtemp >= x-xlen + 1 && setDoors != numDoors){
-							Debug.Log("Making Door");
-								Door d = new Door(new Vector2(xtemp, ytemp));
-								d.setRoom(r);
-								doors.Add(d);
-								setDoors++;
-								setCell(xtemp,ytemp, MAP_REF.DOOR);
+                            setCell(xtemp, ytemp, MAP_REF.WALL);
+
+                            if (xtemp >= x-xlen + 1 && setDoors != numDoors){
+							//Debug.Log("Making Door");
+								//Door d = new Door(new Vector2(xtemp, ytemp));
+								//d.setRoom(r);
+								//doors.Add(d);
+							//	setDoors++;
+							//	setCell(xtemp,ytemp, MAP_REF.DOOR);
 							}else{
-                            	setCell(xtemp, ytemp, MAP_REF.WALL);
-							Debug.Log("Non Door");
+							//Debug.Log("Non Door");
 							}
 						}
                         else if (ytemp == (y + (ylen - 1) / 2)) {// bottom 
@@ -233,14 +341,94 @@ public class Board {
                         else{
                             setCell(xtemp, ytemp, MAP_REF.FLOOR);
 						}
+
+                        switch (doorWall)
+                        {
+                            case 0:
+                                //North
+                                if (xtemp == x - xlen / 2 && ytemp == (y - ylen / 2))
+                                {
+                                    Debug.Log("Creating N");
+                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                                }
+                                break;
+                            case 1://east
+                                if (xtemp == x && ytemp == y)
+                                {
+                                    Debug.Log("Creating E");
+                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                                }
+                                break;
+                            case 2://south
+                                if (xtemp == x - xlen / 2 && ytemp == (y + (ylen + 1) / 2) - 1)
+                                {
+                                    Debug.Log("Creating S");
+                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                                }
+                                break;
+                            case 3://west
+                                if (xtemp == x - xlen +1 && ytemp == y)
+                                {
+                                    Debug.Log("Creating W");
+                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                                }
+                                break;
+                        }
                     }
                 }
-
                 break;
         }
 
         return true;
     }
+
+    public void makeRandomDoorInRoom(Room r, int xc, int yc, int direction)
+    {
+        Debug.Log("Making door");
+        /*int dir = Random.Range(0, 3);
+        Debug.Log("dir = " + dir);
+        int height = r.yLength;
+        int width = r.xLength;
+        int x = r.startX;
+        int y = r.startY;
+        Debug.Log("Chords = " + x + "," + y + ". Item = " + getCell(x, y));
+        int posX = Random.Range((x - 1), (x - width + 1));
+        int posY = Random.Range((y - 1), (y - height + 1));*/
+
+        Door d = new Door(new Vector2(xc, yc));
+        d.setRoom(r);
+        doors.Add(d);
+        setCell(new Vector2(xc, yc), MAP_REF.DOOR);
+       /* switch (dir)
+        {
+            case 0://NORTH
+                d = new Door(new Vector2(x+1, y));
+                d.setRoom(r);
+                doors.Add(d);
+                setCell(x+1, y, MAP_REF.DOOR);
+                break;
+            case 1://EAST
+                d = new Door(new Vector2(x+width, y+1));
+                d.setRoom(r);
+                doors.Add(d);
+                setCell(x+width, y+1, MAP_REF.DOOR);
+                break;
+            case 2://SOUTH
+                Debug.Log(getCell(x, y + height));
+                d = new Door(new Vector2(x+1, y+height));
+                d.setRoom(r);
+                doors.Add(d);
+                setCell(x+1, y+height, MAP_REF.DOOR);
+                break;
+            case 3://WEST
+                d = new Door(new Vector2(x, y+1));
+                d.setRoom(r);
+                doors.Add(d);
+                setCell(x, y+1, MAP_REF.DOOR);
+                break;
+        }*/
+    }
+
 
     public void placePiece(Piece p)
     {
@@ -260,7 +448,7 @@ public class Board {
     public void setCell(Vector2 v, MAP_REF ct)
     {
         int x = (int)v.x;
-        int y = (int)v.x;
+        int y = (int)v.y;
         RefMap[x,y] = ct;
     }
 
