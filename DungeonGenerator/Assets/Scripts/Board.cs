@@ -19,7 +19,11 @@ public class Board {
 	ArrayList corrs = new ArrayList ();
 
     Piece[] board = { };
-    MAP_REF [] refMap = {};
+    public MAP_REF [,] RefMap
+    {
+        get;
+        private set;
+    }
     int[] map = { };
     public Board(int xs, int ys, int px, int py)
     {
@@ -28,7 +32,7 @@ public class Board {
         this.pieceXSize = px;
         this.pieceYSize = py;
         board = new Piece[xsize * ysize];
-        refMap = new MAP_REF[xsize * ysize];
+        RefMap = new MAP_REF[xsize , ysize];
         setEmptyBoard();
     }
 
@@ -247,17 +251,17 @@ public class Board {
     }
     public void setCell(int x, int y, MAP_REF mr)
     {
-        refMap[x + xsize * y] = mr;
+        RefMap[x, y] = mr;
     }
     private MAP_REF getCell(int x, int y)
     {
-        return refMap[x + xsize * y];
+        return RefMap[x, y];
     }
     public void setCell(Vector2 v, MAP_REF ct)
     {
         int x = (int)v.x;
         int y = (int)v.x;
-        refMap[x + xsize * y] = ct;
+        RefMap[x,y] = ct;
     }
 
     string showDungeon()
