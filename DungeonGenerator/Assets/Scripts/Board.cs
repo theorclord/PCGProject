@@ -80,7 +80,7 @@ public class Board {
 		int numDoors = 1;
 		int setDoors = 0;
         //Q: How should we place the doors? Randomly on any wall, or set as parameter?
-        int doorWall = 3;// Random.Range(0, 3);
+        int doorWall = Random.Range(0, 3);
         // choose the way it's pointing at
         int dir = 0;
         if (direction > 0 && direction < 4)
