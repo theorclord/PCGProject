@@ -2,7 +2,15 @@
 using System.Collections;
 
 public class Board {
-
+    public enum MAP_REF
+    {
+        UNUSED,
+        WALL,
+        FLOOR,
+        DOOR,
+        START,
+        END
+    }
     public int xsize, ysize;
     public int pieceXSize;
     public int pieceYSize;
