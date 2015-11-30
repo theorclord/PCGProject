@@ -592,4 +592,15 @@ public class Board {
 		
 		return true;
 	}
+
+
+    void PSEUDO_GENERATE_ROOM( 
+        Vector2 PosistionOfPlayer,
+        Vector2 StartPosOfNewRoom,
+        int directionOfRoom/*Maybe not needed*/,
+        int NumberOfEachPieceMax
+
+        ){}
+
+
 }
