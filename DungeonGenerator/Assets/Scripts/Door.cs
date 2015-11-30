@@ -5,7 +5,13 @@ public class Door {
 
 	Room[] connections = new Room[2]; // a door only connects 2 rooms/corridors
 	Vector2 position;
-
+    public enum DIR
+    {
+        NORTH,
+        EAST,
+        SOUTH,
+        WEST
+    }
 
 	public Door (Room r1, Room r2, Vector2 pos)
 	{

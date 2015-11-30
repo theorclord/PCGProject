@@ -1,0 +1,2 @@
+
+Doors: Direction from the room they are made, so a door in the top of a room(when created) gets the direction NORTH
