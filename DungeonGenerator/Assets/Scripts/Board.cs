@@ -19,6 +19,7 @@ public class Board {
 	ArrayList corrs = new ArrayList ();
 
     Piece[] board = { };
+    MAP_REF [] refMap = {};
     int[] map = { };
     public Board(int xs, int ys, int px, int py)
     {
@@ -37,7 +38,7 @@ public class Board {
         {
             for(int j = 0; j < ysize; j++)
             {
-                setCell(i, j, -1);
+                setCell(i, j, MAP_REF.UNUSED);
             }
         }
     }
@@ -100,16 +101,16 @@ public class Board {
                     {
                         // start with the walls
                         if (xtemp == (x - xlen / 2))
-                            setCell(xtemp, ytemp, wall);
+                            setCell(xtemp, ytemp, MAP_REF.WALL);
                         else if (xtemp == (x + (xlen - 1) / 2))
-                            setCell(xtemp, ytemp, wall);
+                            setCell(xtemp, ytemp, MAP_REF.WALL);
                         else if (ytemp == y)
-                            setCell(xtemp, ytemp, wall);
+                            setCell(xtemp, ytemp, MAP_REF.WALL);
                         else if (ytemp == (y - ylen + 1))
-                            setCell(xtemp, ytemp, wall);
+                            setCell(xtemp, ytemp, MAP_REF.WALL);
                         // and then fill with the floor
                         else
-                            setCell(xtemp, ytemp, floor);
+                            setCell(xtemp, ytemp, MAP_REF.FLOOR);
                     }
                 }
 
@@ -135,15 +136,15 @@ public class Board {
                     for (int xtemp = x; xtemp < (x + xlen); xtemp++)
                     {
                         if (xtemp == x)
-                            setCell(xtemp, ytemp, wall);
+                            setCell(xtemp, ytemp, MAP_REF.WALL);
                         else if (xtemp == (x + xlen - 1))
-                            setCell(xtemp, ytemp, wall);
+                            setCell(xtemp, ytemp, MAP_REF.WALL);
                         else if (ytemp == (y - ylen / 2))
-                            setCell(xtemp, ytemp, wall);
+                            setCell(xtemp, ytemp, MAP_REF.WALL);
                         else if (ytemp == (y + (ylen - 1) / 2))
-                            setCell(xtemp, ytemp, wall);
+                            setCell(xtemp, ytemp, MAP_REF.WALL);
                         else
-                            setCell(xtemp, ytemp, floor);
+                            setCell(xtemp, ytemp, MAP_REF.FLOOR);
                     }
                 }
 
@@ -169,15 +170,15 @@ public class Board {
                     for (int xtemp = (x - xlen / 2); xtemp < (x + (xlen + 1) / 2); xtemp++)
                     {
                         if (xtemp == (x - xlen / 2))
-                            setCell(xtemp, ytemp, wall);
+                            setCell(xtemp, ytemp, MAP_REF.WALL);
                         else if (xtemp == (x + (xlen - 1) / 2))
-                            setCell(xtemp, ytemp, wall);
+                            setCell(xtemp, ytemp, MAP_REF.WALL);
                         else if (ytemp == y)
-                            setCell(xtemp, ytemp, wall);
+                            setCell(xtemp, ytemp, MAP_REF.WALL);
                         else if (ytemp == (y + ylen - 1))
-                            setCell(xtemp, ytemp, wall);
+                            setCell(xtemp, ytemp, MAP_REF.WALL);
                         else
-                            setCell(xtemp, ytemp, floor);
+                            setCell(xtemp, ytemp, MAP_REF.FLOOR);
                     }
                 }
 
@@ -204,10 +205,10 @@ public class Board {
                     for (int xtemp = x; xtemp > (x - xlen); xtemp--)
                     {
                         if (xtemp == x){// right side walls
-							setCell(xtemp, ytemp, wall);
+							setCell(xtemp, ytemp, MAP_REF.WALL);
 						}
                         else if (xtemp == (x - xlen + 1)){ // left side walls
-							setCell(xtemp, ytemp, wall);
+							setCell(xtemp, ytemp, MAP_REF.WALL);
 						}
                         else if (ytemp == (y - ylen / 2)){ // top
 							if(xtemp >= x-xlen + 1 && setDoors != numDoors){
@@ -216,17 +217,17 @@ public class Board {
 								d.setRoom(r);
 								doors.Add(d);
 								setDoors++;
-								setCell(xtemp,ytemp,2);
+								setCell(xtemp,ytemp, MAP_REF.DOOR);
 							}else{
-                            	setCell(xtemp, ytemp, wall);
+                            	setCell(xtemp, ytemp, MAP_REF.WALL);
 							Debug.Log("Non Door");
 							}
 						}
                         else if (ytemp == (y + (ylen - 1) / 2)) {// bottom 
-                            setCell(xtemp, ytemp, wall);
+                            setCell(xtemp, ytemp, MAP_REF.WALL);
 						}
                         else{
-                            setCell(xtemp, ytemp, floor);
+                            setCell(xtemp, ytemp, MAP_REF.FLOOR);
 						}
                     }
                 }
@@ -244,9 +245,9 @@ public class Board {
 
 
     }
-    public void setCell(int x, int y, int celltype)
+    public void setCell(int x, int y, MAP_REF mr)
     {
-        map[x + xsize * y] = celltype;
+        refMap[x + xsize * y] = mr;
     }
     private int getCell(int x, int y)
     {
@@ -344,7 +345,7 @@ public class Board {
 			// if we're still here, let's start building
 			for (ytemp = y; ytemp > (y - len); ytemp--)
 			{
-				setCell(xtemp, ytemp, floor);
+				setCell(xtemp, ytemp, MAP_REF.FLOOR);
 			}
 			break;
 			
@@ -361,7 +362,7 @@ public class Board {
 			
 			for (xtemp = x; xtemp < (x + len); xtemp++)
 			{
-				setCell(xtemp, ytemp, floor);
+				setCell(xtemp, ytemp, MAP_REF.FLOOR);
 			}
 			break;
 			
@@ -378,7 +379,7 @@ public class Board {
 			
 			for (ytemp = y; ytemp < (y + len); ytemp++)
 			{
-				setCell(xtemp, ytemp, floor);
+				setCell(xtemp, ytemp, MAP_REF.FLOOR);
 			}
 			break;
 			
@@ -395,7 +396,7 @@ public class Board {
 			
 			for (xtemp = x; xtemp > (x - len); xtemp--)
 			{
-				setCell(xtemp, ytemp, floor);
+				setCell(xtemp, ytemp, MAP_REF.FLOOR);
 			}
 			break;
 		}
