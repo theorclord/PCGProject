@@ -49,8 +49,8 @@ public class PlayerController : MonoBehaviour {
             }
             else if(dungeon[(int)(transform.position.x + vec.x), (int)(transform.position.y + vec.y)] == Board.MAP_REF.DOOR)
             {
-                gameCon.OpenDoor(transform.position);
                 transform.Translate(vec);
+                gameCon.OpenDoor(transform.position);
             }
             else
             {

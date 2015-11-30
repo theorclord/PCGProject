@@ -211,8 +211,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5ddea7a78572c9439c03a99673a6a97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DungeonWidth: 10
-  DungeonHeight: 10
+  DungeonWidth: 50
+  DungeonHeight: 50
   mainCam: {fileID: 507700270}
 --- !u!4 &1866530697
 Transform:
