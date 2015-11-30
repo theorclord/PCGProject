@@ -195,9 +195,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1866530695}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 260528613c88f564f90a0795708a20e3, type: 3}
+  m_Script: {fileID: 11500000, guid: b5ddea7a78572c9439c03a99673a6a97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DungeonWidth: 10
+  DungeonHeight: 10
 --- !u!4 &1866530697
 Transform:
   m_ObjectHideFlags: 0
