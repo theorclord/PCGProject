@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Old version, not used
+/// </summary>
 public class LabyrinthGenerator : MonoBehaviour {
     public GameObject[,] gameBoard;
 	// Use this for initialization

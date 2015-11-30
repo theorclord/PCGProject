@@ -97,6 +97,7 @@ GameObject:
   - 92: {fileID: 507700273}
   - 124: {fileID: 507700272}
   - 81: {fileID: 507700271}
+  - 114: {fileID: 507700276}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -141,7 +142,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: .300000012
+  near clip plane: -1
   far clip plane: 1000
   field of view: 60
   orthographic: 1
@@ -171,6 +172,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &507700276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 507700270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53cc3df13470bce468afeff7e5336579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSensitivity: .100000001
 --- !u!1 &1866530695
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,6 +213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DungeonWidth: 10
   DungeonHeight: 10
+  mainCam: {fileID: 507700270}
 --- !u!4 &1866530697
 Transform:
   m_ObjectHideFlags: 0
