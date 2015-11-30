@@ -8,12 +8,14 @@ public class Piece {
         DOOR, ROOM, CORRIDOR
     }
 
-    TYPE t;
+    public TYPE type;
 
-    int xSize;
-    int ySize;
-    int xStart;
-    int yStart;
+    public Vector2 corner1, corner2, corner3, corner4;
+
+    public int xSize;
+    public int ySize;
+    public int xStart;
+    public int yStart;
 
     public Piece(int xstart, int ystart, int xsize, int ysize)
     {
