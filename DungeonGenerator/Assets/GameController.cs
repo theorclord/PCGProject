@@ -95,23 +95,34 @@ public class GameController : MonoBehaviour {
         int xpos = (int)position.x;
         int ypos = (int)position.y;
         Vector3 tempPos = Vector3.zero;
+		int xprev = 0;
+		int yprev = 0;
         for(int i = -1; i < 2; i += 2)
         {
             if (board.RefMap[xpos + i, ypos] == Board.MAP_REF.UNUSED)
             {
                 //change pos in x dir
                 tempPos = new Vector3(xpos + i, ypos);
+				xprev = i;
                 break;
             } else if(board.RefMap[xpos, ypos+i] == Board.MAP_REF.UNUSED)
             {
                 //change pos in y dir
                 tempPos = new Vector3(xpos, ypos+i);
+				yprev = i;
                 break;
             }
         }
+		if (xprev == -1)//west
+			board.placeRoom (randomRoom (tempPos), 3);
+        else if(xprev == 1)//East
+			board.placeRoom (randomRoom (tempPos), 3);
+		else if(yprev == -1)//North
+			board.placeRoom (randomRoom (tempPos), 3);
+		else if(yprev == 1)//south
+			board.placeRoom (randomRoom (tempPos), 3);
 
-        
-        board.placeRoom(randomRoom(tempPos));
+        //board.placeRoom(randomRoom(tempPos));
         board.setCell((int)tempPos.x,(int)tempPos.y,Board.MAP_REF.DOOR);
         visualizeBoard(board.RefMap);
     }

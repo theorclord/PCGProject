@@ -53,17 +53,23 @@ public class Board {
             }
         }
     }
+	public void placeRoom(Room r, int dir)
+	{
+		makeRoom(r.startX, r.startY, r.xLength, r.yLength, dir, r,0);
+		rooms.Add (r);
+		Debug.Log(showDungeon());
+	}
 
     public void placeRoom(Room r)
     {
-        makeRoom(r.startX, r.startY, r.xLength, r.yLength, 0, r);
+        makeRoom(r.startX, r.startY, r.xLength, r.yLength, 0, r,0);
 		rooms.Add (r);
         Debug.Log(showDungeon());
     }
 
 
     private bool makeRoom(int x, int y, int xlength, int ylength,
-            int direction, Room r)
+            int direction, Room r, int doorDir)
     {
         /*******************************************************************************/
 
@@ -71,7 +77,7 @@ public class Board {
         // (2x2 for walking on, the rest is walls)
         int xlen = xlength;//getRand(4, xlength);
         int ylen = ylength;// getRand(4, ylength);
-
+		int ddir = doorDir;
         // the tile type it's going to be filled with
         int floor = 0; // jordgolv..
         int wall = 1; // jordv????gg
@@ -83,7 +89,7 @@ public class Board {
         int doorWall = 0;// Random.Range(0, 3);
         // choose the way it's pointing at
         int dir = 0;
-        if (direction > 0 && direction < 4)
+        if (direction > 0 && direction < 4) // not north, north by default, and less than 4
             dir = direction;
 
         switch (dir)
@@ -100,7 +106,7 @@ public class Board {
                     {
                         if (xtemp < 0 || xtemp > xsize)
                             return false;
-                        if (getCell(xtemp, ytemp) != MAP_REF.UNUSED)
+                        if (getCell(xtemp, ytemp) != MAP_REF.UNUSED && getCell(xtemp,ytemp)!=MAP_REF.WALL)
                             return false; // no space left...
                     }
                 }
