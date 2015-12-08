@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour {
         player.GetComponent<PlayerController>().SetPlayerCamera(mainCam);
         player.GetComponent<PlayerController>().SetDungeon(board.RefMap);
         player.GetComponent<PlayerController>().SetGameController(this);
-        player.transform.position = new Vector3(DungeonWidth/2, DungeonHeight/2-2);
+        player.transform.position = new Vector3(DungeonWidth/2, DungeonHeight/2);
 
         visualizeBoard(board.RefMap);
     }
@@ -113,17 +113,17 @@ public class GameController : MonoBehaviour {
                 break;
             }
         }
-		if (xprev == -1)//west
-			board.placeRoom (randomRoom (tempPos), 3);
-        else if(xprev == 1)//East
-			board.placeRoom (randomRoom (tempPos), 3);
-		else if(yprev == -1)//North
-			board.placeRoom (randomRoom (tempPos), 3);
+		if(yprev == -1)//North
+			board.placeRoom (randomRoom (tempPos), 0);
+        else if (xprev == 1)//East
+            board.placeRoom(randomRoom(tempPos), 1);
 		else if(yprev == 1)//south
-			board.placeRoom (randomRoom (tempPos), 3);
+			board.placeRoom (randomRoom (tempPos), 2);
+        if (xprev == -1)//west
+            board.placeRoom(randomRoom(tempPos), 3);
 
         //board.placeRoom(randomRoom(tempPos));
-        board.setCell((int)tempPos.x,(int)tempPos.y,Board.MAP_REF.DOOR);
+        //board.setCell((int)tempPos.x,(int)tempPos.y,Board.MAP_REF.DOOR);
         visualizeBoard(board.RefMap);
     }
 
