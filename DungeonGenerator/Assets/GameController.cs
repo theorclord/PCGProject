@@ -6,7 +6,9 @@ public class GameController : MonoBehaviour {
     public int DungeonHeight;
     public GameObject mainCam;
 
-    private float adventuresScale = 0.05f;
+    // the adventuresness of the player. Should be between 0 and 1
+    private float adventuresScale = 0.5f;
+    private float timeScale = 0.5f;
     private int turnCount = 0;
     private bool exitNotSet = true;
 
@@ -108,6 +110,58 @@ public class GameController : MonoBehaviour {
 
     public void OpenDoor(Vector3 position)
     {
+        // logic for the liniarity of the dungeon based on the adventureScale
+        int numdoors = 0;
+        int[] doorOrder = new int[3];
+
+        float limit1 = 0.45f * adventuresScale + 0.35f;
+        float limit2 = 0.25f * adventuresScale + 0.65f;
+        float chanceNumDoors = Random.Range(0f, 1f);
+        //Number of doors
+        if(chanceNumDoors <= limit1)
+        {
+            numdoors = 1;
+        }
+        else if (chanceNumDoors <= limit2)
+        {
+            numdoors = 2;
+        } else
+        {
+            numdoors = 3;
+        }
+        float chanceDoorOrder = Random.Range(0f, 1f);
+        float doorOrderTemp = Random.Range(0f, 1f);
+        if (chanceDoorOrder <= limit1)
+        {
+            // Low adventure value
+            if(doorOrderTemp <= 0.5) { 
+            doorOrder = new int[] { 1, 2, 3 };
+            } else {
+                doorOrder = new int[] { 1, 3, 2 };
+            }
+        } else if(chanceDoorOrder <= limit2)
+        {
+            //Medium adventure value
+            if (doorOrderTemp <= 0.5)
+            {
+                doorOrder = new int[] { 3, 1, 2 };
+            } else {
+                doorOrder = new int[] { 2, 1, 3 };
+            }
+        } else
+        {
+            //High adventure value
+            if (doorOrderTemp <= 0.5)
+            {
+                doorOrder = new int[] { 3, 2, 1 };
+            } else
+            {
+                doorOrder = new int[] { 2, 3, 1 };
+            }
+        }
+
+        Debug.Log("Number of doors: " + numdoors + ", Door order" + doorOrder[0] + doorOrder[1] + doorOrder[2]);
+
         Debug.Log("Generate New Room");
         int xpos = (int)position.x;
         int ypos = (int)position.y;
@@ -162,8 +216,9 @@ public class GameController : MonoBehaviour {
         visualizeBoard(board.RefMap);
 
         // Logic for when the player should find the exit
-        float chanceOfExit = 1 / (1 + Mathf.Exp(-turnCount * adventuresScale));
-        Debug.Log(chanceOfExit);
+        float chanceOfExit = 1 / (1 + Mathf.Exp(-turnCount * adventuresScale*timeScale));
+        // Sets the exit in the beginning of the new room
+        // TODO: Set exit in center of room or other place
         if (chanceOfExit > 0.999 && exitNotSet)
         {
             Debug.Log("Deploy exit");
@@ -205,4 +260,5 @@ public class GameController : MonoBehaviour {
     {
         turnCount++;
     }
+    
 }
