@@ -1,6 +1,10 @@
 
-When creating a room, make sure that it tries to create enough so that i doesnt skip creating.
+When creating a room, make sure that it tries to create enough so that it doesn't skip creating.
+Min/Max size of a room, and check when creating door, if there is at least the minimum amount of space left; if not - change direction.
+Multiple doors in a room.  (func: only open one? (choices))
 
+
+SET CORNERS OF THE ROOMS!!
 
 TODO:
 

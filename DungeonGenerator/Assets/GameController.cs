@@ -10,6 +10,9 @@ public class GameController : MonoBehaviour {
     private GameObject[,] interactables;
     private Board board;
 
+    public int MIN_ROOM_SIZE = 4;
+    public int MAX_ROOM_SIZE = 7;
+
     private GameObject player;
     // Use this for initialization
     void Start () {
@@ -120,14 +123,31 @@ public class GameController : MonoBehaviour {
                 break;
             }
         }
-		if(yprev == -1)//North
-			board.placeRoom (randomRoom (tempPos), 0);
-        else if (xprev == 1)//East
-            board.placeRoom(randomRoom(tempPos), 1);
-		else if(yprev == 1)//south
-			board.placeRoom (randomRoom (tempPos), 2);
-        if (xprev == -1)//west
-            board.placeRoom(randomRoom(tempPos), 3);
+        bool prev = false;
+        int attempts = 0;
+        while(prev == false && attempts < 10)
+        {
+            if (yprev == -1)
+            {//North
+                prev = board.placeRoom(randomRoom(tempPos), 0);
+            }
+            else if (xprev == 1)
+            {//East
+                prev = board.placeRoom(randomRoom(tempPos), 1);
+
+            }
+            else if (yprev == 1)
+            {//south
+                prev = board.placeRoom(randomRoom(tempPos), 2);
+
+            }
+                if (xprev == -1)
+            {//west
+                prev = board.placeRoom(randomRoom(tempPos), 3);
+                
+            }
+            attempts++;
+        }
 
         //board.placeRoom(randomRoom(tempPos));
         //board.setCell((int)tempPos.x,(int)tempPos.y,Board.MAP_REF.DOOR);
@@ -136,7 +156,7 @@ public class GameController : MonoBehaviour {
 
     private Room randomRoom(Vector3 position)
     {
-        return new Room((int)position.x, (int)position.y, Random.Range(3, 6), Random.Range(3, 6));
+        return new Room((int)position.x, (int)position.y, Random.Range(MIN_ROOM_SIZE, MAX_ROOM_SIZE), Random.Range(MIN_ROOM_SIZE, MAX_ROOM_SIZE));
     }
 
     public void playerInteraction(Interactable inter)
