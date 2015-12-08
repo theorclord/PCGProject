@@ -58,7 +58,8 @@ public class Board {
         bool res = false;
         // from GameController, vector has +1 or -1 offset in the direction.
         //makeRoom(r.startX, r.startY, r.xLength, r.yLength, dir, r, dir);
-        switch (dir)
+        res = makeFitRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir, dir);
+        /*switch (4)
         {
             case 0://north
                 res = makeNorthRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
@@ -72,7 +73,10 @@ public class Board {
             case 3:
                 res = makeWestRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
                 break;
-        }
+            case 4:
+                
+                break;
+        }*/
         //makeWestRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
 		rooms.Add (r);
 		Debug.Log(showDungeon());
@@ -85,6 +89,170 @@ public class Board {
         makeCenterRoom(r.startX, r.startY, r.xLength, r.yLength,0,  r, -1);
         rooms.Add (r);
         Debug.Log(showDungeon());
+    }
+
+    private bool makeFitRoom(int x, int y, int xlength, int ylength, Room r, int doorDir, int incDir)
+    {
+        //x and y should be made so it is outside of the door (basically inside the new room)
+        int xPos = 0;
+        int xNeg = 0;
+        int yPos = 0;
+        int yNeg = 0;
+        bool xpFound = false;
+        bool xnFound = false;
+        bool ypFound = false;
+        bool ynFound = false;
+
+        for (int i = 0; i < xlength; i++)
+        {
+            //Debug.Log("x = " + i + ", y = " + y);
+            Debug.Log(getCell(x + i, y));
+            if (getCell(x+i, y) == MAP_REF.UNUSED && !xpFound && x+i != 0 && x+i != xsize)
+            {
+                xPos++;
+            }
+            else
+            {
+                xpFound = true;
+            }
+            if (getCell(x-i, y) == MAP_REF.UNUSED && !xnFound && x - i != 0 && x- i != xsize)
+            {
+                xNeg++;
+            }
+            else
+            {
+                xnFound = true;
+            }
+        }
+        for (int j = 0; j < ylength; j++)
+        {
+                
+            if (getCell(x, y-j) == MAP_REF.UNUSED && !ynFound && y-j != 0 && y-j != ysize)
+            {
+                yNeg++;
+            }
+            else
+            {
+                ynFound = true;
+            }
+            if (getCell(x, y+j) == MAP_REF.UNUSED && !ypFound && y + j != 0 && y + j != ysize)
+            {
+                yPos++;
+            }
+            else
+            {
+                ypFound = true;
+            }
+        }
+        Debug.Log("xPos = " + xPos + ", xNeg = " + xNeg + ", yPos = " + yPos + ", yNeg = " + yNeg);
+        
+        for(int w = x-xNeg; w < x+xPos; w++)
+        {
+            for(int l = y-yNeg; l < y+yPos; l++)
+            {
+                if(w==x-xNeg || w == x + xPos-1 || l == y - yNeg || l == y + yPos-1)//lower and higher end
+                {
+                    setCell(w, l, MAP_REF.WALL);
+                }else
+                {
+                    setCell(w, l, MAP_REF.FLOOR);
+                }
+            }
+        }
+        setCell(x, y, MAP_REF.FLOOR);
+        
+        //Debug.Log(doorPlace + " = doorplace");
+        int xVal = 0;
+        int yVal = 0;
+        if (xPos > xNeg)
+        {
+            xVal = xPos;
+        }
+        else
+        {
+            xVal = xNeg;
+        }
+        if (yPos > yNeg)
+        {
+            yVal = yPos;
+        }
+        else
+        {
+            yVal = yNeg;
+        }
+
+        /*
+        x+xVal = Right
+        y+yVal = Up
+        x-xneg = left
+        x
+        */
+        int doorPlace = Random.Range(0, 3);
+        switch (incDir)
+        {
+            case 0://NorthFacing room
+                //North, east and west
+                if(doorPlace == 0)//North
+                {
+                    makeRandomDoorInRoom(r, ((x-xNeg)+(x+xPos-1))/2, y-yVal, 0);
+                }
+                else if(doorPlace == 1)//east
+                {
+                    makeRandomDoorInRoom(r, x+xPos-1, ((y-yNeg)+(y+yPos-1))/2, 0);
+                }
+                else
+                {
+                    makeRandomDoorInRoom(r, x - xNeg, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
+                }
+                break;
+            case 1://Eastfacing
+                //East, north and south
+                if (doorPlace == 0)
+                {
+                    makeRandomDoorInRoom(r, x + xPos - 1, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
+                }
+                else if (doorPlace == 1)
+                {
+                    makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y - yVal, 0);
+                }
+                else
+                {
+                    makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y + yVal - 1, 0);
+                }
+                break;
+            case 2://southfacing
+                //south, east and west
+                if (doorPlace == 0)
+                {
+                    makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y + yVal - 1, 0);
+                }
+                else if (doorPlace == 1)
+                {
+                    makeRandomDoorInRoom(r, x + xPos - 1, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
+                }
+                else
+                {
+                    makeRandomDoorInRoom(r, x - xNeg, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
+                }
+                break;
+            case 3://westfacing
+                //west, south and north
+                if (doorPlace == 0)
+                {
+                    makeRandomDoorInRoom(r, x - xNeg, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
+                }
+                else if (doorPlace == 1)
+                {
+                    makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y + yVal - 1, 0);
+                }
+                else
+                {
+                    makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y - yVal, 0);
+                }
+                break;
+        }
+
+        return true;
     }
 
     private bool makeNorthRoom(int x, int y, int xlength, int ylength, Room r, int doorDir)
