@@ -53,28 +53,30 @@ public class Board {
             }
         }
     }
-	public void placeRoom(Room r, int dir)
+	public bool placeRoom(Room r, int dir)
 	{
+        bool res = false;
         // from GameController, vector has +1 or -1 offset in the direction.
         //makeRoom(r.startX, r.startY, r.xLength, r.yLength, dir, r, dir);
         switch (dir)
         {
             case 0://north
-                makeNorthRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
+                res = makeNorthRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
                 break;
             case 1:
-                makeEastRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
+                res = makeEastRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
                 break;
             case 2:
-                makeSouthRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
+                res = makeSouthRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
                 break;
             case 3:
-                makeWestRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
+                res = makeWestRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
                 break;
         }
         //makeWestRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
 		rooms.Add (r);
 		Debug.Log(showDungeon());
+        return res;
 	}
 
     public void placeRoom(Room r) // Starting room, no particular direction
@@ -116,6 +118,7 @@ public class Board {
         {// set y+=1 to compensate the offset.  //REMEMBER TO SET THE DOOR BACK AFTERWARDS
             doorY += 1;
             doorEntrance = true;
+            Debug.Log("DOOR SHOULD BE MADE dir: " + doorWall);
         }
         for (int ytemp = doorY; ytemp > (doorY - ylen); ytemp--)
         {
@@ -146,7 +149,9 @@ public class Board {
                         }
                         break;
                     case 1://east
-                        if (xtemp == doorX + (xlen) / 2 && ytemp == doorY - ylen / 2)
+                        Debug.Log("xtemp: "+xtemp +"xtemp simily: " + (doorX + (xlen) / 2));
+                        Debug.Log("ytemp: " + ytemp + "ytemp simily: " + (doorY - ylen / 2));
+                        if (xtemp == doorX + (xlen-1) / 2 && ytemp == doorY - ylen / 2)
                         {
                             Debug.Log("Creating E");
                             makeRandomDoorInRoom(r, xtemp, ytemp, 0);
@@ -159,6 +164,9 @@ public class Board {
                             Debug.Log("Creating W");
                             makeRandomDoorInRoom(r, xtemp, ytemp, 0);
                         }
+                        break;
+                    case 3:
+                        Debug.Log("3Inclusive");
                         break;
                 }
             }
@@ -199,9 +207,9 @@ public class Board {
         }
         if (doorDir != -1)
         {// set y+=1 to compensate the offset.  //REMEMBER TO SET THE DOOR BACK AFTERWARDS
-            Debug.Log("DIR = 0");
             doorX -= 1;
             doorEntrance = true;
+            Debug.Log("DOOR SHOULD BE MADE dir: "+doorWall);
         }
 
         for (int ytemp = (doorY - ylen / 2); ytemp < (doorY + (ylen + 1) / 2); ytemp++)
@@ -223,7 +231,7 @@ public class Board {
                 {
                     case 0:
                         //North
-                        if (xtemp == doorX + xlen / 2 && ytemp == (doorY - ylen / 2))
+                        if (xtemp == doorX + xlen / 2 && ytemp == (doorY + (ylen + 1) / 2) - 1)
                         {
                             Debug.Log("Creating N");
                             makeRandomDoorInRoom(r, xtemp, ytemp, 0);
@@ -237,11 +245,14 @@ public class Board {
                         }
                         break;
                     case 2://south
-                        if (xtemp == doorX + xlen / 2 && ytemp == (doorY + (ylen + 1) / 2) - 1)
+                        if (xtemp == doorX + xlen / 2 && ytemp == (doorY - ylen / 2))
                         {
                             Debug.Log("Creating S");
                             makeRandomDoorInRoom(r, xtemp, ytemp, 0);
                         }
+                        break;
+                    case 3:
+                        Debug.Log("3Inclusive");
                         break;
                 }
             }
@@ -283,6 +294,7 @@ public class Board {
         {// set y+=1 to compensate the offset.  //REMEMBER TO SET THE DOOR BACK AFTERWARDS
             doorY -= 1;
             doorEntrance = true;
+            Debug.Log("DOOR SHOULD BE MADE dir: "+ doorWall);
         }
 
         for (int ytemp = doorY; ytemp < (doorY + ylen); ytemp++)
@@ -304,7 +316,7 @@ public class Board {
                 {
                    
                     case 0://east
-                        if (xtemp == doorX + (xlen) / 2 && ytemp == doorY + ylen / 2)
+                        if (xtemp == doorX + (xlen-1) / 2 && ytemp == doorY + ylen / 2)
                         {
                             Debug.Log("Creating E");
                             makeRandomDoorInRoom(r, xtemp, ytemp, 0);
@@ -323,6 +335,9 @@ public class Board {
                             Debug.Log("Creating W");
                             makeRandomDoorInRoom(r, xtemp, ytemp, 0);
                         }
+                        break;
+                    case 3:
+                        Debug.Log("3Inclusive");
                         break;
                 }
             }
@@ -365,6 +380,7 @@ public class Board {
         {
             doorX += 1;
             doorEntrance = true;
+            Debug.Log("DOOR SHOULD BE MADE dir: " + doorWall);
         }
 
         for (int ytemp = (doorY - ylen / 2); ytemp < (doorY + (ylen + 1) / 2); ytemp++)
@@ -405,6 +421,9 @@ public class Board {
                             Debug.Log("Creating W");
                             makeRandomDoorInRoom(r, xtemp, ytemp, 0);
                         }
+                        break;
+                    case 3:
+                        Debug.Log("3Inclusive");
                         break;
                 }
             }
@@ -463,20 +482,20 @@ public class Board {
         switch (doorWall)
         {
             case 0://north
-                Debug.Log("Creating N");
-                makeRandomDoorInRoom(r, x, y - (ylen) / 2, 0);
-                break;
-            case 1://east
-                    Debug.Log("Creating E");
-                    makeRandomDoorInRoom(r, x-xlen/2, y, 0);
-                break;
-            case 2://south
-                    Debug.Log("Creating S");
+                Debug.Log("Creating N-C");
                 makeRandomDoorInRoom(r, x, y + (ylen) / 2, 0);
                 break;
+            case 1://east
+                    Debug.Log("Creating E-C");
+                makeRandomDoorInRoom(r, x+xlen/2, y, 0);
+                break;
+            case 2://south
+                    Debug.Log("Creating S-C");
+                makeRandomDoorInRoom(r, x, y - (ylen) / 2, 0);
+                break;
             case 3://west
-                    Debug.Log("Creating W");
-                    makeRandomDoorInRoom(r, x+xlen/2, y, 0);
+                    Debug.Log("Creating W-C");
+                makeRandomDoorInRoom(r, x - xlen / 2, y, 0);
                 
                 break;
             }

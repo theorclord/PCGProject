@@ -1,13 +1,14 @@
 
-Doors: Direction from the room they are made, so a door in the top of a room(when created) gets the direction NORTH
+When creating a room, make sure that it tries to create enough so that it doesn't skip creating.
+Min/Max size of a room, and check when creating door, if there is at least the minimum amount of space left; if not - change direction.
+Multiple doors in a room.  (func: only open one? (choices))
 
 
+SET CORNERS OF THE ROOMS!!
 
 TODO:
 
-* make it so the doors are where you enter ( entrance vector )
 * remove sprites of walls. (Skipped)
-* Connect walls that share door (ROOMS)
 * Board should be represented as GamePieces, not ENUMS
 * Need to add interactable gameobjects such as enemies and events ( Trigger something )
 * Limit the amount of pieces that can be generated
