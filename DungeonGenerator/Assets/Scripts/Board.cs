@@ -199,7 +199,6 @@ public class Board {
         }
         if (doorDir != -1)
         {// set y+=1 to compensate the offset.  //REMEMBER TO SET THE DOOR BACK AFTERWARDS
-            Debug.Log("DIR = 0");
             doorX -= 1;
             doorEntrance = true;
         }
@@ -223,7 +222,7 @@ public class Board {
                 {
                     case 0:
                         //North
-                        if (xtemp == doorX + xlen / 2 && ytemp == (doorY - ylen / 2))
+                        if (xtemp == doorX + xlen / 2 && ytemp == (doorY + (ylen + 1) / 2) - 1)
                         {
                             Debug.Log("Creating N");
                             makeRandomDoorInRoom(r, xtemp, ytemp, 0);
@@ -237,7 +236,7 @@ public class Board {
                         }
                         break;
                     case 2://south
-                        if (xtemp == doorX + xlen / 2 && ytemp == (doorY + (ylen + 1) / 2) - 1)
+                        if (xtemp == doorX + xlen / 2 && ytemp == (doorY - ylen / 2))
                         {
                             Debug.Log("Creating S");
                             makeRandomDoorInRoom(r, xtemp, ytemp, 0);
@@ -463,20 +462,20 @@ public class Board {
         switch (doorWall)
         {
             case 0://north
-                Debug.Log("Creating N");
-                makeRandomDoorInRoom(r, x, y - (ylen) / 2, 0);
-                break;
-            case 1://east
-                    Debug.Log("Creating E");
-                    makeRandomDoorInRoom(r, x-xlen/2, y, 0);
-                break;
-            case 2://south
-                    Debug.Log("Creating S");
+                Debug.Log("Creating N-C");
                 makeRandomDoorInRoom(r, x, y + (ylen) / 2, 0);
                 break;
+            case 1://east
+                    Debug.Log("Creating E-C");
+                makeRandomDoorInRoom(r, x+xlen/2, y, 0);
+                break;
+            case 2://south
+                    Debug.Log("Creating S-C");
+                makeRandomDoorInRoom(r, x, y - (ylen) / 2, 0);
+                break;
             case 3://west
-                    Debug.Log("Creating W");
-                    makeRandomDoorInRoom(r, x+xlen/2, y, 0);
+                    Debug.Log("Creating W-C");
+                makeRandomDoorInRoom(r, x - xlen / 2, y, 0);
                 
                 break;
             }
