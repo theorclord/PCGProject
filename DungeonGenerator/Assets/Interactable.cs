@@ -5,6 +5,7 @@ public class Interactable : MonoBehaviour {
     public enum InteractType
     {
         Entrance,
+        Dialog,
         Exit
     }
 

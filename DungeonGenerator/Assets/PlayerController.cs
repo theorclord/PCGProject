@@ -7,6 +7,12 @@ public class PlayerController : MonoBehaviour {
     private Board.MAP_REF[,] dungeon;
     private GameObject[,] interactable;
     private GameController gameCon;
+
+    public int TurnMove
+    {
+        get; set;
+    }
+    private int currentMove;
 	// Update is called once per frame
 	void Update () {
 
@@ -48,7 +54,6 @@ public class PlayerController : MonoBehaviour {
 
     private void executeMove(Vector3 vec)
     {
-        //Debug.Log(dungeon[(int)transform.position.x, (int)transform.position.y]);
         int transXTrans = (int)(transform.position.x+vec.x);
         int transYTrans = (int)(transform.position.y + vec.y);
         if (!(dungeon.GetLongLength(0) <= transXTrans || 0 > transXTrans || dungeon.GetLongLength(1) <= transYTrans || transYTrans < 0))
@@ -60,11 +65,13 @@ public class PlayerController : MonoBehaviour {
             else if(dungeon[(int)(transform.position.x + vec.x), (int)(transform.position.y + vec.y)] == Board.MAP_REF.DOOR)
             {
                 transform.Translate(vec);
+                currentMove++;
                 gameCon.OpenDoor(transform.position);
             }
             else
             {
                 transform.Translate(vec);
+                currentMove++;
             }
         }
         if(interactable[transXTrans,transYTrans] != null){
@@ -73,6 +80,11 @@ public class PlayerController : MonoBehaviour {
             gameCon.playerInteraction(inter);
         }
         mainCamera.transform.position = transform.position;
+        if (currentMove >= TurnMove)
+        {
+            currentMove = 0;
+        }
+        gameCon.NextTurn();
     }
 
     public void SetGameController(GameController gameController)
