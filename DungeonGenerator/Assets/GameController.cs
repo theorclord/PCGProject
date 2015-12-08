@@ -51,7 +51,7 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        
 	}
 
     /// <summary>
@@ -108,11 +108,14 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Logic for how to handle dungeon generation when a door is opened
+    /// </summary>
+    /// <param name="position">Current position of player</param>
     public void OpenDoor(Vector3 position)
     {
         // logic for the liniarity of the dungeon based on the adventureScale
         int numdoors = 0;
-        int[] doorOrder = new int[3];
 
         float limit1 = 0.45f * adventuresScale + 0.35f;
         float limit2 = 0.25f * adventuresScale + 0.65f;
@@ -129,36 +132,8 @@ public class GameController : MonoBehaviour {
         {
             numdoors = 3;
         }
-        float chanceDoorOrder = Random.Range(0f, 1f);
-        float doorOrderTemp = Random.Range(0f, 1f);
-        if (chanceDoorOrder <= limit1)
-        {
-            // Low adventure value
-            if(doorOrderTemp <= 0.5) { 
-            doorOrder = new int[] { 1, 2, 3 };
-            } else {
-                doorOrder = new int[] { 1, 3, 2 };
-            }
-        } else if(chanceDoorOrder <= limit2)
-        {
-            //Medium adventure value
-            if (doorOrderTemp <= 0.5)
-            {
-                doorOrder = new int[] { 3, 1, 2 };
-            } else {
-                doorOrder = new int[] { 2, 1, 3 };
-            }
-        } else
-        {
-            //High adventure value
-            if (doorOrderTemp <= 0.5)
-            {
-                doorOrder = new int[] { 3, 2, 1 };
-            } else
-            {
-                doorOrder = new int[] { 2, 3, 1 };
-            }
-        }
+        //Prioritiesed order of the doors
+        ArrayList doorOrder = getDoorOrder(limit1, limit2);
 
         Debug.Log("Number of doors: " + numdoors + ", Door order" + doorOrder[0] + doorOrder[1] + doorOrder[2]);
 
@@ -187,25 +162,91 @@ public class GameController : MonoBehaviour {
         bool prev = false;
         Room newroom = randomRoom(tempPos);
         int attempts = 0;
+        //Door directions:
+        // North = 0
+        // East = 1
+        // South = 2
+        // West = 3
+
         while(prev == false && attempts < 10)
         {
             if (yprev == -1)
             {//North
-                prev = board.placeRoom(newroom, 0, position);
+                for(int i = 0; i<doorOrder.Count; i++)
+                {
+                    switch ((int)doorOrder[i])
+                    {
+                        case 0:
+                            doorOrder[i] = 0;
+                            break;
+                        case 1:
+                            doorOrder[i] = 3;
+                            break;
+                        case 2:
+                            doorOrder[i] = 1;
+                            break;
+                    }
+                }
+                prev = board.placeRoom(newroom, 0, position, doorOrder, numdoors);
             }
             else if (xprev == 1)
             {//East
-                prev = board.placeRoom(newroom, 1, position);
+                for (int i = 0; i < doorOrder.Count; i++)
+                {
+                    switch ((int)doorOrder[i])
+                    {
+                        case 0:
+                            doorOrder[i] = 1;
+                            break;
+                        case 1:
+                            doorOrder[i] = 0;
+                            break;
+                        case 2:
+                            doorOrder[i] = 2;
+                            break;
+                    }
+                }
+                prev = board.placeRoom(newroom, 1, position, doorOrder, numdoors);
 
             }
             else if (yprev == 1)
             {//south
-                prev = board.placeRoom(newroom, 2, position);
+                for (int i = 0; i < doorOrder.Count; i++)
+                {
+                    switch ((int)doorOrder[i])
+                    {
+                        case 0:
+                            doorOrder[i] = 2;
+                            break;
+                        case 1:
+                            doorOrder[i] = 1;
+                            break;
+                        case 2:
+                            doorOrder[i] = 3;
+                            break;
+                    }
+                }
+                prev = board.placeRoom(newroom, 2, position, doorOrder, numdoors);
 
             }
                 if (xprev == -1)
             {//west
-                prev = board.placeRoom(newroom, 3, position);
+                for (int i = 0; i < doorOrder.Count; i++)
+                {
+                    switch ((int)doorOrder[i])
+                    {
+                        case 0:
+                            doorOrder[i] = 3;
+                            break;
+                        case 1:
+                            doorOrder[i] = 2;
+                            break;
+                        case 2:
+                            doorOrder[i] = 0;
+                            break;
+                    }
+                }
+                prev = board.placeRoom(newroom, 3, position, doorOrder, numdoors);
                 
             }
             attempts++;
@@ -216,7 +257,8 @@ public class GameController : MonoBehaviour {
         visualizeBoard(board.RefMap);
 
         // Logic for when the player should find the exit
-        float chanceOfExit = 1 / (1 + Mathf.Exp(-turnCount * adventuresScale*timeScale));
+        //TODO check value
+        float chanceOfExit = 1 / (1 + Mathf.Exp(-turnCount * 1/(adventuresScale*timeScale+1)));
         // Sets the exit in the beginning of the new room
         // TODO: Set exit in center of room or other place
         if (chanceOfExit > 0.999 && exitNotSet)
@@ -232,6 +274,8 @@ public class GameController : MonoBehaviour {
             interactables[x, y] = exit;
             exitNotSet = false;
         }
+
+        // Logic for dialog interaction
 
     }
 
@@ -254,11 +298,74 @@ public class GameController : MonoBehaviour {
     }
 
     /// <summary>
+    /// Adds the value to the adventurescal
+    /// </summary>
+    /// <param name="val"></param>
+    public void ChangeAdventureScale(float val)
+    {
+        adventuresScale += val;
+        Mathf.Clamp(adventuresScale, 0.0f, 1.0f);
+    }
+
+
+    /// <summary>
     /// Executes turn based events
     /// </summary>
     public void NextTurn()
     {
+        Debug.Log(adventuresScale);
         turnCount++;
     }
     
+
+    /// <summary>
+    /// Function responsible for the control of the door order
+    /// </summary>
+    /// <param name="limit1"></param>
+    /// <param name="limit2"></param>
+    /// <returns></returns>
+    private ArrayList getDoorOrder(float limit1, float limit2)
+    {
+        ArrayList doorOrder = null;
+
+        float chanceDoorOrder = Random.Range(0f, 1f);
+        float doorOrderTemp = Random.Range(0f, 1f);
+        if (chanceDoorOrder <= limit1)
+        {
+            // Low adventure value
+            if (doorOrderTemp <= 0.5)
+            {
+                doorOrder = new ArrayList(new int[] { 0, 1, 2 });
+            }
+            else
+            {
+                doorOrder = new ArrayList(new int[] { 0, 2, 1 });
+            }
+        }
+        else if (chanceDoorOrder <= limit2)
+        {
+            //Medium adventure value
+            if (doorOrderTemp <= 0.5)
+            {
+                doorOrder = new ArrayList(new int[] { 2, 0, 1 });
+            }
+            else
+            {
+                doorOrder = new ArrayList(new int[] { 1, 0, 2 });
+            }
+        }
+        else
+        {
+            //High adventure value
+            if (doorOrderTemp <= 0.5)
+            {
+                doorOrder = new ArrayList(new int[] { 2, 1, 0 });
+            }
+            else
+            {
+                doorOrder = new ArrayList(new int[] { 1, 2, 0 });
+            }
+        }
+        return doorOrder;
+    }
 }

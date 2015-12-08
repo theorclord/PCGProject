@@ -83,8 +83,8 @@ public class PlayerController : MonoBehaviour {
         if (currentMove >= TurnMove)
         {
             currentMove = 0;
+            gameCon.NextTurn();
         }
-        gameCon.NextTurn();
     }
 
     public void SetGameController(GameController gameController)

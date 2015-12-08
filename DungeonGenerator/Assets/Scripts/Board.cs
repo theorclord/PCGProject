@@ -53,12 +53,12 @@ public class Board {
             }
         }
     }
-	public bool placeRoom(Room r, int dir, Vector2 ent, ArrayList doors)
+	public bool placeRoom(Room r, int dir, Vector2 ent, ArrayList doors, int numberOfDoors)
 	{
         bool res = false;
         // from GameController, vector has +1 or -1 offset in the direction.
         //makeRoom(r.startX, r.startY, r.xLength, r.yLength, dir, r, dir);
-        res = makeFitRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir, dir, ent, doors);
+        res = makeFitRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir, dir, ent, doors, numberOfDoors);
         /*switch (4)
         {
             case 0://north
@@ -91,7 +91,7 @@ public class Board {
         Debug.Log(showDungeon());
     }
 
-    private bool makeFitRoom(int x, int y, int xlength, int ylength, Room r, int doorDir, int incDir, Vector2 ent, ArrayList doors)
+    private bool makeFitRoom(int x, int y, int xlength, int ylength, Room r, int doorDir, int incDir, Vector2 ent, ArrayList doors, int numDoors)
     {
         //x and y should be made so it is outside of the door (basically inside the new room)
         int xPos = 0;
@@ -214,7 +214,7 @@ public class Board {
             }
         }*/
         Debug.Log("Done adding doors to list");
-        while (doors.Count > 0)
+        while (numDoors > 0)
         {
             int doorPlace = (int)doors[0];//Random.Range(0, 3);
             switch (incDir)
@@ -281,6 +281,7 @@ public class Board {
                     break;
             }
             doors.RemoveAt(0);
+            numDoors--;
         }
         setCell(x, y, MAP_REF.FLOOR);
         setCell((int)ent.x, (int)ent.y, MAP_REF.FLOOR);
