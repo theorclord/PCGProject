@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour {
     public GameObject mainCam;
 
     private GameObject[,] gameBoard;
+    private GameObject[,] interactables;
     private Board board;
 
     private GameObject player;
@@ -14,6 +15,7 @@ public class GameController : MonoBehaviour {
     void Start () {
         mainCam.transform.position = new Vector3(DungeonHeight / 2, DungeonWidth / 2,-1);
         gameBoard = new GameObject[DungeonWidth, DungeonHeight];
+        interactables = new GameObject[DungeonWidth, DungeonHeight];
         board = new Board(DungeonWidth,DungeonHeight,1,1);
         Room center = new Room(board.xsize / 2, board.ysize / 2, 5, 5);
         //Room cor = new Room(board.xsize / 2 + 3, board.ysize / 2 + 3, 5, 1);
@@ -25,7 +27,12 @@ public class GameController : MonoBehaviour {
         player.GetComponent<PlayerController>().SetPlayerCamera(mainCam);
         player.GetComponent<PlayerController>().SetDungeon(board.RefMap);
         player.GetComponent<PlayerController>().SetGameController(this);
+        player.GetComponent<PlayerController>().SetInteractable(interactables);
         player.transform.position = new Vector3(DungeonWidth/2, DungeonHeight/2-2);
+
+        GameObject entrance = Instantiate(Resources.Load("Prefabs/Interactable") as GameObject);
+        entrance.transform.position = player.transform.position;
+        interactables[(int)player.transform.position.x, (int)player.transform.position.y] = entrance;
 
         visualizeBoard(board.RefMap);
     }
@@ -119,5 +126,14 @@ public class GameController : MonoBehaviour {
     private Room randomRoom(Vector3 position)
     {
         return new Room((int)position.x, (int)position.y, Random.Range(3, 6), Random.Range(3, 6));
+    }
+
+    public void playerInteraction(Interactable inter)
+    {
+        Interactable.InteractType type = inter.Type;
+        if(type == Interactable.InteractType.Exit)
+        {
+            Debug.Log("You win");
+        }
     }
 }

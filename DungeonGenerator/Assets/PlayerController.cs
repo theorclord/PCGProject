@@ -5,6 +5,7 @@ using System;
 public class PlayerController : MonoBehaviour {
     private GameObject mainCamera;
     private Board.MAP_REF[,] dungeon;
+    private GameObject[,] interactable;
     private GameController gameCon;
 	// Update is called once per frame
 	void Update () {
@@ -31,9 +32,18 @@ public class PlayerController : MonoBehaviour {
         mainCamera = cam;
     }
 
+    /// <summary>
+    /// Sets the board of of the game. 
+    /// </summary>
+    /// <param name="dun"></param>
     public void SetDungeon(Board.MAP_REF[,] dun)
     {
         dungeon = dun;
+    }
+
+    public void SetInteractable(GameObject[,] interactable)
+    {
+        this.interactable = interactable;
     }
 
     private void executeMove(Vector3 vec)
@@ -56,6 +66,11 @@ public class PlayerController : MonoBehaviour {
             {
                 transform.Translate(vec);
             }
+        }
+        if(interactable[transXTrans,transYTrans] != null){
+            GameObject gObj = interactable[transXTrans, transYTrans];
+            Interactable inter = gObj.GetComponent<Interactable>();
+            gameCon.playerInteraction(inter);
         }
         mainCamera.transform.position = transform.position;
     }
