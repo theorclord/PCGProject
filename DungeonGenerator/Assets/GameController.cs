@@ -16,8 +16,8 @@ public class GameController : MonoBehaviour {
     private GameObject[,] interactables;
     private Board board;
 
-    public int MIN_ROOM_SIZE = 4;
-    public int MAX_ROOM_SIZE = 7;
+    public int MIN_ROOM_SIZE = 3;
+    public int MAX_ROOM_SIZE = 4;
 
     private GameObject player;
     // Use this for initialization
@@ -191,21 +191,21 @@ public class GameController : MonoBehaviour {
         {
             if (yprev == -1)
             {//North
-                prev = board.placeRoom(newroom, 0);
+                prev = board.placeRoom(newroom, 0, position);
             }
             else if (xprev == 1)
             {//East
-                prev = board.placeRoom(newroom, 1);
+                prev = board.placeRoom(newroom, 1, position);
 
             }
             else if (yprev == 1)
             {//south
-                prev = board.placeRoom(newroom, 2);
+                prev = board.placeRoom(newroom, 2, position);
 
             }
                 if (xprev == -1)
             {//west
-                prev = board.placeRoom(newroom, 3);
+                prev = board.placeRoom(newroom, 3, position);
                 
             }
             attempts++;
@@ -237,7 +237,7 @@ public class GameController : MonoBehaviour {
 
     private Room randomRoom(Vector3 position)
     {
-        return new Room((int)position.x, (int)position.y, Random.Range(MIN_ROOM_SIZE, MAX_ROOM_SIZE), Random.Range(MIN_ROOM_SIZE, MAX_ROOM_SIZE));
+        return new Room((int)position.x, (int)position.y, Random.Range(MIN_ROOM_SIZE, MAX_ROOM_SIZE-MIN_ROOM_SIZE), Random.Range(MIN_ROOM_SIZE, MAX_ROOM_SIZE - MIN_ROOM_SIZE));
     }
 
     public void playerInteraction(Interactable inter)
