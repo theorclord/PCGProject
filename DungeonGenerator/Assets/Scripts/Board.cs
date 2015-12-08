@@ -53,17 +53,371 @@ public class Board {
             }
         }
     }
-
-    public void placeRoom(Room r)
-    {
-        makeRoom(r.startX, r.startY, r.xLength, r.yLength, 0, r);
+	public void placeRoom(Room r, int dir)
+	{
+        // from GameController, vector has +1 or -1 offset in the direction.
+        //makeRoom(r.startX, r.startY, r.xLength, r.yLength, dir, r, dir);
+        switch (dir)
+        {
+            case 0://north
+                makeNorthRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
+                break;
+            case 1:
+                makeEastRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
+                break;
+            case 2:
+                makeSouthRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
+                break;
+            case 3:
+                makeWestRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
+                break;
+        }
+        //makeWestRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir);
 		rooms.Add (r);
+		Debug.Log(showDungeon());
+	}
+
+    public void placeRoom(Room r) // Starting room, no particular direction
+    {
+        // makeRoom(r.startX, r.startY, r.xLength, r.yLength, 0, r, -1);
+        makeCenterRoom(r.startX, r.startY, r.xLength, r.yLength,0,  r, -1);
+        rooms.Add (r);
         Debug.Log(showDungeon());
     }
 
+    private bool makeNorthRoom(int x, int y, int xlength, int ylength, Room r, int doorDir)
+    {
+        int xlen = xlength;
+        int ylen = ylength;
+        int doorX = x;
+        int doorY = y;
+        bool doorEntrance = false;
+        int tmpChange = 0;
+        int doorWall = Random.Range(0,3);
 
-    private bool makeRoom(int x, int y, int xlength, int ylength,
-            int direction, Room r)
+        Debug.Log("North Facing room");
+        // Check if there's enough space left for it
+        if (doorDir != -1)
+            tmpChange += 1; // means we are going from a set point already occupied.
+        for (int ytemp = doorY; ytemp > (doorY - ylen + tmpChange); ytemp--) // added +1 to account for the placement of the joint walls in the south.
+        {
+            if (ytemp < 0 || ytemp > ysize)
+                return false;
+            for (int xtemp = (doorX - xlen / 2); xtemp < (doorX + (xlen + 1) / 2); xtemp++)
+            {
+                if (xtemp < 0 || xtemp > xsize)
+                    return false;
+                if (getCell(xtemp, ytemp) != MAP_REF.UNUSED && getCell(xtemp, ytemp) != MAP_REF.WALL)
+                    return false; // no space left...
+            }
+        }
+        // we're still here, build
+        if (doorDir != -1)
+        {// set y+=1 to compensate the offset.  //REMEMBER TO SET THE DOOR BACK AFTERWARDS
+            doorY += 1;
+            doorEntrance = true;
+        }
+        for (int ytemp = doorY; ytemp > (doorY - ylen); ytemp--)
+        {
+            for (int xtemp = (doorX - xlen / 2); xtemp < (doorX + (xlen + 1) / 2); xtemp++)
+            {
+
+                // start with the walls
+                if (xtemp == (doorX - xlen / 2))//West
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else if (xtemp == (doorX + (xlen - 1) / 2))//East
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else if (ytemp == doorY)//south
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else if (ytemp == (doorY - ylen + 1))// North
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                // and then fill with the floor
+                else
+                    setCell(xtemp, ytemp, MAP_REF.FLOOR);
+
+                switch (doorWall)
+                {
+                    case 0:
+                        //North
+                        if (xtemp == doorX && ytemp == doorY - ylen + 1)
+                        {
+                            Debug.Log("Creating N");
+                            makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                        }
+                        break;
+                    case 1://east
+                        if (xtemp == doorX + (xlen) / 2 && ytemp == doorY - ylen / 2)
+                        {
+                            Debug.Log("Creating E");
+                            makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                        }
+                        break;
+                    
+                    case 2://west
+                        if (xtemp == doorX - xlen / 2 && ytemp == doorY - ylen / 2)
+                        {
+                            Debug.Log("Creating W");
+                            makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                        }
+                        break;
+                }
+            }
+        }
+        if (doorEntrance)
+        {
+            setCell(doorX, doorY, MAP_REF.DOOR);
+        }
+
+        return true;
+    }
+
+    private bool makeEastRoom(int x, int y, int xlength, int ylength, Room r, int doorDir)
+    {
+        int xlen = xlength;
+        int ylen = ylength;
+        int doorX = x;
+        int doorY = y;
+        bool doorEntrance = false;
+        int tmpChange = 0;
+        int doorWall = Random.Range(0, 3);
+
+        if (doorDir != -1)
+            tmpChange += 1; // means we are going from a set point already occupied.
+
+        Debug.Log("East Facing room");
+        for (int ytemp = (doorY - ylen / 2); ytemp < (doorY + (ylen + 1) / 2); ytemp++)
+        {
+            if (ytemp < 0 || ytemp > ysize)
+                return false;
+            for (int xtemp = doorX; xtemp < (doorX + xlen - tmpChange); xtemp++)
+            {
+                if (xtemp < 0 || xtemp > xsize)
+                    return false;
+                if (getCell(xtemp, ytemp) != MAP_REF.UNUSED)
+                    return false;
+            }
+        }
+        if (doorDir != -1)
+        {// set y+=1 to compensate the offset.  //REMEMBER TO SET THE DOOR BACK AFTERWARDS
+            Debug.Log("DIR = 0");
+            doorX -= 1;
+            doorEntrance = true;
+        }
+
+        for (int ytemp = (doorY - ylen / 2); ytemp < (doorY + (ylen + 1) / 2); ytemp++)
+        {
+            for (int xtemp = doorX; xtemp < (doorX + xlen); xtemp++)
+            {
+                if (xtemp == doorX)//west
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else if (xtemp == (doorX + xlen - 1))//east
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else if (ytemp == (doorY - ylen / 2))
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else if (ytemp == (doorY + (ylen - 1) / 2))
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else
+                    setCell(xtemp, ytemp, MAP_REF.FLOOR);
+
+                switch (doorWall)
+                {
+                    case 0:
+                        //North
+                        if (xtemp == doorX + xlen / 2 && ytemp == (doorY - ylen / 2))
+                        {
+                            Debug.Log("Creating N");
+                            makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                        }
+                        break;
+                    case 1://east
+                        if (xtemp == doorX + (xlen - 1) && ytemp == doorY)
+                        {
+                            Debug.Log("Creating E");
+                            makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                        }
+                        break;
+                    case 2://south
+                        if (xtemp == doorX + xlen / 2 && ytemp == (doorY + (ylen + 1) / 2) - 1)
+                        {
+                            Debug.Log("Creating S");
+                            makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                        }
+                        break;
+                }
+            }
+        }
+        if (doorEntrance)
+        {
+            setCell(doorX, doorY, MAP_REF.DOOR);
+        }
+        return true;
+    }
+
+    private bool makeSouthRoom(int x, int y, int xlength, int ylength, Room r, int doorDir)
+    {
+        int xlen = xlength;
+        int ylen = ylength;
+        int doorX = x;
+        int doorY = y;
+        bool doorEntrance = false;
+        int tmpChange = 0;
+        int doorWall = Random.Range(0, 3);
+
+        if (doorDir != -1)
+            tmpChange += 1; // means we are going from a set point already occupied.
+        Debug.Log("South Facing room");
+        for (int ytemp = y; ytemp < (y + ylen - tmpChange); ytemp++)
+        {
+            if (ytemp < 0 || ytemp > ysize)
+                return false;
+            for (int xtemp = (doorX - xlen / 2); xtemp < (doorX + (xlen + 1) / 2); xtemp++)
+            {
+                if (xtemp < 0 || xtemp > xsize)
+                    return false;
+                if (getCell(xtemp, ytemp) != MAP_REF.UNUSED)
+                    return false;
+            }
+        }
+
+        if (doorDir != -1)
+        {// set y+=1 to compensate the offset.  //REMEMBER TO SET THE DOOR BACK AFTERWARDS
+            doorY -= 1;
+            doorEntrance = true;
+        }
+
+        for (int ytemp = doorY; ytemp < (doorY + ylen); ytemp++)
+        {
+            for (int xtemp = (doorX - xlen / 2); xtemp < (doorX + (xlen + 1) / 2); xtemp++)
+            {
+                if (xtemp == (doorX - xlen / 2))
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else if (xtemp == (doorX + (xlen - 1) / 2))
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else if (ytemp == doorY)
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else if (ytemp == (doorY + ylen - 1))
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else
+                    setCell(xtemp, ytemp, MAP_REF.FLOOR);
+
+                switch (doorWall)
+                {
+                   
+                    case 0://east
+                        if (xtemp == doorX + (xlen) / 2 && ytemp == doorY + ylen / 2)
+                        {
+                            Debug.Log("Creating E");
+                            makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                        }
+                        break;
+                    case 1://south
+                        if (xtemp == doorX && ytemp == (doorY + ylen - 1))
+                        {
+                            Debug.Log("Creating S");
+                            makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                        }
+                        break;
+                    case 2://west
+                        if (xtemp == doorX - xlen / 2 && ytemp == doorY + ylen / 2)
+                        {
+                            Debug.Log("Creating W");
+                            makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                        }
+                        break;
+                }
+            }
+        }
+        if (doorEntrance)
+        {
+            setCell(doorX, doorY, MAP_REF.DOOR);
+        }
+
+        return true;
+    }
+
+    private bool makeWestRoom(int x, int y, int xlength, int ylength, Room r, int doorDir)
+    {
+        int xlen = xlength;
+        int ylen = ylength;
+        int doorX = x;
+        int doorY = y;
+        bool doorEntrance = false;
+        int tmpChange = 0;
+        int doorWall = Random.Range(0, 3);
+
+        if (doorDir != -1)
+            tmpChange += 1; // means we are going from a set point already occupied.
+
+        Debug.Log("West Facing room");
+        for (int ytemp = (doorY - ylen / 2); ytemp < (doorY + (ylen + 1) / 2); ytemp++)
+        {
+            if (ytemp < 0 || ytemp > ysize)
+                return false;
+            for (int xtemp = doorX; xtemp > (doorX - xlen+tmpChange); xtemp--)
+            {
+                if (xtemp < 0 || xtemp > xsize)
+                    return false;
+                if (getCell(xtemp, ytemp) != MAP_REF.UNUSED)
+                    return false;
+            }
+        }
+        if (doorDir != -1)
+        {
+            doorX += 1;
+            doorEntrance = true;
+        }
+
+        for (int ytemp = (doorY - ylen / 2); ytemp < (doorY + (ylen + 1) / 2); ytemp++)
+        {
+            for (int xtemp = doorX; xtemp > (doorX - xlen); xtemp--)
+            {
+                if (xtemp == doorX)// right side walls
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else if (xtemp == (doorX - xlen + 1))// left side walls
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else if (ytemp == (doorY - ylen / 2)) // top
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else if (ytemp == (doorY + (ylen - 1) / 2))// bottom 
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else
+                    setCell(xtemp, ytemp, MAP_REF.FLOOR);
+
+                switch (doorWall)
+                {
+                    case 0:
+                        //North
+                        if (xtemp == doorX - xlen / 2 && ytemp == (doorY - ylen / 2))
+                        {
+                            Debug.Log("Creating N");
+                            makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                        }
+                        break;
+                    case 1://south
+                        if (xtemp == doorX - xlen / 2 && ytemp == (doorY + (ylen + 1) / 2) - 1)
+                        {
+                            Debug.Log("Creating S");
+                            makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                        }
+                        break;
+                    case 2://west
+                        if (xtemp == doorX - xlen + 1 && ytemp == doorY)
+                        {
+                            Debug.Log("Creating W");
+                            makeRandomDoorInRoom(r, xtemp, ytemp, 0);
+                        }
+                        break;
+                }
+            }
+        }
+        if (doorEntrance)
+        {
+            setCell(doorX, doorY, MAP_REF.DOOR);
+        }
+        return true;
+    }
+
+    private bool makeCenterRoom(int x, int y, int xlength, int ylength,
+            int direction, Room r, int doorDir)
     {
         /*******************************************************************************/
 
@@ -71,315 +425,64 @@ public class Board {
         // (2x2 for walking on, the rest is walls)
         int xlen = xlength;//getRand(4, xlength);
         int ylen = ylength;// getRand(4, ylength);
-
-        // the tile type it's going to be filled with
-        int floor = 0; // jordgolv..
-        int wall = 1; // jordv????gg
-
-		// Needs a door somewhere
-		int numDoors = 1;
-		int setDoors = 0;
-        //Q: How should we place the doors? Randomly on any wall, or set as parameter?
-        int doorWall = 0;// Random.Range(0, 3);
+		int ddir = doorDir;
+        int doorWall = Random.Range(0, 4);
         // choose the way it's pointing at
         int dir = 0;
-        if (direction > 0 && direction < 4)
+        if (direction > 0 && direction < 4) // not north, north by default, and less than 4
             dir = direction;
 
-        switch (dir)
+        for (int ytemp = (y - ylen / 2); ytemp < (y + (ylen + 1) / 2); ytemp++)
         {
-
-            case 0: // north
-                Debug.Log("North Facing room");
-                // Check if there's enough space left for it
-                for (int ytemp = y; ytemp > (y - ylen); ytemp--)
-                {
-                    if (ytemp < 0 || ytemp > ysize)
-                        return false;
-                    for (int xtemp = (x - xlen / 2); xtemp < (x + (xlen + 1) / 2); xtemp++)
-                    {
-                        if (xtemp < 0 || xtemp > xsize)
-                            return false;
-                        if (getCell(xtemp, ytemp) != MAP_REF.UNUSED)
-                            return false; // no space left...
-                    }
-                }
-
-                // we're still here, build
-                for (int ytemp = y; ytemp > (y - ylen); ytemp--)
-                {
-                    for (int xtemp = (x - xlen / 2); xtemp < (x + (xlen + 1) / 2); xtemp++)
-                    {
-
-                        // start with the walls
-                        if (xtemp == (x - xlen / 2))//West
-                            setCell(xtemp, ytemp, MAP_REF.WALL);
-                        else if (xtemp == (x + (xlen - 1) / 2))//East
-                            setCell(xtemp, ytemp, MAP_REF.WALL);
-                        else if (ytemp == y)//south
-                            setCell(xtemp, ytemp, MAP_REF.WALL);
-                        else if (ytemp == (y - ylen + 1))// North
-                            setCell(xtemp, ytemp, MAP_REF.WALL);
-                        // and then fill with the floor
-                        else
-                            setCell(xtemp, ytemp, MAP_REF.FLOOR);
-
-                        switch (doorWall)
-                        {
-                            case 0:
-                                //North
-                                if (xtemp == x && ytemp == y-ylen+1)
-                                {
-                                    Debug.Log("Creating N");
-                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
-                                }
-                                break;
-                            case 1://east
-                                if (xtemp == x + (xlen) / 2 && ytemp == y - ylen / 2)
-                                {
-                                    Debug.Log("Creating E");
-                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
-                                }
-                                break;
-                            case 2://south
-                                if (xtemp == x && ytemp == y)
-                                {
-                                    Debug.Log("Creating S");
-                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
-                                }
-                                break;
-                            case 3://west
-                                if (xtemp == x - xlen / 2 && ytemp == y - ylen / 2)
-                                {
-                                    Debug.Log("Creating W");
-                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
-                                }
-                                break;
-                        }
-                    }
-                }
-                //makeRandomDoorInRoom(r, 0);
-                break;
-
-            case 1: // east
-                Debug.Log("East Facing room");
-                for (int ytemp = (y - ylen / 2); ytemp < (y + (ylen + 1) / 2); ytemp++)
-                {
-                    if (ytemp < 0 || ytemp > ysize)
-                        return false;
-                    for (int xtemp = x; xtemp < (x + xlen); xtemp++)
-                    {
-                        if (xtemp < 0 || xtemp > xsize)
-                            return false;
-                        if (getCell(xtemp, ytemp) != MAP_REF.UNUSED)
-                            return false;
-                    }
-                }
-
-                for (int ytemp = (y - ylen / 2); ytemp < (y + (ylen + 1) / 2); ytemp++)
-                {
-                    for (int xtemp = x; xtemp < (x + xlen); xtemp++)
-                    {
-                        if (xtemp == x)//west
-                            setCell(xtemp, ytemp, MAP_REF.WALL);
-                        else if (xtemp == (x + xlen - 1))//east
-                            setCell(xtemp, ytemp, MAP_REF.WALL);
-                        else if (ytemp == (y - ylen / 2))
-                            setCell(xtemp, ytemp, MAP_REF.WALL);
-                        else if (ytemp == (y + (ylen - 1) / 2))
-                            setCell(xtemp, ytemp, MAP_REF.WALL);
-                        else
-                            setCell(xtemp, ytemp, MAP_REF.FLOOR);
-
-                        switch (doorWall)
-                        {
-                            case 0:
-                                //North
-                                if (xtemp == x+xlen/2 && ytemp == (y - ylen / 2))
-                                {
-                                    Debug.Log("Creating N");
-                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
-                                }
-                                break;
-                            case 1://east
-                                if (xtemp == x + (xlen-1) && ytemp == y)
-                                {
-                                    Debug.Log("Creating E");
-                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
-                                }
-                                break;
-                            case 2://south
-                                if (xtemp == x+xlen/2 && ytemp == (y + (ylen+1) / 2)-1)
-                                {
-                                    Debug.Log("Creating S");
-                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
-                                }
-                                break;
-                            case 3://west
-                                if (xtemp == x && ytemp == y)
-                                {
-                                    Debug.Log("Creating W");
-                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
-                                }
-                                break;
-                        }
-                    }
-                }
-                //makeRandomDoorInRoom(r,1);
-                break;
-
-            case 2: // south
-                Debug.Log("South Facing room");
-                for (int ytemp = y; ytemp < (y + ylen); ytemp++)
-                {
-                    if (ytemp < 0 || ytemp > ysize)
-                        return false;
-                    for (int xtemp = (x - xlen / 2); xtemp < (x + (xlen + 1) / 2); xtemp++)
-                    {
-                        if (xtemp < 0 || xtemp > xsize)
-                            return false;
-                        if (getCell(xtemp, ytemp) != MAP_REF.UNUSED)
-                            return false;
-                    }
-                }
-
-                for (int ytemp = y; ytemp < (y + ylen); ytemp++)
-                {
-                    for (int xtemp = (x - xlen / 2); xtemp < (x + (xlen + 1) / 2); xtemp++)
-                    {
-                        if (xtemp == (x - xlen / 2))
-                            setCell(xtemp, ytemp, MAP_REF.WALL);
-                        else if (xtemp == (x + (xlen - 1) / 2))
-                            setCell(xtemp, ytemp, MAP_REF.WALL);
-                        else if (ytemp == y)
-                            setCell(xtemp, ytemp, MAP_REF.WALL);
-                        else if (ytemp == (y + ylen - 1))
-                            setCell(xtemp, ytemp, MAP_REF.WALL);
-                        else
-                            setCell(xtemp, ytemp, MAP_REF.FLOOR);
-
-                        switch (doorWall)
-                        {
-                            case 0:
-                                //North
-                                if (xtemp == x && ytemp == y)
-                                {
-                                    Debug.Log("Creating N");
-                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
-                                }
-                                break;
-                            case 1://east
-                                if (xtemp == x + (xlen) / 2 && ytemp == y + ylen / 2)
-                                {
-                                    Debug.Log("Creating E");
-                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
-                                }
-                                break;
-                            case 2://south
-                                if (xtemp == x && ytemp == (y + ylen - 1))
-                                {
-                                    Debug.Log("Creating S");
-                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
-                                }
-                                break;
-                            case 3://west
-                                if (xtemp == x - xlen / 2 && ytemp == y + ylen / 2)
-                                {
-                                    Debug.Log("Creating W");
-                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
-                                }
-                                break;
-                        }
-                    }
-                }
-               // makeRandomDoorInRoom(r,2);
-                break;
-
-            case 3: // west
-                Debug.Log("West Facing room");
-                for (int ytemp = (y - ylen / 2); ytemp < (y + (ylen + 1) / 2); ytemp++)
-                {
-                    if (ytemp < 0 || ytemp > ysize)
-                        return false;
-                    for (int xtemp = x; xtemp > (x - xlen); xtemp--)
-                    {
-                        if (xtemp < 0 || xtemp > xsize)
-                            return false;
-                        if (getCell(xtemp, ytemp) != MAP_REF.UNUSED)
-                            return false;
-                    }
-                }
-                
-
-                for (int ytemp = (y - ylen / 2); ytemp < (y + (ylen + 1) / 2); ytemp++)
-                {
-                    for (int xtemp = x; xtemp > (x - xlen); xtemp--)
-                    {
-                        if (xtemp == x){// right side walls
-							setCell(xtemp, ytemp, MAP_REF.WALL);
-						}
-                        else if (xtemp == (x - xlen + 1)){ // left side walls
-							setCell(xtemp, ytemp, MAP_REF.WALL);
-						}
-                        else if (ytemp == (y - ylen / 2)){ // top
-                            setCell(xtemp, ytemp, MAP_REF.WALL);
-
-                            if (xtemp >= x-xlen + 1 && setDoors != numDoors){
-							//Debug.Log("Making Door");
-								//Door d = new Door(new Vector2(xtemp, ytemp));
-								//d.setRoom(r);
-								//doors.Add(d);
-							//	setDoors++;
-							//	setCell(xtemp,ytemp, MAP_REF.DOOR);
-							}else{
-							//Debug.Log("Non Door");
-							}
-						}
-                        else if (ytemp == (y + (ylen - 1) / 2)) {// bottom 
-                            setCell(xtemp, ytemp, MAP_REF.WALL);
-						}
-                        else{
-                            setCell(xtemp, ytemp, MAP_REF.FLOOR);
-						}
-
-                        switch (doorWall)
-                        {
-                            case 0:
-                                //North
-                                if (xtemp == x - xlen / 2 && ytemp == (y - ylen / 2))
-                                {
-                                    Debug.Log("Creating N");
-                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
-                                }
-                                break;
-                            case 1://east
-                                if (xtemp == x && ytemp == y)
-                                {
-                                    Debug.Log("Creating E");
-                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
-                                }
-                                break;
-                            case 2://south
-                                if (xtemp == x - xlen / 2 && ytemp == (y + (ylen + 1) / 2) - 1)
-                                {
-                                    Debug.Log("Creating S");
-                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
-                                }
-                                break;
-                            case 3://west
-                                if (xtemp == x - xlen +1 && ytemp == y)
-                                {
-                                    Debug.Log("Creating W");
-                                    makeRandomDoorInRoom(r, xtemp, ytemp, 0);
-                                }
-                                break;
-                        }
-                    }
-                }
-                break;
+            if (ytemp < 0 || ytemp > ysize)
+                return false;
+            for (int xtemp = (x - xlen / 2); xtemp < (x + (xlen + 1) / 2); xtemp++)
+            {
+                if (xtemp < 0 || xtemp > xsize)
+                    return false;
+                if (getCell(xtemp, ytemp) != MAP_REF.UNUSED && getCell(xtemp, ytemp) != MAP_REF.WALL)
+                    return false; // no space left...
+            }
         }
+        for (int ytemp = (y - ylen / 2); ytemp < (y + (ylen + 1) / 2); ytemp++)
+        {
+            for (int xtemp = (x - xlen / 2); xtemp < (x + (xlen + 1) / 2); xtemp++)
+            {
+                if (xtemp == (x - xlen / 2))//West
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else if (xtemp == (x + (xlen ) / 2))//East  /// Shouldnt it be +1?
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else if (ytemp == (y-ylen/2))//south
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else if (ytemp == (y + (ylen)/2))// North
+                    setCell(xtemp, ytemp, MAP_REF.WALL);
+                else
+                    setCell(xtemp, ytemp, MAP_REF.FLOOR);
+            }
+        }
+        switch (doorWall)
+        {
+            case 0://north
+                Debug.Log("Creating N");
+                makeRandomDoorInRoom(r, x, y - (ylen) / 2, 0);
+                break;
+            case 1://east
+                    Debug.Log("Creating E");
+                    makeRandomDoorInRoom(r, x-xlen/2, y, 0);
+                break;
+            case 2://south
+                    Debug.Log("Creating S");
+                makeRandomDoorInRoom(r, x, y + (ylen) / 2, 0);
+                break;
+            case 3://west
+                    Debug.Log("Creating W");
+                    makeRandomDoorInRoom(r, x+xlen/2, y, 0);
+                
+                break;
+            }
+    return true;
 
-        return true;
+    
     }
 
     public void makeRandomDoorInRoom(Room r, int xc, int yc, int direction)
