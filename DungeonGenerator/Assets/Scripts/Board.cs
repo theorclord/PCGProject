@@ -103,47 +103,282 @@ public class Board {
         bool ypFound = false;
         bool ynFound = false;
         Debug.Log("xL = " + xlength + ", yL = " + ylength);
-        for (int i = 0; i < xlength; i++)
+
+        // NEW TEST
+        MAP_REF[,] room = new MAP_REF[xlength, ylength];
+        
+        //Dir = north
+        if (incDir == 0)
         {
-            //Debug.Log("x = " + i + ", y = " + y);
-            //Debug.Log(getCell(x + i, y));
-            if (getCell(x+i, y) == MAP_REF.UNUSED && !xpFound && x+i != 0 && x+i != xsize)
+            room[xlength / 2, 0] = MAP_REF.FLOOR;
+            for (int w = 0; w < xlength; w++)
             {
-                xPos++;
+                for (int l = 0; l < ylength; l++)
+                {
+                    if (RefMap[(int)ent.x - (xlength / 2) + w, (int)ent.y + l] == MAP_REF.UNUSED)
+                    {
+                        if (w == 0 || w == xlength - 1 || l == 0 || l == ylength - 1)
+                        {
+                            //set wall
+                            room[w, l] = MAP_REF.WALL;
+                        }
+                        else
+                        {//set floor
+                            room[w, l] = MAP_REF.FLOOR;
+                        }
+                    }
+                    else
+                    {
+                        room[w, l] = RefMap[(int)ent.x - (xlength / 2) + w, (int)ent.y + l];
+                    }
+                }
             }
-            else
+            // LINK room to refMap
+            for (int w = 0; w < xlength; w++)
             {
-                xpFound = true;
-            }
-            if (getCell(x-i, y) == MAP_REF.UNUSED && !xnFound && x - i != 0 && x- i != xsize)
-            {
-                xNeg++;
-            }
-            else
-            {
-                xnFound = true;
+                for (int l = 0; l < ylength; l++)
+                {
+                    setCell((int)ent.x - (xlength / 2) + w, (int)ent.y + l, room[w, l]);
+                    // RefMap[x - (xlength / 2) + w, y + l] = room[w, l];
+                }
             }
         }
-        for (int j = 0; j < ylength; j++)
+
+        //East
+        if (incDir == 1)
         {
-                
-            if (getCell(x, y-j) == MAP_REF.UNUSED && !ynFound && y-j != 0 && y-j != ysize)
+            room[xlength / 2, 0] = MAP_REF.FLOOR;
+            for (int w = 0; w < xlength; w++)
             {
-                yNeg++;
+                for (int l = 0; l < ylength; l++)
+                {
+                    if (RefMap[(int)ent.x - (xlength / 2) + w, (int)ent.y + l] == MAP_REF.UNUSED)
+                    {
+                        if (w == 0 || w == xlength - 1 || l == 0 || l == ylength - 1)
+                        {
+                            //set wall
+                            room[w, l] = MAP_REF.WALL;
+                        }
+                        else
+                        {//set floor
+                            room[w, l] = MAP_REF.FLOOR;
+                        }
+                    }
+                    else
+                    {
+                        room[w, l] = RefMap[(int)ent.x - (xlength / 2) + w, (int)ent.y + l];
+                    }
+                }
             }
-            else
+            // LINK room to refMap
+            for (int w = 0; w < xlength; w++)
             {
-                ynFound = true;
-            }
-            if (getCell(x, y+j) == MAP_REF.UNUSED && !ypFound && y + j != 0 && y + j != ysize)
-            {
-                yPos++;
-            }
-            else
-            {
-                ypFound = true;
+                for (int l = 0; l < ylength; l++)
+                {
+                    setCell((int)ent.x - (xlength / 2) + w, (int)ent.y + l, room[w, l]);
+                    // RefMap[x - (xlength / 2) + w, y + l] = room[w, l];
+                }
             }
         }
+        //SOUTH
+        if (incDir == 2)
+        {
+            room[xlength / 2, 0] = MAP_REF.FLOOR;
+            for (int w = 0; w < xlength; w++)
+            {
+                for (int l = 0; l < ylength; l++)
+                {
+                    if (RefMap[(int)ent.x - (xlength / 2) + w, (int)ent.y - l] == MAP_REF.UNUSED)
+                    {
+                        if (w == 0 || w == xlength - 1 || l == 0 || l == ylength - 1)
+                        {
+                            //set wall
+                            room[w, l] = MAP_REF.WALL;
+                        }
+                        else
+                        {//set floor
+                            room[w, l] = MAP_REF.FLOOR;
+                        }
+                    }
+                    else
+                    {
+                        room[w, l] = RefMap[(int)ent.x - (xlength / 2) + w, (int)ent.y - l];
+                    }
+                }
+            }
+            // LINK room to refMap
+            for (int w = 0; w < xlength; w++)
+            {
+                for (int l = 0; l < ylength; l++)
+                {
+                    setCell((int)ent.x - (xlength / 2) + w, (int)ent.y - l, room[w, l]);
+                    // RefMap[x - (xlength / 2) + w, y + l] = room[w, l];
+                }
+            }
+        }
+        //West
+        if (incDir == 3)
+        {
+            room[xlength / 2, 0] = MAP_REF.FLOOR;
+            for (int w = 0; w < xlength; w++)
+            {
+                for (int l = 0; l < ylength; l++)
+                {
+                    if (RefMap[(int)ent.x - (xlength / 2) + w, (int)ent.y + l] == MAP_REF.UNUSED)
+                    {
+                        if (w == 0 || w == xlength - 1 || l == 0 || l == ylength - 1)
+                        {
+                            //set wall
+                            room[w, l] = MAP_REF.WALL;
+                        }
+                        else
+                        {//set floor
+                            room[w, l] = MAP_REF.FLOOR;
+                        }
+                    }
+                    else
+                    {
+                        room[w, l] = RefMap[(int)ent.x - (xlength / 2) + w, (int)ent.y + l];
+                    }
+                }
+            }// LINK room to refMap
+            for (int w = 0; w < xlength; w++)
+            {
+                for (int l = 0; l < ylength; l++)
+                {
+                    setCell((int)ent.x - (xlength / 2) + w, (int)ent.y + l, room[w, l]);
+                    // RefMap[x - (xlength / 2) + w, y + l] = room[w, l];
+                }
+            }
+
+        }
+        
+
+                // new test for splitting room in accurate sizes:
+                /*
+                    for(int i = 0; i < xlength/2; i++)
+                    {
+                        if(getCell(x+i, y) == MAP_REF.UNUSED && !xpFound && x+i != 0 && x+i != xsize)
+                        {
+                            xPos++;
+                        }
+                        else
+                        {
+                            xpFound = true;
+                        }
+                        if (getCell(x - i, y) == MAP_REF.UNUSED && !xnFound && x - i != 0 && x - i != xsize)
+                        {
+                            xNeg++;
+                        }
+                        else
+                        {
+                            xnFound = true;
+                        }
+                    }
+                    for (int j = 0; j < ylength/2; j++)
+                    {
+
+                        if (getCell(x, y - j) == MAP_REF.UNUSED && !ynFound && y - j != 0 && y - j != ysize)
+                        {
+                            yNeg++;
+                        }
+                        else
+                        {
+                            ynFound = true;
+                        }
+                        if (getCell(x, y + j) == MAP_REF.UNUSED && !ypFound && y + j != 0 && y + j != ysize)
+                        {
+                            yPos++;
+                        }
+                        else
+                        {
+                            ypFound = true;
+                        }
+                    }
+                    // X values
+                    if(!(xNeg+xPos == xlength))
+                    {
+                        while(xNeg<xlength && getCell(xNeg, y)==MAP_REF.UNUSED && xNeg + xPos < xlength)
+                        {
+                            if(getCell(xNeg+1, y) == MAP_REF.UNUSED)
+                            {
+                                xNeg++;
+                            }
+                            else { break; }
+                        }
+                        while (xPos < xlength && getCell(xPos, y) == MAP_REF.UNUSED && xNeg + xPos < xlength)
+                        {
+                            if (getCell(xPos + 1, y) == MAP_REF.UNUSED)
+                            {
+                                xPos++;
+                            }
+                            else { break; }
+                        }
+                    }
+                    // Y values
+                    if (!(yNeg + yPos == ylength))
+                    {
+                        while (yNeg < ylength && getCell(x, yNeg) == MAP_REF.UNUSED && yNeg + yPos < ylength)
+                        {
+                            if (getCell(x, yNeg+1) == MAP_REF.UNUSED)
+                            {
+                                yNeg++;
+                            }
+                            else { break; }
+                        }
+                        while (yPos < ylength && getCell(x, yPos) == MAP_REF.UNUSED && yNeg + yPos < ylength)
+                        {
+                            if (getCell(x, yPos+1) == MAP_REF.UNUSED)
+                            {
+                                yPos++;
+                            }
+                            else { break; }
+                        }
+                    }*/
+
+                /////// End ///////
+
+             /*   for (int i = 0; i < xlength; i++)
+                {
+                    //Debug.Log("x = " + i + ", y = " + y);
+                    //Debug.Log(getCell(x + i, y));
+                    if (getCell(x+i, y) == MAP_REF.UNUSED && !xpFound && x+i != 0 && x+i != xsize)
+                    {
+                        xPos++;
+                    }
+                    else
+                    {
+                        xpFound = true;
+                    }
+                    if (getCell(x-i, y) == MAP_REF.UNUSED && !xnFound && x - i != 0 && x- i != xsize)
+                    {
+                        xNeg++;
+                    }
+                    else
+                    {
+                        xnFound = true;
+                    }
+                }
+                for (int j = 0; j < ylength; j++)
+                {
+
+                    if (getCell(x, y-j) == MAP_REF.UNUSED && !ynFound && y-j != 0 && y-j != ysize)
+                    {
+                        yNeg++;
+                    }
+                    else
+                    {
+                        ynFound = true;
+                    }
+                    if (getCell(x, y+j) == MAP_REF.UNUSED && !ypFound && y + j != 0 && y + j != ysize)
+                    {
+                        yPos++;
+                    }
+                    else
+                    {
+                        ypFound = true;
+                    }
+                }*/
         Debug.Log("xPos = " + xPos + ", xNeg = " + xNeg + ", yPos = " + yPos + ", yNeg = " + yNeg);
         //MAKE SURE THE TOTAL LENGTH IS NOT BIGGER THAT MAX!
        /* if (xPos == xNeg)
@@ -156,19 +391,25 @@ public class Board {
             yPos /= 2;
             yNeg /= 2;
         }*/
-        for(int w = x-xNeg; w < x+xPos; w++)
+       /* for(int w = x-xNeg; w < x+xPos; w++)
         {
             for(int l = y-yNeg; l < y+yPos; l++)
             {
                 if(w==x-xNeg || w == x + xPos-1 || l == y - yNeg || l == y + yPos-1)//lower and higher end
                 {
-                    setCell(w, l, MAP_REF.WALL);
+                    if (getCell(w, l) != MAP_REF.WALL || getCell(w, l) == MAP_REF.UNUSED)
+                    {
+                        if(getCell(w, l) != MAP_REF.DOOR)
+                        {
+                            setCell(w, l, MAP_REF.WALL);
+                        }
+                    }
                 }else
                 {
                     setCell(w, l, MAP_REF.FLOOR);
                 }
             }
-        }
+        }*/
         
         
         //Debug.Log(doorPlace + " = doorplace");
@@ -214,7 +455,7 @@ public class Board {
             }
         }*/
         Debug.Log("Done adding doors to list");
-        while (numDoors > 0)
+       /* while (numDoors > 0)
         {
             int doorPlace = (int)doors[0];//Random.Range(0, 3);
             switch (incDir)
@@ -282,9 +523,14 @@ public class Board {
             }
             doors.RemoveAt(0);
             numDoors--;
-        }
+        }*/
         setCell(x, y, MAP_REF.FLOOR);
         setCell((int)ent.x, (int)ent.y, MAP_REF.FLOOR);
+        /*setCell((int)ent.x, (int)ent.y+1, MAP_REF.FLOOR);
+        setCell((int)ent.x, (int)ent.y-1, MAP_REF.FLOOR);
+        setCell((int)ent.x+1, (int)ent.y, MAP_REF.FLOOR);
+        setCell((int)ent.x-1, (int)ent.y, MAP_REF.FLOOR);*/
+
 
         return true;
     }
