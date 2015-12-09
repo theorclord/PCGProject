@@ -7,7 +7,7 @@ public class GameController : MonoBehaviour {
     public GameObject mainCam;
 
     // the adventuresness of the player. Should be between 0 and 1
-    private float adventuresScale = 0.5f;
+    private float adventureScale = 0.5f;
     private float timeScale = 0.5f;
     private int turnCount = 0;
     private bool exitNotSet = true;
@@ -112,26 +112,21 @@ public class GameController : MonoBehaviour {
     /// Logic for how to handle dungeon generation when a door is opened
     /// </summary>
     /// <param name="position">Current position of player</param>
-    public void OpenDoor(Vector3 position)
+    /// <param name="dir">The direction moved, 0 up, 1 right, 2 down, 3 left</param>
+    public void OpenDoor(Vector3 position, int dir)
     {
         // logic for the liniarity of the dungeon based on the adventureScale
         int numdoors = 0;
 
-        float limit1 = 0.45f * adventuresScale + 0.35f;
-        float limit2 = 0.25f * adventuresScale + 0.65f;
+        float limit1 = 0.45f * adventureScale + 0.35f;
+        float limit2 = 0.25f * adventureScale + 0.65f;
         float chanceNumDoors = Random.Range(0f, 1f);
         //Number of doors
         if(chanceNumDoors <= limit1)
-        {
-            numdoors = 1;
-        }
+        { numdoors = 1; }
         else if (chanceNumDoors <= limit2)
-        {
-            numdoors = 2;
-        } else
-        {
-            numdoors = 3;
-        }
+        { numdoors = 2; } else
+        { numdoors = 3; }
         //Prioritiesed order of the doors
         ArrayList doorOrder = getDoorOrder(limit1, limit2);
 
@@ -141,21 +136,17 @@ public class GameController : MonoBehaviour {
         int xpos = (int)position.x;
         int ypos = (int)position.y;
         Vector3 tempPos = Vector3.zero;
-		int xprev = 0;
-		int yprev = 0;
         for(int i = -1; i < 2; i += 2)
         {
             if (board.RefMap[xpos + i, ypos] == Board.MAP_REF.UNUSED)
             {
                 //change pos in x dir
                 tempPos = new Vector3(xpos + i, ypos);
-				xprev = i;
                 break;
             } else if(board.RefMap[xpos, ypos+i] == Board.MAP_REF.UNUSED)
             {
                 //change pos in y dir
                 tempPos = new Vector3(xpos, ypos+i);
-				yprev = i;
                 break;
             }
         }
@@ -170,95 +161,85 @@ public class GameController : MonoBehaviour {
 
         while(prev == false && attempts < 10)
         {
-            if (yprev == -1)
-            {//North
-                for(int i = 0; i<doorOrder.Count; i++)
-                {
-                    switch ((int)doorOrder[i])
-                    {
-                        case 0:
-                            doorOrder[i] = 0;
-                            break;
-                        case 1:
-                            doorOrder[i] = 3;
-                            break;
-                        case 2:
-                            doorOrder[i] = 1;
-                            break;
+            switch (dir)
+            {
+                case 0:
+                    for (int i = 0; i < doorOrder.Count; i++) {
+                        switch ((int)doorOrder[i]) {
+                            case 0:
+                                doorOrder[i] = 0;
+                                break;
+                            case 1:
+                                doorOrder[i] = 3;
+                                break;
+                            case 2:
+                                doorOrder[i] = 1;
+                                break;
+                        }
                     }
-                }
-                prev = board.placeRoom(newroom, 0, position, doorOrder, numdoors);
-            }
-            else if (xprev == 1)
-            {//East
-                for (int i = 0; i < doorOrder.Count; i++)
-                {
-                    switch ((int)doorOrder[i])
-                    {
-                        case 0:
-                            doorOrder[i] = 1;
-                            break;
-                        case 1:
-                            doorOrder[i] = 0;
-                            break;
-                        case 2:
-                            doorOrder[i] = 2;
-                            break;
+                    prev = board.placeRoom(newroom, 0, position, doorOrder, numdoors);
+                    break;
+                case 1:
+                    for (int i = 0; i < doorOrder.Count; i++){
+                        switch ((int)doorOrder[i]){
+                            case 0:
+                                doorOrder[i] = 1;
+                                break;
+                            case 1:
+                                doorOrder[i] = 0;
+                                break;
+                            case 2:
+                                doorOrder[i] = 2;
+                                break;
+                        }
                     }
-                }
-                prev = board.placeRoom(newroom, 1, position, doorOrder, numdoors);
-
-            }
-            else if (yprev == 1)
-            {//south
-                for (int i = 0; i < doorOrder.Count; i++)
-                {
-                    switch ((int)doorOrder[i])
+                    prev = board.placeRoom(newroom, 0, position, doorOrder, numdoors);
+                    break;
+                case 2:
+                    for (int i = 0; i < doorOrder.Count; i++)
                     {
-                        case 0:
-                            doorOrder[i] = 2;
-                            break;
-                        case 1:
-                            doorOrder[i] = 1;
-                            break;
-                        case 2:
-                            doorOrder[i] = 3;
-                            break;
+                        switch ((int)doorOrder[i])
+                        {
+                            case 0:
+                                doorOrder[i] = 2;
+                                break;
+                            case 1:
+                                doorOrder[i] = 1;
+                                break;
+                            case 2:
+                                doorOrder[i] = 3;
+                                break;
+                        }
                     }
-                }
-                prev = board.placeRoom(newroom, 2, position, doorOrder, numdoors);
-
-            }
-                if (xprev == -1)
-            {//west
-                for (int i = 0; i < doorOrder.Count; i++)
-                {
-                    switch ((int)doorOrder[i])
+                    prev = board.placeRoom(newroom, 0, position, doorOrder, numdoors);
+                    break;
+                case 3:
+                    for (int i = 0; i < doorOrder.Count; i++)
                     {
-                        case 0:
-                            doorOrder[i] = 3;
-                            break;
-                        case 1:
-                            doorOrder[i] = 2;
-                            break;
-                        case 2:
-                            doorOrder[i] = 0;
-                            break;
+                        switch ((int)doorOrder[i])
+                        {
+                            case 0:
+                                doorOrder[i] = 3;
+                                break;
+                            case 1:
+                                doorOrder[i] = 2;
+                                break;
+                            case 2:
+                                doorOrder[i] = 0;
+                                break;
+                        }
                     }
-                }
-                prev = board.placeRoom(newroom, 3, position, doorOrder, numdoors);
-                
+                    prev = board.placeRoom(newroom, 0, position, doorOrder, numdoors);
+                    break;
             }
             attempts++;
         }
 
-        //board.placeRoom(randomRoom(tempPos));
-        //board.setCell((int)tempPos.x,(int)tempPos.y,Board.MAP_REF.DOOR);
         visualizeBoard(board.RefMap);
 
         // Logic for when the player should find the exit
-        //TODO check value
-        float chanceOfExit = 1 / (1 + Mathf.Exp(-turnCount * 1/(adventuresScale*timeScale+1)));
+        float chanceOfExit = 1 / (1 + Mathf.Exp(-turnCount * 1/(adventureScale*timeScale+1)));
+        //Debug.Log("Exit chance " + chanceOfExit);
         // Sets the exit in the beginning of the new room
         // TODO: Set exit in center of room or other place
         if (chanceOfExit > 0.999 && exitNotSet)
@@ -305,8 +286,8 @@ public class GameController : MonoBehaviour {
     /// <param name="val"></param>
     public void ChangeAdventureScale(float val)
     {
-        adventuresScale += val;
-        Mathf.Clamp(adventuresScale, 0.0f, 1.0f);
+        adventureScale += val;
+        adventureScale = Mathf.Clamp(adventureScale, 0.0f, 1.0f);
     }
 
 
@@ -315,7 +296,6 @@ public class GameController : MonoBehaviour {
     /// </summary>
     public void NextTurn()
     {
-        Debug.Log(adventuresScale);
         turnCount++;
     }
     
