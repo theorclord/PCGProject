@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts.AStar;
 
 public class GameController : MonoBehaviour {
     public int DungeonWidth;
@@ -12,6 +13,9 @@ public class GameController : MonoBehaviour {
     private int turnCount = 0;
     private bool exitNotSet = true;
 
+    //Astar
+    private AStar aStar;
+
     private GameObject[,] gameBoard;
     private GameObject[,] interactables;
     private Board board;
@@ -22,6 +26,10 @@ public class GameController : MonoBehaviour {
     private GameObject player;
     // Use this for initialization
     void Start () {
+        // A Star logic for pacing purpose
+        aStar = new AStar();
+
+
         mainCam.transform.position = new Vector3(DungeonHeight / 2, DungeonWidth / 2,-1);
         gameBoard = new GameObject[DungeonWidth, DungeonHeight];
         interactables = new GameObject[DungeonWidth, DungeonHeight];
@@ -296,7 +304,45 @@ public class GameController : MonoBehaviour {
     /// </summary>
     public void NextTurn()
     {
+        Debug.Log(turnCount);
         turnCount++;
+
+
+
+
+        //Astar test
+        //Find entrance
+        GameObject entrance = null;
+        foreach (GameObject gObj in interactables)
+        {
+            if(gObj != null) {
+                if( gObj.GetComponent<Interactable>().Type == Interactable.InteractType.Entrance)
+                {
+                    entrance = gObj;
+                }
+            }
+        }
+        //Create algorithm board
+        bool[,] passable = new bool[board.RefMap.GetLength(0), board.RefMap.GetLength(1)];
+        for(int i = 0; i< board.RefMap.GetLength(0); i++)
+        {
+            for(int j=0;j< board.RefMap.GetLength(1); j++)
+            {
+                Board.MAP_REF mapPos = board.RefMap[i, j];
+                if(mapPos == Board.MAP_REF.UNUSED || mapPos == Board.MAP_REF.WALL)
+                {
+                    passable[i, j] = false;
+                } else
+                {
+                    passable[i, j] = true;
+                }
+                
+            }
+        }
+
+        int disFromStart = AStar.distance(passable, (int)player.transform.position.x, (int)player.transform.position.y,
+            (int)entrance.transform.position.x, (int)entrance.transform.position.y);
+        Debug.Log("Astar distance from start " + disFromStart);
     }
     
 
