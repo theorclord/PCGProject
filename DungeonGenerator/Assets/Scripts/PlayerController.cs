@@ -54,8 +54,24 @@ public class PlayerController : MonoBehaviour {
 
     private void executeMove(Vector3 vec)
     {
-        int transXTrans = (int)(transform.position.x+vec.x);
+        int dir = -1;
+        Vector3 curPos = transform.position;
+        int transXTrans = (int)(transform.position.x + vec.x);
         int transYTrans = (int)(transform.position.y + vec.y);
+        if ((int) curPos.y < transYTrans)
+        {
+            dir = 0;
+        } else if((int)curPos.x < transXTrans)
+        {
+            dir = 1;
+        } else if((int) curPos.y > transYTrans)
+        {
+            dir = 2;
+        } else
+        {
+            dir = 3;
+        }
+
         if (!(dungeon.GetLongLength(0) <= transXTrans || 0 > transXTrans || dungeon.GetLongLength(1) <= transYTrans || transYTrans < 0))
         {
             if (dungeon[(int)(transform.position.x + vec.x), (int)(transform.position.y + vec.y)] == Board.MAP_REF.WALL)
@@ -66,7 +82,7 @@ public class PlayerController : MonoBehaviour {
             {
                 transform.Translate(vec);
                 currentMove++;
-                gameCon.OpenDoor(transform.position);
+                gameCon.OpenDoor(transform.position, dir);
             }
             else
             {

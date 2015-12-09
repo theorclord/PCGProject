@@ -9,8 +9,8 @@ SET CORNERS OF THE ROOMS!!
 TODO:
 
 * remove sprites of walls. (Skipped)
-* Board should be represented as GamePieces, not ENUMS
-* Need to add interactable gameobjects such as enemies and events ( Trigger something )
+* Board should be represented as GamePieces, not ENUMS (Is both)
+* Need to add interactable gameobjects such as enemies and events ( Trigger something ) (In progress)
 * Limit the amount of pieces that can be generated
 * Goal / Object that you can get to to "finish" the game.
 
