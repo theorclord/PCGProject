@@ -108,8 +108,9 @@ public class Board {
         MAP_REF[,] room = new MAP_REF[xlength, ylength];
         
         //Dir = north
-        if (incDir == 0)
+        if (incDir == 2)
         {
+            Debug.Log("Making North");
             room[xlength / 2, 0] = MAP_REF.FLOOR;
             for (int w = 0; w < xlength; w++)
             {
@@ -117,8 +118,17 @@ public class Board {
                 {
                     if (RefMap[(int)ent.x - (xlength / 2) + w, (int)ent.y + l] == MAP_REF.UNUSED)
                     {
+                        
                         if (w == 0 || w == xlength - 1 || l == 0 || l == ylength - 1)
                         {
+                            if (w == 0 && l == 0)
+                                r.cor3 = new Vector2((int)ent.x - (xlength / 2) + w, (int)ent.y);
+                            if (w == 0 && l == ylength - 1)
+                                r.cor1 = new Vector2((int)ent.x - (xlength / 2) + w, (int)ent.y + l);
+                            if (w == xlength - 1 && l == 0)
+                                r.cor4 = new Vector2((int)ent.x + (xlength / 2), (int)ent.y);
+                            if (w == xlength - 1 && l == ylength - 1)
+                                r.cor2 = new Vector2((int)ent.x + (xlength / 2), (int)ent.y + l);
                             //set wall
                             room[w, l] = MAP_REF.WALL;
                         }
@@ -133,6 +143,41 @@ public class Board {
                     }
                 }
             }
+            int doorsMade = 0;
+            for(int d = 0; d < numDoors; d++)
+            {
+                switch ((int)doors[d])
+                {
+                    case 0:
+                        Debug.Log("Making door N");
+                            room[(int)Random.Range(1, xlength-1), ylength-1] = MAP_REF.DOOR;
+                            doorsMade++;
+                        
+                        break;
+                    case 1:
+                        Debug.Log("Making door W");
+                        room[0, (int)Random.Range(1, ylength-1)] = MAP_REF.DOOR;
+                        doorsMade++;
+
+                        break;
+                    case 2:
+                        Debug.Log("Making door E");
+                        room[xlength-1, (int)Random.Range(1, ylength-1)] = MAP_REF.DOOR;
+                        doorsMade++;
+
+                        break;
+                }
+                for (int i = 0; i < xlength; i++)
+                {
+                    for (int j = 0; j < ylength; j++)
+                    {
+                        
+                    }
+                }
+            }
+            
+
+            Debug.Log("entrance v: " + ent.x + "," + ent.y + ". cor1="+r.cor1+", c2:"+r.cor2);
             // LINK room to refMap
             for (int w = 0; w < xlength; w++)
             {
@@ -147,15 +192,25 @@ public class Board {
         //East
         if (incDir == 1)
         {
-            room[xlength / 2, 0] = MAP_REF.FLOOR;
+            Debug.Log("Making East");
+            room[xlength-1, ylength/2] = MAP_REF.FLOOR;
             for (int w = 0; w < xlength; w++)
             {
                 for (int l = 0; l < ylength; l++)
                 {
-                    if (RefMap[(int)ent.x - (xlength / 2) + w, (int)ent.y + l] == MAP_REF.UNUSED)
+                    if (RefMap[(int)ent.x + w, (int)ent.y-ylength/2 + l] == MAP_REF.UNUSED)
                     {
+                        
                         if (w == 0 || w == xlength - 1 || l == 0 || l == ylength - 1)
                         {
+                            if (w == 0 && l == 0)
+                                r.cor1 = new Vector2((int)ent.x + w, (int)ent.y + ylength / 2 );
+                            if (w == 0 && l == ylength - 1)
+                                r.cor3 = new Vector2((int)ent.x + w, (int)ent.y - ylength / 2);
+                            if (w == xlength - 1 && l == 0)
+                                r.cor2 = new Vector2((int)ent.x + w, (int)ent.y + ylength / 2 );
+                            if (w == xlength - 1 && l == ylength - 1)
+                                r.cor4 = new Vector2((int)ent.x + w, (int)ent.y - ylength / 2);
                             //set wall
                             room[w, l] = MAP_REF.WALL;
                         }
@@ -166,23 +221,51 @@ public class Board {
                     }
                     else
                     {
-                        room[w, l] = RefMap[(int)ent.x - (xlength / 2) + w, (int)ent.y + l];
+                        room[w, l] = RefMap[(int)ent.x + w, (int)ent.y-ylength/2 + l];
                     }
                 }
             }
-            // LINK room to refMap
-            for (int w = 0; w < xlength; w++)
+            int doorsMade = 0;
+            for (int d = 0; d < numDoors; d++)
+            {
+                switch ((int)doors[d])
+                {
+                    case 0:
+                        Debug.Log("Making door E");
+                        room[xlength - 1, (int)Random.Range(1, ylength-1)] = MAP_REF.DOOR;
+
+                        doorsMade++;
+
+                        break;
+                    case 1:
+                        Debug.Log("Making door N");
+
+                        room[(int)Random.Range(1, xlength-1), ylength - 1] = MAP_REF.DOOR;
+                        doorsMade++;
+
+                        break;
+                    case 2:
+                        Debug.Log("Making door S");
+                        room[(int)Random.Range(1, xlength-1), 0] = MAP_REF.DOOR;
+                        doorsMade++;
+
+                        break;
+                }
+            }
+                // LINK room to refMap
+                for (int w = 0; w < xlength; w++)
             {
                 for (int l = 0; l < ylength; l++)
                 {
-                    setCell((int)ent.x - (xlength / 2) + w, (int)ent.y + l, room[w, l]);
+                    setCell((int)ent.x + w, (int)ent.y -ylength/2+ l, room[w, l]);
                     // RefMap[x - (xlength / 2) + w, y + l] = room[w, l];
                 }
             }
         }
         //SOUTH
-        if (incDir == 2)
+        if (incDir == 0)
         {
+            Debug.Log("Making South");
             room[xlength / 2, 0] = MAP_REF.FLOOR;
             for (int w = 0; w < xlength; w++)
             {
@@ -190,8 +273,17 @@ public class Board {
                 {
                     if (RefMap[(int)ent.x - (xlength / 2) + w, (int)ent.y - l] == MAP_REF.UNUSED)
                     {
+                        
                         if (w == 0 || w == xlength - 1 || l == 0 || l == ylength - 1)
                         {
+                            if (w == 0 && l == 0)
+                                r.cor3 = new Vector2((int)ent.x - (xlength / 2), (int)ent.y-ylength+1);
+                            if (w == 0 && l == ylength - 1)
+                                r.cor1 = new Vector2((int)ent.x - (xlength / 2), (int)ent.y);
+                            if (w == xlength - 1 && l == 0)
+                                r.cor4 = new Vector2((int)ent.x + (xlength / 2), (int)ent.y-ylength+1);
+                            if (w == xlength - 1 && l == ylength - 1)
+                                r.cor2 = new Vector2((int)ent.x + (xlength / 2), (int)ent.y);
                             //set wall
                             room[w, l] = MAP_REF.WALL;
                         }
@@ -204,6 +296,31 @@ public class Board {
                     {
                         room[w, l] = RefMap[(int)ent.x - (xlength / 2) + w, (int)ent.y - l];
                     }
+                }
+            }
+            int doorsMade = 0;
+            for (int d = 0; d < numDoors; d++)
+            {
+                switch ((int)doors[d])
+                {
+                    case 0:
+                        Debug.Log("Making door S");
+                        room[(int)Random.Range(1, xlength - 1), ylength - 1] = MAP_REF.DOOR;
+                        doorsMade++;
+
+                        break;
+                    case 1:
+                        Debug.Log("Making door E");
+                        room[xlength - 1, (int)Random.Range(1, ylength - 1)] = MAP_REF.DOOR;
+                        doorsMade++;
+
+                        break;
+                    case 2:
+                        Debug.Log("Making door W");
+                        room[0, (int)Random.Range(1, ylength - 1)] = MAP_REF.DOOR;
+                        doorsMade++;
+
+                        break;
                 }
             }
             // LINK room to refMap
@@ -219,13 +336,22 @@ public class Board {
         //West
         if (incDir == 3)
         {
-            room[xlength / 2, 0] = MAP_REF.FLOOR;
+            Debug.Log("Making West");
+            room[0, ylength/2] = MAP_REF.FLOOR;
             for (int w = 0; w < xlength; w++)
             {
                 for (int l = 0; l < ylength; l++)
                 {
-                    if (RefMap[(int)ent.x - (xlength / 2) + w, (int)ent.y + l] == MAP_REF.UNUSED)
+                    if (RefMap[(int)ent.x - w, (int)ent.y-ylength/2 + l] == MAP_REF.UNUSED)
                     {
+                        if (w == 0 && l == 0)
+                            r.cor1 = new Vector2((int)ent.x - xlength+1, (int)ent.y + ylength / 2);
+                        if (w == 0 && l == ylength - 1)
+                            r.cor3 = new Vector2((int)ent.x - xlength+1, (int)ent.y - ylength / 2);
+                        if (w == xlength - 1 && l == 0)
+                            r.cor2 = new Vector2((int)ent.x, (int)ent.y + ylength / 2);
+                        if (w == xlength - 1 && l == ylength - 1)
+                            r.cor4 = new Vector2((int)ent.x, (int)ent.y - ylength / 2 );
                         if (w == 0 || w == xlength - 1 || l == 0 || l == ylength - 1)
                         {
                             //set wall
@@ -238,22 +364,74 @@ public class Board {
                     }
                     else
                     {
-                        room[w, l] = RefMap[(int)ent.x - (xlength / 2) + w, (int)ent.y + l];
+                        room[w, l] = RefMap[(int)ent.x - w, (int)ent.y -ylength/2 + l];
                     }
                 }
-            }// LINK room to refMap
+            }
+            int doorsMade = 0;
+            for (int d = 0; d < numDoors; d++)
+            {
+                switch ((int)doors[d])
+                {
+                    case 0:
+                        Debug.Log("Making door W");
+                        room[0, (int)Random.Range(1, ylength - 1)] = MAP_REF.DOOR;
+                        
+                        doorsMade++;
+
+                        break;
+                    case 1:
+                        Debug.Log("Making door S");
+                        room[(int)Random.Range(1, xlength - 1), ylength - 1] = MAP_REF.DOOR;
+                        doorsMade++;
+
+                        break;
+                    case 2:
+                        Debug.Log("Making door N");
+                        room[(int)Random.Range(1, xlength - 1),0] = MAP_REF.DOOR;
+                        doorsMade++;
+
+                        break;
+                }
+            }
+            // LINK room to refMap
             for (int w = 0; w < xlength; w++)
             {
                 for (int l = 0; l < ylength; l++)
                 {
-                    setCell((int)ent.x - (xlength / 2) + w, (int)ent.y + l, room[w, l]);
+                    setCell((int)ent.x - w, (int)ent.y -ylength/2+ l, room[w, l]);
                     // RefMap[x - (xlength / 2) + w, y + l] = room[w, l];
                 }
             }
-
         }
+        // SET DOORS!
+        //makeRandomDoorInRoom(r, (int)r.cor1.x, (int)r.cor1.y, 0);
+        //makeRandomDoorInRoom(r, (int)r.cor2.x, (int)r.cor2.y, 0);
+        //makeRandomDoorInRoom(r, (int)r.cor3.x, (int)r.cor3.y, 0);
+        //makeRandomDoorInRoom(r, (int)r.cor4.x, (int)r.cor4.y, 0);
+        /*for (int a = 0; a < numDoors; a++)
+        {
+            switch ((int)doors[a])
+            {
+                case 0:
+                    //north door - (c1x+c2) /2, c1.y
+                    makeRandomDoorInRoom(r,(int)r.cor1.x+(xlength/2),  (int)r.cor1.y, 0 );//(int)(r.cor3.x + r.cor4.x) / 2, (int)r.cor3.y, 0);
+                    break;
+                case 1:
+                    //east door
+                    makeRandomDoorInRoom(r, (int)r.cor2.x, (int)r.cor2.y-(ylength/2), 0);
+                    break;
+                case 2:
+                    //south door
+                    makeRandomDoorInRoom(r, (int)r.cor3.x + (xlength / 2), (int)r.cor3.y, 0);
+                    break;
+                case 3:
+                    //west door
+                    makeRandomDoorInRoom(r, (int)r.cor3.x, (int)r.cor3.y + (ylength / 2), 0);
+                    break;
+            }
+        }*/
         
-
                 // new test for splitting room in accurate sizes:
                 /*
                     for(int i = 0; i < xlength/2; i++)
@@ -927,7 +1105,11 @@ public class Board {
                     setCell(xtemp, ytemp, MAP_REF.FLOOR);
             }
         }
-        switch (doorWall)
+        makeRandomDoorInRoom(r, x, y + (ylen) / 2, 0);
+        makeRandomDoorInRoom(r, x + xlen / 2, y, 0);
+        makeRandomDoorInRoom(r, x, y - (ylen) / 2, 0);
+        makeRandomDoorInRoom(r, x - xlen / 2, y, 0);
+        /*switch (doorWall)
         {
             case 0://north
                 Debug.Log("Creating N-C");
@@ -946,7 +1128,7 @@ public class Board {
                 makeRandomDoorInRoom(r, x - xlen / 2, y, 0);
                 
                 break;
-            }
+            }*/
     return true;
 
     
