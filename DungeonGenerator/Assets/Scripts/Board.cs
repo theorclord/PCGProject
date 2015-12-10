@@ -23,22 +23,27 @@ public class Board {
     public int pieceYSize;
 	ArrayList rooms = new ArrayList ();
 	ArrayList doors = new ArrayList ();
-	ArrayList corrs = new ArrayList ();
+    //ArrayList corrs = new ArrayList ();
 
-    Piece[] board = { };
+    // Piece[] board = { };
+    //int[] map = { };
+
+    private int minLength;
+    private int maxLength;
     public MAP_REF [,] RefMap
     {
         get;
         private set;
     }
-    int[] map = { };
-    public Board(int xs, int ys, int px, int py)
+    public Board(int xs, int ys, int px, int py, int minLength, int maxLength)
     {
         this.xsize = xs;
         this.ysize = ys;
         this.pieceXSize = px;
         this.pieceYSize = py;
-        board = new Piece[xsize * ysize];
+        this.minLength = minLength;
+        this.maxLength = maxLength;
+        //board = new Piece[xsize * ysize];
         RefMap = new MAP_REF[xsize , ysize];
         setEmptyBoard();
     }
@@ -58,7 +63,7 @@ public class Board {
         bool res = false;
         // from GameController, vector has +1 or -1 offset in the direction.
         //makeRoom(r.startX, r.startY, r.xLength, r.yLength, dir, r, dir);
-        res = makeFitRoom(r.startX, r.startY, r.xLength, r.yLength, r, dir, dir, ent, doors, numberOfDoors);
+        res = makeFitRoom(r.xLength, r.yLength, r, dir, ent, doors, numberOfDoors);
         /*switch (4)
         {
             case 0://north
@@ -91,9 +96,10 @@ public class Board {
         Debug.Log(showDungeon());
     }
 
-    private bool makeFitRoom(int x, int y, int xlength, int ylength, Room r, int doorDir, int incDir, Vector2 ent, ArrayList doors, int numDoors)
+    private bool makeFitRoom(int xlength, int ylength, Room r, int incDir, Vector2 ent, ArrayList doors, int numDoors)
     {
         //x and y should be made so it is outside of the door (basically inside the new room)
+        /*
         int xPos = 0;
         int xNeg = 0;
         int yPos = 0;
@@ -102,16 +108,18 @@ public class Board {
         bool xnFound = false;
         bool ypFound = false;
         bool ynFound = false;
+        */
         Debug.Log("xL = " + xlength + ", yL = " + ylength);
 
         // NEW TEST
         MAP_REF[,] room = new MAP_REF[xlength, ylength];
-        
+
+        #region north
         //Dir = north
         if (incDir == 2)
         {
             Debug.Log("Making North");
-            room[xlength / 2, 0] = MAP_REF.FLOOR;
+            //room[xlength / 2, 0] = MAP_REF.FLOOR;
             for (int w = 0; w < xlength; w++)
             {
                 for (int l = 0; l < ylength; l++)
@@ -146,33 +154,27 @@ public class Board {
             int doorsMade = 0;
             for(int d = 0; d < numDoors; d++)
             {
+                Debug.Log("Array Content" + doors[d]);
                 switch ((int)doors[d])
                 {
                     case 0:
                         Debug.Log("Making door N");
-                            room[(int)Random.Range(1, xlength-1), ylength-1] = MAP_REF.DOOR;
-                            doorsMade++;
-                        
+                        int[] coord = new int[] { Random.Range(1, xlength - 1), ylength - 1 };
+                        room[coord[0], coord[1]] = MAP_REF.DOOR;
+                        doorsMade++;
                         break;
                     case 1:
                         Debug.Log("Making door W");
-                        room[0, (int)Random.Range(1, ylength-1)] = MAP_REF.DOOR;
+                        coord = new int[] { 0, Random.Range(1, ylength - 1) };
+                        room[coord[0], coord[1]] = MAP_REF.DOOR;
                         doorsMade++;
-
                         break;
                     case 2:
                         Debug.Log("Making door E");
-                        room[xlength-1, (int)Random.Range(1, ylength-1)] = MAP_REF.DOOR;
+                        coord = new int[] { xlength - 1, Random.Range(1, ylength - 1) };
+                        room[coord[0], coord[1]] = MAP_REF.DOOR;
                         doorsMade++;
-
                         break;
-                }
-                for (int i = 0; i < xlength; i++)
-                {
-                    for (int j = 0; j < ylength; j++)
-                    {
-                        
-                    }
                 }
             }
             
@@ -188,7 +190,7 @@ public class Board {
                 }
             }
         }
-
+        #endregion
         //East
         if (incDir == 1)
         {
@@ -228,27 +230,26 @@ public class Board {
             int doorsMade = 0;
             for (int d = 0; d < numDoors; d++)
             {
+                Debug.Log("Array Content" + doors[d]);
                 switch ((int)doors[d])
                 {
                     case 0:
                         Debug.Log("Making door E");
-                        room[xlength - 1, (int)Random.Range(1, ylength-1)] = MAP_REF.DOOR;
-
+                        int[] coord = new int[] { xlength - 1, (int)Random.Range(1, ylength - 1) };
+                        room[coord[0], coord[1]] = MAP_REF.DOOR;
                         doorsMade++;
-
                         break;
                     case 1:
                         Debug.Log("Making door N");
-
-                        room[(int)Random.Range(1, xlength-1), ylength - 1] = MAP_REF.DOOR;
+                        coord = new int[] { (int)Random.Range(1, xlength - 1), ylength - 1 };
+                        room[coord[0], coord[1]] = MAP_REF.DOOR;
                         doorsMade++;
-
                         break;
                     case 2:
                         Debug.Log("Making door S");
-                        room[(int)Random.Range(1, xlength-1), 0] = MAP_REF.DOOR;
+                        coord = new int[] { (int)Random.Range(1, xlength - 1), 0 };
+                        room[coord[0], coord[1]] = MAP_REF.DOOR;
                         doorsMade++;
-
                         break;
                 }
             }
@@ -301,25 +302,26 @@ public class Board {
             int doorsMade = 0;
             for (int d = 0; d < numDoors; d++)
             {
+                Debug.Log("Array Content" + doors[d]);
                 switch ((int)doors[d])
                 {
                     case 0:
                         Debug.Log("Making door S");
-                        room[(int)Random.Range(1, xlength - 1), ylength - 1] = MAP_REF.DOOR;
+                        int[] coord = new int[] { (int)Random.Range(1, xlength - 1), ylength - 1 };
+                        room[coord[0], coord[1]] = MAP_REF.DOOR;
                         doorsMade++;
-
                         break;
                     case 1:
                         Debug.Log("Making door E");
-                        room[xlength - 1, (int)Random.Range(1, ylength - 1)] = MAP_REF.DOOR;
+                        coord = new int[] { xlength - 1, (int)Random.Range(1, ylength - 1) };
+                        room[coord[0], coord[1]] = MAP_REF.DOOR;
                         doorsMade++;
-
                         break;
                     case 2:
                         Debug.Log("Making door W");
-                        room[0, (int)Random.Range(1, ylength - 1)] = MAP_REF.DOOR;
+                        coord = new int[] { 0, (int)Random.Range(1, ylength - 1) };
+                        room[coord[0], coord[1]] = MAP_REF.DOOR;
                         doorsMade++;
-
                         break;
                 }
             }
@@ -371,26 +373,26 @@ public class Board {
             int doorsMade = 0;
             for (int d = 0; d < numDoors; d++)
             {
+                Debug.Log("Array Content" + doors[d]);
                 switch ((int)doors[d])
                 {
                     case 0:
                         Debug.Log("Making door W");
-                        room[0, (int)Random.Range(1, ylength - 1)] = MAP_REF.DOOR;
-                        
+                        int[] coord = new int[] { 0, Random.Range(1, ylength - 1) };
+                        room[coord[0], coord[1]] = MAP_REF.DOOR;
                         doorsMade++;
-
                         break;
                     case 1:
                         Debug.Log("Making door S");
-                        room[(int)Random.Range(1, xlength - 1), ylength - 1] = MAP_REF.DOOR;
+                        coord = new int[] { (int)Random.Range(1, xlength - 1), ylength - 1 };
+                        room[coord[0], coord[1]] = MAP_REF.DOOR;
                         doorsMade++;
-
                         break;
                     case 2:
                         Debug.Log("Making door N");
-                        room[(int)Random.Range(1, xlength - 1),0] = MAP_REF.DOOR;
+                        coord = new int[] { (int)Random.Range(1, xlength - 1), 0 };
+                        room[coord[0], coord[1]] = MAP_REF.DOOR;
                         doorsMade++;
-
                         break;
                 }
             }
@@ -404,6 +406,7 @@ public class Board {
                 }
             }
         }
+        #region oldDoors
         // SET DOORS!
         //makeRandomDoorInRoom(r, (int)r.cor1.x, (int)r.cor1.y, 0);
         //makeRandomDoorInRoom(r, (int)r.cor2.x, (int)r.cor2.y, 0);
@@ -431,166 +434,166 @@ public class Board {
                     break;
             }
         }*/
-        
-                // new test for splitting room in accurate sizes:
-                /*
-                    for(int i = 0; i < xlength/2; i++)
-                    {
-                        if(getCell(x+i, y) == MAP_REF.UNUSED && !xpFound && x+i != 0 && x+i != xsize)
-                        {
-                            xPos++;
-                        }
-                        else
-                        {
-                            xpFound = true;
-                        }
-                        if (getCell(x - i, y) == MAP_REF.UNUSED && !xnFound && x - i != 0 && x - i != xsize)
-                        {
-                            xNeg++;
-                        }
-                        else
-                        {
-                            xnFound = true;
-                        }
-                    }
-                    for (int j = 0; j < ylength/2; j++)
-                    {
 
-                        if (getCell(x, y - j) == MAP_REF.UNUSED && !ynFound && y - j != 0 && y - j != ysize)
-                        {
-                            yNeg++;
-                        }
-                        else
-                        {
-                            ynFound = true;
-                        }
-                        if (getCell(x, y + j) == MAP_REF.UNUSED && !ypFound && y + j != 0 && y + j != ysize)
-                        {
-                            yPos++;
-                        }
-                        else
-                        {
-                            ypFound = true;
-                        }
-                    }
-                    // X values
-                    if(!(xNeg+xPos == xlength))
-                    {
-                        while(xNeg<xlength && getCell(xNeg, y)==MAP_REF.UNUSED && xNeg + xPos < xlength)
-                        {
-                            if(getCell(xNeg+1, y) == MAP_REF.UNUSED)
-                            {
-                                xNeg++;
-                            }
-                            else { break; }
-                        }
-                        while (xPos < xlength && getCell(xPos, y) == MAP_REF.UNUSED && xNeg + xPos < xlength)
-                        {
-                            if (getCell(xPos + 1, y) == MAP_REF.UNUSED)
-                            {
-                                xPos++;
-                            }
-                            else { break; }
-                        }
-                    }
-                    // Y values
-                    if (!(yNeg + yPos == ylength))
-                    {
-                        while (yNeg < ylength && getCell(x, yNeg) == MAP_REF.UNUSED && yNeg + yPos < ylength)
-                        {
-                            if (getCell(x, yNeg+1) == MAP_REF.UNUSED)
-                            {
-                                yNeg++;
-                            }
-                            else { break; }
-                        }
-                        while (yPos < ylength && getCell(x, yPos) == MAP_REF.UNUSED && yNeg + yPos < ylength)
-                        {
-                            if (getCell(x, yPos+1) == MAP_REF.UNUSED)
-                            {
-                                yPos++;
-                            }
-                            else { break; }
-                        }
-                    }*/
-
-                /////// End ///////
-
-             /*   for (int i = 0; i < xlength; i++)
+        // new test for splitting room in accurate sizes:
+        /*
+            for(int i = 0; i < xlength/2; i++)
+            {
+                if(getCell(x+i, y) == MAP_REF.UNUSED && !xpFound && x+i != 0 && x+i != xsize)
                 {
-                    //Debug.Log("x = " + i + ", y = " + y);
-                    //Debug.Log(getCell(x + i, y));
-                    if (getCell(x+i, y) == MAP_REF.UNUSED && !xpFound && x+i != 0 && x+i != xsize)
-                    {
-                        xPos++;
-                    }
-                    else
-                    {
-                        xpFound = true;
-                    }
-                    if (getCell(x-i, y) == MAP_REF.UNUSED && !xnFound && x - i != 0 && x- i != xsize)
+                    xPos++;
+                }
+                else
+                {
+                    xpFound = true;
+                }
+                if (getCell(x - i, y) == MAP_REF.UNUSED && !xnFound && x - i != 0 && x - i != xsize)
+                {
+                    xNeg++;
+                }
+                else
+                {
+                    xnFound = true;
+                }
+            }
+            for (int j = 0; j < ylength/2; j++)
+            {
+
+                if (getCell(x, y - j) == MAP_REF.UNUSED && !ynFound && y - j != 0 && y - j != ysize)
+                {
+                    yNeg++;
+                }
+                else
+                {
+                    ynFound = true;
+                }
+                if (getCell(x, y + j) == MAP_REF.UNUSED && !ypFound && y + j != 0 && y + j != ysize)
+                {
+                    yPos++;
+                }
+                else
+                {
+                    ypFound = true;
+                }
+            }
+            // X values
+            if(!(xNeg+xPos == xlength))
+            {
+                while(xNeg<xlength && getCell(xNeg, y)==MAP_REF.UNUSED && xNeg + xPos < xlength)
+                {
+                    if(getCell(xNeg+1, y) == MAP_REF.UNUSED)
                     {
                         xNeg++;
                     }
-                    else
-                    {
-                        xnFound = true;
-                    }
+                    else { break; }
                 }
-                for (int j = 0; j < ylength; j++)
+                while (xPos < xlength && getCell(xPos, y) == MAP_REF.UNUSED && xNeg + xPos < xlength)
                 {
-
-                    if (getCell(x, y-j) == MAP_REF.UNUSED && !ynFound && y-j != 0 && y-j != ysize)
+                    if (getCell(xPos + 1, y) == MAP_REF.UNUSED)
+                    {
+                        xPos++;
+                    }
+                    else { break; }
+                }
+            }
+            // Y values
+            if (!(yNeg + yPos == ylength))
+            {
+                while (yNeg < ylength && getCell(x, yNeg) == MAP_REF.UNUSED && yNeg + yPos < ylength)
+                {
+                    if (getCell(x, yNeg+1) == MAP_REF.UNUSED)
                     {
                         yNeg++;
                     }
-                    else
-                    {
-                        ynFound = true;
-                    }
-                    if (getCell(x, y+j) == MAP_REF.UNUSED && !ypFound && y + j != 0 && y + j != ysize)
+                    else { break; }
+                }
+                while (yPos < ylength && getCell(x, yPos) == MAP_REF.UNUSED && yNeg + yPos < ylength)
+                {
+                    if (getCell(x, yPos+1) == MAP_REF.UNUSED)
                     {
                         yPos++;
                     }
-                    else
-                    {
-                        ypFound = true;
-                    }
-                }*/
-        Debug.Log("xPos = " + xPos + ", xNeg = " + xNeg + ", yPos = " + yPos + ", yNeg = " + yNeg);
-        //MAKE SURE THE TOTAL LENGTH IS NOT BIGGER THAT MAX!
-       /* if (xPos == xNeg)
-        {
-            xPos /= 2;
-            xNeg /= 2;
-        }
-        if(yPos == yNeg)
-        {
-            yPos /= 2;
-            yNeg /= 2;
-        }*/
-       /* for(int w = x-xNeg; w < x+xPos; w++)
-        {
-            for(int l = y-yNeg; l < y+yPos; l++)
-            {
-                if(w==x-xNeg || w == x + xPos-1 || l == y - yNeg || l == y + yPos-1)//lower and higher end
-                {
-                    if (getCell(w, l) != MAP_REF.WALL || getCell(w, l) == MAP_REF.UNUSED)
-                    {
-                        if(getCell(w, l) != MAP_REF.DOOR)
-                        {
-                            setCell(w, l, MAP_REF.WALL);
-                        }
-                    }
-                }else
-                {
-                    setCell(w, l, MAP_REF.FLOOR);
+                    else { break; }
                 }
-            }
-        }*/
-        
-        
+            }*/
+
+        /////// End ///////
+
+        /*   for (int i = 0; i < xlength; i++)
+           {
+               //Debug.Log("x = " + i + ", y = " + y);
+               //Debug.Log(getCell(x + i, y));
+               if (getCell(x+i, y) == MAP_REF.UNUSED && !xpFound && x+i != 0 && x+i != xsize)
+               {
+                   xPos++;
+               }
+               else
+               {
+                   xpFound = true;
+               }
+               if (getCell(x-i, y) == MAP_REF.UNUSED && !xnFound && x - i != 0 && x- i != xsize)
+               {
+                   xNeg++;
+               }
+               else
+               {
+                   xnFound = true;
+               }
+           }
+           for (int j = 0; j < ylength; j++)
+           {
+
+               if (getCell(x, y-j) == MAP_REF.UNUSED && !ynFound && y-j != 0 && y-j != ysize)
+               {
+                   yNeg++;
+               }
+               else
+               {
+                   ynFound = true;
+               }
+               if (getCell(x, y+j) == MAP_REF.UNUSED && !ypFound && y + j != 0 && y + j != ysize)
+               {
+                   yPos++;
+               }
+               else
+               {
+                   ypFound = true;
+               }
+           }*/
+        //Debug.Log("xPos = " + xPos + ", xNeg = " + xNeg + ", yPos = " + yPos + ", yNeg = " + yNeg);
+        //MAKE SURE THE TOTAL LENGTH IS NOT BIGGER THAT MAX!
+        /* if (xPos == xNeg)
+         {
+             xPos /= 2;
+             xNeg /= 2;
+         }
+         if(yPos == yNeg)
+         {
+             yPos /= 2;
+             yNeg /= 2;
+         }*/
+        /* for(int w = x-xNeg; w < x+xPos; w++)
+         {
+             for(int l = y-yNeg; l < y+yPos; l++)
+             {
+                 if(w==x-xNeg || w == x + xPos-1 || l == y - yNeg || l == y + yPos-1)//lower and higher end
+                 {
+                     if (getCell(w, l) != MAP_REF.WALL || getCell(w, l) == MAP_REF.UNUSED)
+                     {
+                         if(getCell(w, l) != MAP_REF.DOOR)
+                         {
+                             setCell(w, l, MAP_REF.WALL);
+                         }
+                     }
+                 }else
+                 {
+                     setCell(w, l, MAP_REF.FLOOR);
+                 }
+             }
+         }*/
+
         //Debug.Log(doorPlace + " = doorplace");
+        /*
         int xVal = 0;
         int yVal = 0;
         if (xPos > xNeg)
@@ -609,7 +612,7 @@ public class Board {
         {
             yVal = yNeg;
         }
-
+        */
         /*
         x+xVal = Right
         y+yVal = Up
@@ -632,77 +635,78 @@ public class Board {
                 }
             }
         }*/
-        Debug.Log("Done adding doors to list");
-       /* while (numDoors > 0)
-        {
-            int doorPlace = (int)doors[0];//Random.Range(0, 3);
-            switch (incDir)
-            {
-                case 0://NorthFacing room
-                       //North, east and west
-                    if (doorPlace == 0)//North
-                    {
-                        makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y - yVal, 0);
-                    }
-                    else if (doorPlace == 1)//east
-                    {
-                        makeRandomDoorInRoom(r, x + xPos - 1, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
-                    }
-                    else
-                    {
-                        makeRandomDoorInRoom(r, x - xNeg, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
-                    }
-                    break;
-                case 1://Eastfacing
-                       //East, north and south
-                    if (doorPlace == 0)
-                    {
-                        makeRandomDoorInRoom(r, x + xPos - 1, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
-                    }
-                    else if (doorPlace == 1)
-                    {
-                        makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y - yVal, 0);
-                    }
-                    else
-                    {
-                        makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y + yVal - 1, 0);
-                    }
-                    break;
-                case 2://southfacing
-                       //south, east and west
-                    if (doorPlace == 0)
-                    {
-                        makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y + yVal - 1, 0);
-                    }
-                    else if (doorPlace == 1)
-                    {
-                        makeRandomDoorInRoom(r, x + xPos - 1, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
-                    }
-                    else
-                    {
-                        makeRandomDoorInRoom(r, x - xNeg, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
-                    }
-                    break;
-                case 3://westfacing
-                       //west, south and north
-                    if (doorPlace == 0)
-                    {
-                        makeRandomDoorInRoom(r, x - xNeg, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
-                    }
-                    else if (doorPlace == 1)
-                    {
-                        makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y + yVal - 1, 0);
-                    }
-                    else
-                    {
-                        makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y - yVal, 0);
-                    }
-                    break;
-            }
-            doors.RemoveAt(0);
-            numDoors--;
-        }*/
-        setCell(x, y, MAP_REF.FLOOR);
+        //Debug.Log("Done adding doors to list");
+        /* while (numDoors > 0)
+         {
+             int doorPlace = (int)doors[0];//Random.Range(0, 3);
+             switch (incDir)
+             {
+                 case 0://NorthFacing room
+                        //North, east and west
+                     if (doorPlace == 0)//North
+                     {
+                         makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y - yVal, 0);
+                     }
+                     else if (doorPlace == 1)//east
+                     {
+                         makeRandomDoorInRoom(r, x + xPos - 1, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
+                     }
+                     else
+                     {
+                         makeRandomDoorInRoom(r, x - xNeg, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
+                     }
+                     break;
+                 case 1://Eastfacing
+                        //East, north and south
+                     if (doorPlace == 0)
+                     {
+                         makeRandomDoorInRoom(r, x + xPos - 1, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
+                     }
+                     else if (doorPlace == 1)
+                     {
+                         makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y - yVal, 0);
+                     }
+                     else
+                     {
+                         makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y + yVal - 1, 0);
+                     }
+                     break;
+                 case 2://southfacing
+                        //south, east and west
+                     if (doorPlace == 0)
+                     {
+                         makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y + yVal - 1, 0);
+                     }
+                     else if (doorPlace == 1)
+                     {
+                         makeRandomDoorInRoom(r, x + xPos - 1, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
+                     }
+                     else
+                     {
+                         makeRandomDoorInRoom(r, x - xNeg, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
+                     }
+                     break;
+                 case 3://westfacing
+                        //west, south and north
+                     if (doorPlace == 0)
+                     {
+                         makeRandomDoorInRoom(r, x - xNeg, ((y - yNeg) + (y + yPos - 1)) / 2, 0);
+                     }
+                     else if (doorPlace == 1)
+                     {
+                         makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y + yVal - 1, 0);
+                     }
+                     else
+                     {
+                         makeRandomDoorInRoom(r, ((x - xNeg) + (x + xPos - 1)) / 2, y - yVal, 0);
+                     }
+                     break;
+             }
+             doors.RemoveAt(0);
+             numDoors--;
+         }*/
+        #endregion
+        setCell(r.startX, r.startY, MAP_REF.FLOOR);
         setCell((int)ent.x, (int)ent.y, MAP_REF.FLOOR);
         /*setCell((int)ent.x, (int)ent.y+1, MAP_REF.FLOOR);
         setCell((int)ent.x, (int)ent.y-1, MAP_REF.FLOOR);
@@ -1070,13 +1074,14 @@ public class Board {
         // (2x2 for walking on, the rest is walls)
         int xlen = xlength;//getRand(4, xlength);
         int ylen = ylength;// getRand(4, ylength);
-		int ddir = doorDir;
-        int doorWall = Random.Range(0, 4);
+		//int ddir = doorDir;
+        //int doorWall = Random.Range(0, 4);
         // choose the way it's pointing at
+        /*
         int dir = 0;
         if (direction > 0 && direction < 4) // not north, north by default, and less than 4
             dir = direction;
-
+        */
         for (int ytemp = (y - ylen / 2); ytemp < (y + (ylen + 1) / 2); ytemp++)
         {
             if (ytemp < 0 || ytemp > ysize)
@@ -1181,7 +1186,7 @@ public class Board {
         }*/
     }
 
-
+    /*
     public void placePiece(Piece p)
     {
         int psx = p.xStart;
@@ -1189,8 +1194,17 @@ public class Board {
 
 
     }
+    */
     public void setCell(int x, int y, MAP_REF mr)
     {
+        if(mr == MAP_REF.DOOR)
+        {
+            if(x+minLength >= RefMap.GetLength(0) || y+minLength >= RefMap.GetLength(1) ||
+                x-minLength <= 0 || y-minLength <= 0)
+            {
+                mr = MAP_REF.WALL;
+            }
+        }
         RefMap[x, y] = mr;
     }
     private MAP_REF getCell(int x, int y)
@@ -1246,13 +1260,15 @@ public class Board {
         return dungeonMap;
     }
 
+
 	// THOUGHT: Should make corridor be the same as make room, but with set width?
+    /*
 	private bool makeCorridor(int x, int y, int length, int direction)
 	{
 		/*******************************************************************************/
 		// define the dimensions of the corridor (er.. only the width and
 		// height..)
-
+        /*
 		int len = Random.Range (2, length);
 		int floor = 0;
 		int dir = 0;
@@ -1344,15 +1360,6 @@ public class Board {
 		
 		return true;
 	}
-
-
-    void PSEUDO_GENERATE_ROOM( 
-        Vector2 PosistionOfPlayer,
-        Vector2 StartPosOfNewRoom,
-        int directionOfRoom/*Maybe not needed*/,
-        int NumberOfEachPieceMax
-
-        ){}
-
+    */
 
 }

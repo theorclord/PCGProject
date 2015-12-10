@@ -14,26 +14,22 @@ public class GameController : MonoBehaviour {
     private bool exitNotSet = true;
 
     //Astar
-    private AStar aStar;
+    private int aStarDist;
 
     private GameObject[,] gameBoard;
     private GameObject[,] interactables;
     private Board board;
 
-    public int MIN_ROOM_SIZE = 6;
-    public int MAX_ROOM_SIZE = 8;
+    private int MIN_ROOM_SIZE = 3;
+    private int MAX_ROOM_SIZE = 8;
 
     private GameObject player;
     // Use this for initialization
     void Start () {
-        // A Star logic for pacing purpose
-        aStar = new AStar();
-
-
         mainCam.transform.position = new Vector3(DungeonHeight / 2, DungeonWidth / 2,-1);
         gameBoard = new GameObject[DungeonWidth, DungeonHeight];
         interactables = new GameObject[DungeonWidth, DungeonHeight];
-        board = new Board(DungeonWidth,DungeonHeight,1,1);
+        board = new Board(DungeonWidth,DungeonHeight,1,1, MIN_ROOM_SIZE, MAX_ROOM_SIZE);
         Room center = new Room(board.xsize / 2, board.ysize / 2, 5, 5);
         //Room cor = new Room(board.xsize / 2 + 3, board.ysize / 2 + 3, 5, 1);
         board.placeRoom(center);
@@ -68,8 +64,6 @@ public class GameController : MonoBehaviour {
     /// <param name="boardMap">Enum map repesentation of the board</param>
     private void visualizeBoard(Board.MAP_REF[,] boardMap)
     {
-        string[,] tempLab = { { null, "W", null }, { "W", null, null }, { null, "W", "W" } };
-        //Debug.Log(tempLab.GetLength(0) + " " + tempLab.GetLength(1));
         for (int i = 0; i < boardMap.GetLength(0); i++)
         {
             for (int j = 0; j < boardMap.GetLength(1); j++)
@@ -129,12 +123,22 @@ public class GameController : MonoBehaviour {
         float limit1 = 0.45f * adventureScale + 0.35f;
         float limit2 = 0.25f * adventureScale + 0.65f;
         float chanceNumDoors = Random.Range(0f, 1f);
-        //Number of doors
-        if(chanceNumDoors <= limit1)
-        { numdoors = 1; }
-        else if (chanceNumDoors <= limit2)
-        { numdoors = 2; } else
-        { numdoors = 3; }
+        // Chance for dead end
+        // TODO Check for remaining doors
+        float chance = 1 / (1 + Mathf.Exp(-aStarDist*0.05f * adventureScale+2));
+        if(Random.Range(0f,1f) <= chance)
+        {
+            Debug.Log("No door");
+            numdoors = 0;
+        } else {
+            //Number of doors
+            if (chanceNumDoors <= limit1)
+            { numdoors = 1; }
+            else if (chanceNumDoors <= limit2)
+            { numdoors = 2; }
+            else
+            { numdoors = 3; }
+        }
         //Prioritiesed order of the doors
         ArrayList doorOrder = getDoorOrder(limit1, limit2);
 
@@ -158,89 +162,48 @@ public class GameController : MonoBehaviour {
                 break;
             }
         }
-        bool prev = false;
         Room newroom = randomRoom(tempPos);
-        int attempts = 0;
         //Door directions:
         // North = 0
         // East = 1
         // South = 2
         // West = 3
-
-        while(prev == false && attempts < 10)
+        // TODO: Connected check should add walls to the corners if the next piece is a wall 
+        switch (dir)
         {
-            switch (dir)
-            {
-                case 0:
-                    for (int i = 0; i < doorOrder.Count; i++) {
-                        switch ((int)doorOrder[i]) {
-                            case 0:
-                                doorOrder[i] = 0;
-                                break;
-                            case 1:
-                                doorOrder[i] = 3;
-                                break;
-                            case 2:
-                                doorOrder[i] = 1;
-                                break;
-                        }
-                    }
-                    prev = board.placeRoom(newroom, 0, position, doorOrder, numdoors);
-                    break;
-                case 1:
-                    for (int i = 0; i < doorOrder.Count; i++){
-                        switch ((int)doorOrder[i]){
-                            case 0:
-                                doorOrder[i] = 1;
-                                break;
-                            case 1:
-                                doorOrder[i] = 0;
-                                break;
-                            case 2:
-                                doorOrder[i] = 2;
-                                break;
-                        }
-                    }
-                    prev = board.placeRoom(newroom, 0, position, doorOrder, numdoors);
-                    break;
-                case 2:
-                    for (int i = 0; i < doorOrder.Count; i++)
-                    {
-                        switch ((int)doorOrder[i])
-                        {
-                            case 0:
-                                doorOrder[i] = 2;
-                                break;
-                            case 1:
-                                doorOrder[i] = 1;
-                                break;
-                            case 2:
-                                doorOrder[i] = 3;
-                                break;
-                        }
-                    }
-                    prev = board.placeRoom(newroom, 0, position, doorOrder, numdoors);
-                    break;
-                case 3:
-                    for (int i = 0; i < doorOrder.Count; i++)
-                    {
-                        switch ((int)doorOrder[i])
-                        {
-                            case 0:
-                                doorOrder[i] = 3;
-                                break;
-                            case 1:
-                                doorOrder[i] = 2;
-                                break;
-                            case 2:
-                                doorOrder[i] = 0;
-                                break;
-                        }
-                    }
-                    prev = board.placeRoom(newroom, 0, position, doorOrder, numdoors);
-                    break;
-            }
-            attempts++;
+            case 0:
+                //checks if room is connected
+                if (board.RefMap[(int)(position.x), (int)(position.y+1)] != Board.MAP_REF.UNUSED)
+                {
+                    board.RefMap[(int)(position.x), (int)(position.y)] = Board.MAP_REF.FLOOR;
+                    return;
+                }
+                board.placeRoom(newroom, 2, position, doorOrder, numdoors);
+                break;
+            case 1:
+                //checks if room is connected
+                if (board.RefMap[(int)(position.x+1), (int)(position.y)] != Board.MAP_REF.UNUSED)
+                {
+                    return;
+                }
+                board.placeRoom(newroom, 1, position, doorOrder, numdoors);
+                break;
+            case 2:
+                //checks if room is connected
+                if (board.RefMap[(int)(position.x), (int)(position.y-1)] != Board.MAP_REF.UNUSED)
+                {
+                    return;
+                }
+                board.placeRoom(newroom, 0, position, doorOrder, numdoors);
+                break;
+            case 3:
+                //checks if room is connected
+                if (board.RefMap[(int)(position.x - 1), (int)(position.y)] != Board.MAP_REF.UNUSED)
+                {
+                    return;
+                }
+                board.placeRoom(newroom, 3, position, doorOrder, numdoors);
+                break;
         }
 
         visualizeBoard(board.RefMap);
@@ -304,11 +267,7 @@ public class GameController : MonoBehaviour {
     /// </summary>
     public void NextTurn()
     {
-        Debug.Log(turnCount);
         turnCount++;
-
-
-
 
         //Astar test
         //Find entrance
@@ -342,6 +301,7 @@ public class GameController : MonoBehaviour {
 
         int disFromStart = AStar.distance(passable, (int)player.transform.position.x, (int)player.transform.position.y,
             (int)entrance.transform.position.x, (int)entrance.transform.position.y);
+        aStarDist = disFromStart;
         Debug.Log("Astar distance from start " + disFromStart);
     }
     
