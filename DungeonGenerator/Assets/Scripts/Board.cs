@@ -231,6 +231,7 @@ public class Board {
             int doorsMade = 0;
             for (int d = 0; d < numDoors; d++)
             {
+
                 switch ((int)doors[d])
                 {
                     case 0:
