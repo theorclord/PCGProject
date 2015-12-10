@@ -154,7 +154,7 @@ public class Board {
             int doorsMade = 0;
             for(int d = 0; d < numDoors; d++)
             {
-                Debug.Log("Array Content" + doors[d]);
+                //Debug.Log("Array Content" + doors[d]);
                 switch ((int)doors[d])
                 {
                     case 0:
@@ -230,7 +230,7 @@ public class Board {
             int doorsMade = 0;
             for (int d = 0; d < numDoors; d++)
             {
-                Debug.Log("Array Content" + doors[d]);
+                //Debug.Log("Array Content" + doors[d]);
                 switch ((int)doors[d])
                 {
                     case 0:
@@ -302,7 +302,7 @@ public class Board {
             int doorsMade = 0;
             for (int d = 0; d < numDoors; d++)
             {
-                Debug.Log("Array Content" + doors[d]);
+                //Debug.Log("Array Content" + doors[d]);
                 switch ((int)doors[d])
                 {
                     case 0:
@@ -373,24 +373,24 @@ public class Board {
             int doorsMade = 0;
             for (int d = 0; d < numDoors; d++)
             {
-                Debug.Log("Array Content" + doors[d]);
+                //Debug.Log("Array Content" + doors[d]);
                 switch ((int)doors[d])
                 {
                     case 0:
                         Debug.Log("Making door W");
-                        int[] coord = new int[] { 0, Random.Range(1, ylength - 1) };
+                        int[] coord = new int[] { xlength-1, Random.Range(1, ylength - 1) };
                         room[coord[0], coord[1]] = MAP_REF.DOOR;
                         doorsMade++;
                         break;
                     case 1:
                         Debug.Log("Making door S");
-                        coord = new int[] { (int)Random.Range(1, xlength - 1), ylength - 1 };
+                        coord = new int[] { (int)Random.Range(1, xlength - 1), 0 };
                         room[coord[0], coord[1]] = MAP_REF.DOOR;
                         doorsMade++;
                         break;
                     case 2:
                         Debug.Log("Making door N");
-                        coord = new int[] { (int)Random.Range(1, xlength - 1), 0 };
+                        coord = new int[] { (int)Random.Range(1, xlength - 1), ylength - 1 };
                         room[coord[0], coord[1]] = MAP_REF.DOOR;
                         doorsMade++;
                         break;
