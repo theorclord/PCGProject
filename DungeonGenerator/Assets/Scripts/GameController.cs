@@ -227,7 +227,42 @@ public class GameController : MonoBehaviour {
             Debug.Log("Deploy exit");
             int x = newroom.startX;
             int y = newroom.startY;
-            
+            Board.MAP_REF mr = Board.MAP_REF.UNUSED;
+            while(mr != Board.MAP_REF.WALL)
+            {
+                switch (dir)
+                {
+                    case 0:
+                        y++;
+                        break;
+                    case 1:
+                        x++;
+                        break;
+                    case 2:
+                        y--;
+                        break;
+                    case 3:
+                        x--;
+                        break;
+                }
+                
+                mr = board.RefMap[x, y];
+            }
+            switch (dir)
+            {
+                case 0:
+                    y--;
+                    break;
+                case 1:
+                    x--;
+                    break;
+                case 2:
+                    y++;
+                    break;
+                case 3:
+                    x++;
+                    break;
+            }
             GameObject exit = Instantiate(Resources.Load("Prefabs/Interactable") as GameObject);
             exit.GetComponent<SpriteRenderer>().sprite = Resources.Load("Sprites/Exit", typeof(Sprite)) as Sprite;
             exit.transform.position = new Vector3(x, y);

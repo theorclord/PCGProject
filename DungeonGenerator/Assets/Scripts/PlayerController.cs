@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour {
     private GameObject[,] interactable;
     private GameController gameCon;
 
+    private float delay = 0.1f;
+    private float lastInputTime;
     public int TurnMove
     {
         get; set;
@@ -15,22 +17,27 @@ public class PlayerController : MonoBehaviour {
     private int currentMove;
 	// Update is called once per frame
 	void Update () {
-
-        if (Input.GetKeyDown(KeyCode.W))
+        bool delayCheck = delay < Time.time - lastInputTime;
+        if (Input.GetKeyDown(KeyCode.W) || (Input.GetKey(KeyCode.W) && delayCheck))
         {
-            executeMove(Vector3.up);    
-        } else if (Input.GetKeyDown(KeyCode.S))
+            lastInputTime = Time.time;
+            executeMove(Vector3.up);  
+        } else if (Input.GetKeyDown(KeyCode.S) || (Input.GetKey(KeyCode.S) && delayCheck))
         {
+            lastInputTime = Time.time;
             executeMove(Vector3.down);
         }
-        else if (Input.GetKeyDown(KeyCode.A))
+        else if (Input.GetKeyDown(KeyCode.A) || (Input.GetKey(KeyCode.A) && delayCheck))
         {
+            lastInputTime = Time.time;
             executeMove(Vector3.left);
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D) || (Input.GetKey(KeyCode.D) && delayCheck))
         {
+            lastInputTime = Time.time;
             executeMove(Vector3.right);
         }
+        
     }
 
     public void SetPlayerCamera(GameObject cam)
