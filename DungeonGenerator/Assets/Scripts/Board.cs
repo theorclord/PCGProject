@@ -1251,8 +1251,8 @@ public class Board {
     {
         if(mr == MAP_REF.DOOR)
         {
-            if(x+minLength >= RefMap.GetLength(0) || y+minLength >= RefMap.GetLength(1) ||
-                x-minLength <= 0 || y-minLength <= 0)
+            if(x+maxLength >= RefMap.GetLength(0) || y+maxLength >= RefMap.GetLength(1) ||
+                x-maxLength <= 0 || y- maxLength <= 0)
             {
                 mr = MAP_REF.WALL;
             }
