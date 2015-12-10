@@ -153,7 +153,7 @@ public class Board {
                 }
             }
             int doorsMade = 0;
-            for(int d = 0; d < numDoors; d++)
+            for(int d = 0; d < doors.Count; d++)
             {
                 //Debug.Log("Array Content" + doors[d]);
                 switch ((int)doors[d])
@@ -161,21 +161,34 @@ public class Board {
                     case 0:
                         Debug.Log("Making door N");
                         int[] coord = new int[] { Random.Range(1, xlength - 1), ylength - 1 };
-                        room[coord[0], coord[1]] = MAP_REF.DOOR;
-                        doorsMade++;
+                        if(room[coord[0],coord[1]] == MAP_REF.WALL)
+                        {
+                            room[coord[0], coord[1]] = MAP_REF.DOOR;
+                            doorsMade++;
+                        }
                         break;
                     case 1:
                         Debug.Log("Making door W");
                         coord = new int[] { 0, Random.Range(1, ylength - 1) };
-                        room[coord[0], coord[1]] = MAP_REF.DOOR;
-                        doorsMade++;
+                        if (room[coord[0], coord[1]] == MAP_REF.WALL)
+                        {
+                            room[coord[0], coord[1]] = MAP_REF.DOOR;
+                            doorsMade++;
+                        }
                         break;
                     case 2:
                         Debug.Log("Making door E");
                         coord = new int[] { xlength - 1, Random.Range(1, ylength - 1) };
-                        room[coord[0], coord[1]] = MAP_REF.DOOR;
-                        doorsMade++;
+                        if (room[coord[0], coord[1]] == MAP_REF.WALL)
+                        {
+                            room[coord[0], coord[1]] = MAP_REF.DOOR;
+                            doorsMade++;
+                        }
                         break;
+                }
+                if(doorsMade == numDoors)
+                {
+                    break;
                 }
             }
             
@@ -229,28 +242,41 @@ public class Board {
                 }
             }
             int doorsMade = 0;
-            for (int d = 0; d < numDoors; d++)
+            for (int d = 0; d < doors.Count; d++)
             {
                 switch ((int)doors[d])
                 {
                     case 0:
                         Debug.Log("Making door E");
                         int[] coord = new int[] { xlength - 1, (int)Random.Range(1, ylength - 1) };
-                        room[coord[0], coord[1]] = MAP_REF.DOOR;
-                        doorsMade++;
+                        if (room[coord[0], coord[1]] == MAP_REF.WALL)
+                        {
+                            room[coord[0], coord[1]] = MAP_REF.DOOR;
+                            doorsMade++;
+                        }
                         break;
                     case 1:
                         Debug.Log("Making door N");
                         coord = new int[] { (int)Random.Range(1, xlength - 1), ylength - 1 };
-                        room[coord[0], coord[1]] = MAP_REF.DOOR;
-                        doorsMade++;
+                        if (room[coord[0], coord[1]] == MAP_REF.WALL)
+                        {
+                            room[coord[0], coord[1]] = MAP_REF.DOOR;
+                            doorsMade++;
+                        }
                         break;
                     case 2:
                         Debug.Log("Making door S");
                         coord = new int[] { (int)Random.Range(1, xlength - 1), 0 };
-                        room[coord[0], coord[1]] = MAP_REF.DOOR;
-                        doorsMade++;
+                        if (room[coord[0], coord[1]] == MAP_REF.WALL)
+                        {
+                            room[coord[0], coord[1]] = MAP_REF.DOOR;
+                            doorsMade++;
+                        }
                         break;
+                }
+                if (doorsMade == numDoors)
+                {
+                    break;
                 }
             }
                 // LINK room to refMap
@@ -300,28 +326,41 @@ public class Board {
                 }
             }
             int doorsMade = 0;
-            for (int d = 0; d < numDoors; d++)
+            for (int d = 0; d < doors.Count; d++)
             {
                 switch ((int)doors[d])
                 {
                     case 0:
                         Debug.Log("Making door S");
                         int[] coord = new int[] { (int)Random.Range(1, xlength - 1), ylength - 1 };
-                        room[coord[0], coord[1]] = MAP_REF.DOOR;
-                        doorsMade++;
+                        if (room[coord[0], coord[1]] == MAP_REF.WALL)
+                        {
+                            room[coord[0], coord[1]] = MAP_REF.DOOR;
+                            doorsMade++;
+                        }
                         break;
                     case 1:
                         Debug.Log("Making door E");
                         coord = new int[] { xlength - 1, (int)Random.Range(1, ylength - 1) };
-                        room[coord[0], coord[1]] = MAP_REF.DOOR;
-                        doorsMade++;
+                        if (room[coord[0], coord[1]] == MAP_REF.WALL)
+                        {
+                            room[coord[0], coord[1]] = MAP_REF.DOOR;
+                            doorsMade++;
+                        }
                         break;
                     case 2:
                         Debug.Log("Making door W");
                         coord = new int[] { 0, (int)Random.Range(1, ylength - 1) };
+                        if (room[coord[0], coord[1]] == MAP_REF.WALL)
+                        {
                         room[coord[0], coord[1]] = MAP_REF.DOOR;
                         doorsMade++;
+                        }
                         break;
+                }
+                if(doorsMade == numDoors)
+                {
+                    break;
                 }
             }
             // LINK room to refMap
@@ -370,7 +409,7 @@ public class Board {
                 }
             }
             int doorsMade = 0;
-            for (int d = 0; d < numDoors; d++)
+            for (int d = 0; d < doors.Count; d++)
             {
                 //Debug.Log("Array Content" + doors[d]);
                 switch ((int)doors[d])
@@ -378,21 +417,34 @@ public class Board {
                     case 0:
                         Debug.Log("Making door W");
                         int[] coord = new int[] { xlength-1, Random.Range(1, ylength - 1) };
-                        room[coord[0], coord[1]] = MAP_REF.DOOR;
-                        doorsMade++;
+                        if (room[coord[0], coord[1]] == MAP_REF.WALL)
+                        {
+                            room[coord[0], coord[1]] = MAP_REF.DOOR;
+                            doorsMade++;
+                        }
                         break;
                     case 1:
                         Debug.Log("Making door S");
                         coord = new int[] { (int)Random.Range(1, xlength - 1), 0 };
-                        room[coord[0], coord[1]] = MAP_REF.DOOR;
-                        doorsMade++;
+                        if (room[coord[0], coord[1]] == MAP_REF.WALL)
+                        {
+                            room[coord[0], coord[1]] = MAP_REF.DOOR;
+                            doorsMade++;
+                        }
                         break;
                     case 2:
                         Debug.Log("Making door N");
                         coord = new int[] { (int)Random.Range(1, xlength - 1), ylength - 1 };
-                        room[coord[0], coord[1]] = MAP_REF.DOOR;
-                        doorsMade++;
+                        if (room[coord[0], coord[1]] == MAP_REF.WALL)
+                        {
+                            room[coord[0], coord[1]] = MAP_REF.DOOR;
+                            doorsMade++;
+                        }
                         break;
+                }
+                if(doorsMade == numDoors)
+                {
+                    break;
                 }
             }
             // LINK room to refMap
