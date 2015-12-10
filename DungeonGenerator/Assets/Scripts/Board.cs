@@ -60,6 +60,7 @@ public class Board {
     }
 	public bool placeRoom(Room r, int dir, Vector2 ent, ArrayList doors, int numberOfDoors)
 	{
+        Debug.Log("Setting Room");
         bool res = false;
         // from GameController, vector has +1 or -1 offset in the direction.
         //makeRoom(r.startX, r.startY, r.xLength, r.yLength, dir, r, dir);
@@ -230,7 +231,10 @@ public class Board {
             int doorsMade = 0;
             for (int d = 0; d < numDoors; d++)
             {
+<<<<<<< HEAD
                 //Debug.Log("Array Content" + doors[d]);
+=======
+>>>>>>> 9e7946d5f0ce023161f2b61c023bfa13ec5ae7b0
                 switch ((int)doors[d])
                 {
                     case 0:
@@ -302,7 +306,10 @@ public class Board {
             int doorsMade = 0;
             for (int d = 0; d < numDoors; d++)
             {
+<<<<<<< HEAD
                 //Debug.Log("Array Content" + doors[d]);
+=======
+>>>>>>> 9e7946d5f0ce023161f2b61c023bfa13ec5ae7b0
                 switch ((int)doors[d])
                 {
                     case 0:

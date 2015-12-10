@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour {
     private float adventureScale = 0.5f;
     private float timeScale = 0.5f;
     private int turnCount = 0;
-    private bool exitNotSet = true;
+    private bool exitSet = false;
 
     //Astar
     private int aStarDist;
@@ -117,6 +117,8 @@ public class GameController : MonoBehaviour {
     /// <param name="dir">The direction moved, 0 up, 1 right, 2 down, 3 left</param>
     public void OpenDoor(Vector3 position, int dir)
     {
+        // When door opens, set the logic of the location to floor
+        board.RefMap[(int)(position.x), (int)(position.y)] = Board.MAP_REF.FLOOR;
         // logic for the liniarity of the dungeon based on the adventureScale
         int numdoors = 0;
 
@@ -125,11 +127,19 @@ public class GameController : MonoBehaviour {
         float chanceNumDoors = Random.Range(0f, 1f);
         // Chance for dead end
         // TODO Check for remaining doors
-        float chance = 1 / (1 + Mathf.Exp(-aStarDist*0.05f * adventureScale+2));
-        if(Random.Range(0f,1f) <= chance)
+        bool doorFound = false;
+        foreach (Board.MAP_REF mr in board.RefMap)
+        {
+            if(mr == Board.MAP_REF.DOOR)
+            {
+                doorFound = true;
+            }
+        }
+        float chance = 1 / (1 + Mathf.Exp(-aStarDist * 0.05f * adventureScale + 2));
+        if (Random.Range(0f, 1f) <= chance && (doorFound || exitSet))
         {
             Debug.Log("No door");
-            numdoors = 0;
+            numdoors = 0;    
         } else {
             //Number of doors
             if (chanceNumDoors <= limit1)
@@ -175,7 +185,6 @@ public class GameController : MonoBehaviour {
                 //checks if room is connected
                 if (board.RefMap[(int)(position.x), (int)(position.y+1)] != Board.MAP_REF.UNUSED)
                 {
-                    board.RefMap[(int)(position.x), (int)(position.y)] = Board.MAP_REF.FLOOR;
                     return;
                 }
                 board.placeRoom(newroom, 2, position, doorOrder, numdoors);
@@ -213,7 +222,7 @@ public class GameController : MonoBehaviour {
         //Debug.Log("Exit chance " + chanceOfExit);
         // Sets the exit in the beginning of the new room
         // TODO: Set exit in center of room or other place
-        if (chanceOfExit > 0.999 && exitNotSet)
+        if (chanceOfExit > 0.999 && !exitSet)
         {
             Debug.Log("Deploy exit");
             int x = newroom.startX;
@@ -224,7 +233,7 @@ public class GameController : MonoBehaviour {
             exit.transform.position = new Vector3(x, y);
             exit.GetComponent<Interactable>().Type = Interactable.InteractType.Exit;
             interactables[x, y] = exit;
-            exitNotSet = false;
+            exitSet = true;
         }
 
         // Logic for dialog interaction
