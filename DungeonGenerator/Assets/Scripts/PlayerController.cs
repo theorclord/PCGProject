@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour {
         {
             if (dungeon[(int)(transform.position.x + vec.x), (int)(transform.position.y + vec.y)] == Board.MAP_REF.WALL)
             {
-                Debug.Log("Wall, can't move through");
+                //Debug.Log("Wall, can't move through");
             }
             else if(dungeon[(int)(transform.position.x + vec.x), (int)(transform.position.y + vec.y)] == Board.MAP_REF.DOOR)
             {

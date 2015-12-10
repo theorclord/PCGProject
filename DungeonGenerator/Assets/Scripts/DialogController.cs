@@ -16,10 +16,16 @@ public class DialogController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //For testing Purpose
         if (Input.GetKeyDown(KeyCode.O))
         {
             DialogCanvas.SetActive(!DialogCanvas.activeSelf);
         }
+    }
+
+    public void SetCanvas(bool val)
+    {
+        DialogCanvas.SetActive(val);
     }
 
     public void ButtonClicked(bool selection)
@@ -28,12 +34,14 @@ public class DialogController : MonoBehaviour {
         {
             Debug.Log("You clicked yes");
             // Increase the adventure scale
-            gameCon.ChangeAdventureScale(0.1f);
+            gameCon.ChangeAdventureScale(0.5f);
+            DialogCanvas.SetActive(false);
         } else
         {
             Debug.Log("You clicked no");
             // Decrease the adventure scale
-            gameCon.ChangeAdventureScale(-0.1f);
+            gameCon.ChangeAdventureScale(-0.5f);
+            DialogCanvas.SetActive(false);
         }
     }
 }

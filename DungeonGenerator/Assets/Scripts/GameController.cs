@@ -6,6 +6,7 @@ public class GameController : MonoBehaviour {
     public int DungeonWidth;
     public int DungeonHeight;
     public GameObject mainCam;
+    public GameObject DialogCont;
 
     // the adventuresness of the player. Should be between 0 and 1
     private float adventureScale = 0.5f;
@@ -24,6 +25,8 @@ public class GameController : MonoBehaviour {
     private int MAX_ROOM_SIZE = 8;
 
     private GameObject player;
+    private bool dialogSet;
+
     // Use this for initialization
     void Start () {
         mainCam.transform.position = new Vector3(DungeonHeight / 2, DungeonWidth / 2,-1);
@@ -135,10 +138,9 @@ public class GameController : MonoBehaviour {
                 doorFound = true;
             }
         }
-        float chance = 1 / (1 + Mathf.Exp(-aStarDist * 0.05f * adventureScale + 2));
+        float chance = 1 / (1 + Mathf.Exp(-aStarDist * 0.1f * adventureScale + 2));
         if (Random.Range(0f, 1f) <= chance && (doorFound || exitSet))
         {
-            Debug.Log("No door");
             numdoors = 0;    
         } else {
             //Number of doors
@@ -220,15 +222,14 @@ public class GameController : MonoBehaviour {
         // Logic for when the player should find the exit
         float chanceOfExit = 1 / (1 + Mathf.Exp(-turnCount * 1/(adventureScale*timeScale+1)));
         //Debug.Log("Exit chance " + chanceOfExit);
-        // Sets the exit in the beginning of the new room
-        // TODO: Set exit in center of room or other place
+        // Sets the exit in the new room
         if (chanceOfExit > 0.999 && !exitSet)
         {
             Debug.Log("Deploy exit");
             int x = newroom.startX;
             int y = newroom.startY;
             Board.MAP_REF mr = Board.MAP_REF.UNUSED;
-            while(mr != Board.MAP_REF.WALL)
+            while(mr != Board.MAP_REF.WALL && mr != Board.MAP_REF.DOOR)
             {
                 switch (dir)
                 {
@@ -244,8 +245,7 @@ public class GameController : MonoBehaviour {
                     case 3:
                         x--;
                         break;
-                }
-                
+                }           
                 mr = board.RefMap[x, y];
             }
             switch (dir)
@@ -272,13 +272,60 @@ public class GameController : MonoBehaviour {
         }
 
         // Logic for dialog interaction
-
+        // Set a dialog in the first generated room
+        if (!dialogSet)
+        {
+            Debug.Log("Setting dialog");
+            int x = newroom.startX;
+            int y = newroom.startY;
+            Board.MAP_REF mr = Board.MAP_REF.UNUSED;
+            while (mr != Board.MAP_REF.WALL && mr != Board.MAP_REF.DOOR)
+            {
+                switch (dir)
+                {
+                    case 0:
+                        y++;
+                        break;
+                    case 1:
+                        x++;
+                        break;
+                    case 2:
+                        y--;
+                        break;
+                    case 3:
+                        x--;
+                        break;
+                }
+                mr = board.RefMap[x, y];
+            }
+            switch (dir)
+            {
+                case 0:
+                    y--;
+                    break;
+                case 1:
+                    x--;
+                    break;
+                case 2:
+                    y++;
+                    break;
+                case 3:
+                    x++;
+                    break;
+            }
+            GameObject dialog = Instantiate(Resources.Load("Prefabs/Interactable") as GameObject);
+            dialog.GetComponent<SpriteRenderer>().sprite = Resources.Load("Sprites/DialogStarter", typeof(Sprite)) as Sprite;
+            dialog.transform.position = new Vector3(x, y);
+            dialog.GetComponent<Interactable>().Type = Interactable.InteractType.Dialog;
+            interactables[x, y] = dialog;
+            dialogSet = true;
+        }
     }
 
     private Room randomRoom(Vector3 position)
     {
         Room r = new Room((int)position.x, (int)position.y, Random.Range(MIN_ROOM_SIZE, MAX_ROOM_SIZE), Random.Range(MIN_ROOM_SIZE, MAX_ROOM_SIZE));
-        Debug.Log("Room.xL = " + r.xLength + ", R.yl = " + r.yLength);
+        //Debug.Log("Room.xL = " + r.xLength + ", R.yl = " + r.yLength);
         return r;
     }
 
@@ -288,10 +335,12 @@ public class GameController : MonoBehaviour {
         if(type == Interactable.InteractType.Dialog)
         {
             Debug.Log("Start dialog");
+            DialogCont.GetComponent<DialogController>().SetCanvas(true);
         }
         else if(type == Interactable.InteractType.Exit)
         {
             Debug.Log("You win");
+            Application.LoadLevel(Application.loadedLevel);
         }
     }
 
