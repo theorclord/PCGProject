@@ -758,16 +758,71 @@ public class Board {
              numDoors--;
          }*/
         #endregion
+		cleanMissedDoors ();
         setCell(r.startX, r.startY, MAP_REF.FLOOR);
         setCell((int)ent.x, (int)ent.y, MAP_REF.FLOOR);
         /*setCell((int)ent.x, (int)ent.y+1, MAP_REF.FLOOR);
         setCell((int)ent.x, (int)ent.y-1, MAP_REF.FLOOR);
         setCell((int)ent.x+1, (int)ent.y, MAP_REF.FLOOR);
         setCell((int)ent.x-1, (int)ent.y, MAP_REF.FLOOR);*/
-
+		
 
         return true;
     }
+
+	private void cleanMissedDoors()
+		// Add check is blocked on 3 sides.
+	{
+		for (int i = 0; i < xsize; i++) 
+		{
+			for(int j = 0; j < ysize; j++)
+			{
+				bool spaceFound = false;
+				int sides = 0;
+				if(RefMap[i,j] == MAP_REF.DOOR)
+				{
+					Debug.Log("Door found at "+i+","+j+".");
+					//x-1
+					if(i-1>=0){
+						if(RefMap[i-1,j] == MAP_REF.UNUSED ){
+							spaceFound = true;
+							sides++;
+							Debug.Log("Space found at "+(i-1)+","+j+".");
+						}
+					}
+					//x+1
+					if(i+1<xsize){
+						if(RefMap[i+1,j] == MAP_REF.UNUSED ){
+							spaceFound = true;
+							sides++;
+							Debug.Log("Space found at "+(i+1)+","+j+".");
+						}
+					}
+					//y-1
+					if(j-1>=0){
+						if(RefMap[i,j-1] == MAP_REF.UNUSED ){
+							spaceFound = true;
+							sides++;
+							Debug.Log("Space found at "+i+","+(j-1)+".");
+						}
+					}
+					//y+1
+					if(j+1<ysize){
+						if(RefMap[i,j+1] == MAP_REF.UNUSED ){
+							spaceFound = true;
+							sides++;
+							Debug.Log("Space found at "+i+","+(j+1)+".");
+						}
+					}
+
+					if(!spaceFound || sides >= 3){
+						RefMap[i,j] = MAP_REF.WALL;
+						GameObject.Find("GameBoardController").GetComponent<GameController>().setSpriteToWall(i,j);
+					}
+				}
+			}
+		}
+	}
 
     private bool makeNorthRoom(int x, int y, int xlength, int ylength, Room r, int doorDir)
     {
