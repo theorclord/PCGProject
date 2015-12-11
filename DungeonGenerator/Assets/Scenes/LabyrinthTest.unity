@@ -806,8 +806,7 @@ MonoBehaviour:
   DungeonWidth: 50
   DungeonHeight: 50
   mainCam: {fileID: 507700270}
-  MIN_ROOM_SIZE: 6
-  MAX_ROOM_SIZE: 8
+  DialogCont: {fileID: 1753060513}
 --- !u!4 &1866530697
 Transform:
   m_ObjectHideFlags: 0
