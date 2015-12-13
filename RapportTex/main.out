@@ -3,8 +3,10 @@
 \BOOKMARK [1][-]{section.3}{Game Design}{}% 3
 \BOOKMARK [1][-]{section.4}{Methods}{}% 4
 \BOOKMARK [2][-]{subsection.4.1}{Adventureness of the player}{section.4}% 5
-\BOOKMARK [1][-]{section.5}{Results}{}% 6
-\BOOKMARK [2][-]{subsection.5.1}{Did it work}{section.5}% 7
-\BOOKMARK [2][-]{subsection.5.2}{How well}{section.5}% 8
-\BOOKMARK [1][-]{section.6}{Discussion}{}% 9
-\BOOKMARK [1][-]{section*.2}{References}{}% 10
+\BOOKMARK [3][-]{subsubsection.4.1.1}{AdventurenessCalc scale value}{subsection.4.1}% 6
+\BOOKMARK [2][-]{subsection.4.2}{A-star distance measure algorithm}{section.4}% 7
+\BOOKMARK [1][-]{section.5}{Results}{}% 8
+\BOOKMARK [2][-]{subsection.5.1}{Did it work}{section.5}% 9
+\BOOKMARK [2][-]{subsection.5.2}{How well}{section.5}% 10
+\BOOKMARK [1][-]{section.6}{Discussion}{}% 11
+\BOOKMARK [1][-]{section*.2}{References}{}% 12

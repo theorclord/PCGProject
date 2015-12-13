@@ -14,7 +14,7 @@
 % If IEEEtran.cls has not been installed into the LaTeX system files,
 % manually specify the path to it like:
 % \documentclass[conference,compsoc]{../sty/IEEEtran}
-\usepackage{hyperref}
+%\usepackage{hyperref}
 \usepackage{graphicx}
 
 
@@ -454,29 +454,57 @@ Since this is the first room that is generated, it will also contain an interact
 	\caption{Dungeon with dialog interaction point placed. The Interaction point is represented by the yellow circle.}
 	\label{fig:dialogset}
 \end{figure}
+
+The rooms have a chance of making from 0 to 3 doors. Number of doors spawned depend on the adventureness of the players as described in section \ref{sec:adven}.
+
+\begin{figure}[h]
+	\graphicspath{{figures/}}
+	\includegraphics[width = \columnwidth ]{DungeonLayout.png}
+	\caption{A partially explored dungeon with an exit spawned}
+	\label{fig:dungparexit}
+\end{figure}
+Once you have explored a lot of the dungeon, the exit point will have an increasing chance of spawning. Even if it spawns, you can always avoid going on it, and keep exploring, if that is what you want. But once you enter the exit spot, the dungeon will reset and you will start a new dungeon adventure.
+In figure \ref{fig:dungparexit} you can see an example of a partially explored dungeon with an exit spawned. As one can see there is still more dungeon to be explored, even though the exit has already been spawned.
+
 \subsection{Adventureness of the player}
+\label{sec:adven}
 The adventureness of the player is set based on the interaction with the dialog interaction spot. It is more a stand-in for deeper gameplay interaction, and serves as a point where the algorithm can get a value which determines the players mindset when playing the game. 
 
 The adventureness scale is used in several of the random algorithms to push the outcome towards the players wishes. A more adventurous player will have a higher adventureness score, whilst a lower score is awarded to less adventurous players.
 
 The two most important uses are for when to generate the exit and the number of doors in a newly generated room. 
 The exit placement chance is based on the adventureness of the player and how long the player has been playing, measured in terms of moves made.
-The actual chance also uses a combined value of how much a player have moved, compared to the distance from the center of the map.
-float chanceOfExit = 1 / (1 + Mathf.Exp(-turnCount * 1/(adventureScale*adventurenessCalc*timeScale+1))) 
+The actual chance also uses a combined value of how much a player have moved, compared to the distance from the center of the map. This parameter, called advententurenessCalc is explained in more detail in section \ref{sec:adventCalc}. 
+The final calculation used can be seen in equation \ref{eq:exit}.
 
-If the adventure-mode is selected, the system will then make it so there will be generated a lot more rooms before the end-point is reached. If the adventure mode is not selected, the dungeon that will be generated will be significantly smaller. 
+\begin{equation}
+\label{eq:exit}
+chanceOfExit = \frac{1}{1 + e^{-\frac{Tc}{AS*AC*t+1}}}
+\end{equation}
+
+The terms used in equation \ref{eq:exit} are as follows. 
+
+\textit{Tc} is the turn count of the game. It is a measure of how long time the game has passed.
+
+\textit{AS} is the adventureness of the player and takes a value between 0 and 1. 
+
+\textit{AC} is the advententurenessCalc, which is a calculated value explained in section \ref{sec:adventCalc}.
+
+\textit{t} is a time scale factor.
+
+The general gist of the function is that the longer the player spends in the game, the more of a chance there is to spawn the exit. The rest of the terms are there to prolong the game based on the players adventureness.
+
+The number of doors created in a new room is a direct consequence of how adventurous the player is. There is always a chance for creating any number of doors, but the chance of more than one door is significantly increased based on the players adventureness.
+
+\subsubsection{AdventurenessCalc scale value}
+\label{sec:adventCalc}
+The adventurenessCalc value is an attempt to gather information about the players mindset real-time throughout the game.
+The value is calculated based on the how much the player moves around compared to how long the player has moved. The idea behind the value is that player who seek to explore more, will move around more than players we simply wishes to complete the level. 
 
 \subsection{A-star distance measure algorithm}
 \label{sec:astar}
-The rooms have a chance of making from 0 to 3 doors. The chance for which is based by using the A-Star algorithm to see how "far" the player has explored from the start. The further away you are, the more you have explored, and so the less doors will probably spawn. The exploration value will be bigger the closer you are to the start, as it yields the more possible directions to explore from.
+In addition to our own algorithms, we use the A-star algorithms 
 
-\begin{figure}[h]
-	\graphicspath{{figures/}}
-	\includegraphics[width = \columnwidth ]{DungeonLayout.png}
-	\caption{Behaviour tree for final AI. The top sequence is the entry point. The left branch returns true if there are no ghost nearby.}
-	\label{fig:behavTree}
-\end{figure}
-Once you have explored a lot of the dungeon (more if in adventure mode), the exit point will have an increasing chance of spawning. Even if it spawns, you can always avoid going on it, and keep exploring, if that is what you want. But once you enter the exit spot, the dungeon will reset and you will start a new dungeon adventure.
 \section{Results}
 \subsection{Did it work}
 We weren't able to implement all the features that we wanted, which were described in the introduction and background. Our original idea was too out of scope, with much too many goals that would be unreachable given the time we had for our project. Even though not all we wanted to do, was completed, we were able to implement the most important features; having a dungeon being created in real-time, allowing the players to explore the dungeons as they see fit. Whether they are feeling adventurous, or just want to have a quick map and be done with it. 
@@ -570,11 +598,11 @@ Dungeon size reconfiguration
 H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
   0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
 \bibitem{SpaceHulkvid}
-Full Control and Games workshop, \url{http://www.spacehulk-game.com/}, Last visit: 13-12-2015
+Full Control and Games workshop, http://www.spacehulk-game.com/, Last visit: 13-12-2015
 \bibitem{SpaceHulkBoard}
-Games workshop, \url{http://www.games-workshop.com/en-AU/Space-Hulk}, Last visit: 13-12-2015
+Games workshop, http://www.games-workshop.com/en-AU/Space-Hulk, Last visit: 13-12-2015
 \bibitem{Diablo2}
-Blizzard Entertainment, \url{http://eu.blizzard.com/en-gb/games/d2/}, Last visit: 13-12-2015
+Blizzard Entertainment, http://eu.blizzard.com/en-gb/games/d2/, Last visit: 13-12-2015
 \end{thebibliography}
 
 \end{document}
