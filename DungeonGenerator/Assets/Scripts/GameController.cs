@@ -63,6 +63,10 @@ public class GameController : MonoBehaviour {
         
 	}
 
+	public void setSpriteToWall(int x, int y){
+		gameBoard[x,y].GetComponent<SpriteRenderer>().sprite = Resources.Load("Sprites/Wall", typeof(Sprite)) as Sprite;
+	}
+
     /// <summary>
     /// Visualizes the board based on the enum map 
     /// </summary>
