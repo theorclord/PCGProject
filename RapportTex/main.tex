@@ -380,11 +380,14 @@ The abstract goes here.
 
 \section{Introduction}
 % no \IEEEPARstart
-We wanted to make a board game dungeon map creator in this project. Having rooms, doors, items and interactables being procedurally generated on the fly, as we journeyed through the dungeon. Our idea was to create this in a way that utilized PCG in some sort of manner that would make the user feel like it was part of a "story" in some sense, or that everything had some sort of connection. This also meant that we wanted to give the user some sense of choice. Whether it was to possible directions to venture, or to have some sort of (History?) decision-point where the user would have to set the scene for how the next parts of the dungeon would be generated. A simple example we came up with was to have the player choose whether he or she felt adventurous or not. Using this information in order to toggle if the dungeon should have a lot of bends and be made very spread, or if it should be more linear and maybe shorter.
+We wanted to make a board game dungeon map creator in this project. Having rooms, doors, items and interactables being procedurally generated on the fly, as we journeyed through the dungeon. 
+Our idea was to create this in a way that utilized PCG in some sort of manner that would make the user feel like it was part of a "story" in some sense, or that everything had some sort of connection. 
+
+This also meant that we wanted to give the user some sense of choice. Whether it was to possible directions to venture, or to have some sort of interactive decision-point where the user would have to set the scene for how the next parts of the dungeon would be generated. A simple example we came up with was to have the player choose whether he or she felt adventurous or not. Using this information in order to toggle if the dungeon should have a lot of bends and be made very spread, or if it should be more linear and maybe shorter.
 
 Our problem statement was formed to be something like this:
 \begin{itemize}
-\item[-] Procedurally generate a dungeon and it's contents in real-time, as the player explores what is already generated. Making points along the way where enemies, treasure or other points of interest can be found and interacted with.
+\item[-] \textit{Procedurally generate a dungeon and it's contents in real-time, as the player explores what is already generated. Making points along the way where enemies, treasure or other points of interest can be found and interacted with.}
 \end{itemize}
 
 Initially we wanted to create something really big. Having the dungeon implement some sort of history. So say that if the player were to kill an enemy, the game would then know that that type of creature would act more hostile the next time the player would encounter them. And on the other side, if the player were to help that "enemy", maybe it would become a friend instead?
@@ -394,7 +397,7 @@ If we wanted to implement this type of history and decision making into the gene
 In this document, we will elaborate and discuss on the implementations we made, how we narrowed down our scope in accordance with the supervisor, and how we came to the conclusions that we did.
 	
 \section{Background}
-Procedural content generation for maps and dungeon creation has been used a multitude of time over the years. So what we wanted to do for our project, in order to hopefully make it stand out, was to try to  implement the element of decisions and history. By having close to everything being generated as you go along, would make it possible to generate a huge amount of different scenarios, maps and game plays. Technically speaking, every play-through could be different. 
+Procedural content generation for maps and dungeon creation has been used a multitude of time over the years. So what we wanted to do for our project, in order to hopefully make it stand out, was to try to implement the element of decisions and history. By having close to everything being generated as you go along, would make it possible to generate a huge amount of different scenarios, maps and game plays. Technically speaking, every play-through could be different. 
 Our goals and wants for this project was initially set very high, as we wanted to have the opportunity to implement as much of our vision as possible. How much we can implement, and how the scope may be narrowed down, remains to be seen.
 
 There are plenty of concepts, ideas and pre-made generators out there, and it can be quite informative to look into those, read about how other people have made their solutions, and get ideas to how we can improve and make our project as good as we are able.
@@ -402,51 +405,69 @@ There are plenty of concepts, ideas and pre-made generators out there, and it ca
 \begin{figure}[h]
 	\graphicspath{{figures/}}
 	\includegraphics[width = \columnwidth ]{SpacehulkMap.png}
-	\caption{Behaviour tree for final AI. The top sequence is the entry point. The left branch returns true if there are no ghost nearby.}
-	\label{fig:behavTree}
+	\caption{Layout of a mission map for the game Space Hulk.}
+	\label{fig:spacehulk}
 \end{figure}
 
-Above is a picture of what we used for reference when we first came up with our idea. It is a very simple layout, but it has the key elements that we wanted as well. Rooms, doors and hallways.
+In figure \ref{fig:spacehulk} you can see a map layout of a level of the digital version of the game Space Hulk\cite{SpaceHulkvid}. This was used as initial reference for our idea, as it is a digital representation of a board game. It is a very simple layout, but it has the key elements that we wanted as well. Rooms, doors and hallways.
+The video game is directly based on the board game version with the same name\cite{SpaceHulkBoard}, and as such is related to the idea we had about generating a board game map through a piece system in a digital tool and context. 
 
-When our generator is complete, we are hoping to use some smart algorithms, like A-Star, in order to validate if our dungeons are viable. We will have to use this in-game as we generate as well, if we hope to create our maps “on the go” since we want the room placements to be dependent on how the player interacts with the world we create for them.
+Further games generates dungeon structures, an example being the game from Blizzard North, Diablo II\cite{Diablo2}. It generates the levels the player traverses on game creation. Though the layout is not fuelled by player actions, its generation of levels provides a greater replayability. 
 
-We believe that making this dungeon generator/exploration game will be an interesting project, as we will get to put our minds together to come up with what we hope will be great ideas as to how we can create fun and interesting dungeons. Will we be able to make the game as we visualize it, or will we end up with something completely different along the way? 
+When our generator is complete, we are hoping to use some smart algorithms, like A-Star, in order to validate if our dungeons are viable. We will have to use this in-game as we generate as well, if we hope to create our maps "on the go" since we want the room placements to be dependent on how the player interacts with the world we create for them.
+
+We believe that making this dungeon generator/exploration game will be an interesting project, as we will get to put our minds together to come up with what we hope will be great ideas as to how we can create fun and interesting dungeons. 
+
 \section{Game Design}
 The core mechanics of the game are purely based on PCG. Without it, the game would simply not be possible. Of course, we could always create dungeons using manual design, and a paper-to-code approach. But since we want to make a game that is purely based on PCG, we need to create every algorithm from scratch, and we have to make calculated design approaches in order to make the algorithms as we want them.
 
 Our first and foremost milestone, is to come up with a way of creating the dungeon in such a fashion that we can validate how good it is, and from there, make it so that we can add more features into it, like creating objects, enemies and other interactables. 
 
-Our approach to generating the dungeon, rooms and content in real-time, will be to first create a dungeon generator that will instantly create the entire dungeon in one go. That means all the rooms, doors and hallways. This means that we will have to come up with a clever way of making a complete layout of the generated content. Making sure that the sizes of the rooms don't exceed the total size of the map, and to enable the dungeons to be generated in different sizes and shapes. Just because we initially want to be able to create a complete dungeon, doesn't mean we always want to create the same one, as that would not really constitute the sort of procedural content generation that we want. 
+Our approach to generating the dungeon, rooms and content in real-time, will be to first create a dungeon generator that will instantly create the entire dungeon in one go. That means all the rooms, doors and hallways. This means that we will have to come up with a clever way of making a complete layout of the generated content. Making sure that the sizes of the rooms do not exceed the total size of the map, and to enable the dungeons to be generated in different sizes and shapes. Just because we initially want to be able to create a complete dungeon, doesn't mean we always want to create the same one, as that would not really constitute the sort of procedural content generation that we want. 
 From there our task will be to break it down into pieces. Have only a single room be created from the start, and then expand on that room. Having one or more doors or ways to exit the room in different directions, and then generate new rooms that will be visible to the player.
 
 Once we are able to generate a dungeon be creating new rooms and connecting them to the existing map, as the game is being played, the next step will be to have some form of content in the rooms.
-The start point will, for the sake of simplicity and control, always be in the center of the first room that is created. But as we expand on our dungeon, we will need to have some sort of end condition. So what we will do is to implement an exit area. At first we thought about having the exit point be set from the start, and then create the rooms in the map so that they would eventually reach that point. But as we thought about it more and more, we realized that this was not how we wanted it. We wanted the players to explore as much as possible, without having to think about where the exact point of the exit were. So what we came up with, was to have the "adventure" scale. Basically what that means, is that the player gets the choice to select how "adventurous" he or she is feeling, and have that decision factor into the generation of the game space. If the player is feeling adventurous, the dungeons will be generated with rooms that spread more out, and that has more options of directions that are accessible. And going back to the end point; we believe the game would be more fun if the exit is generated suddenly, when you enter a new room that was previously unexplored. And when the exit would appear, would in some way be connected to how adventurous the player was.
+The start point will, for the sake of simplicity and control, always be in the center of the first room that is created. But as we expand on our dungeon, we will need to have some sort of end condition. So what we will do is to implement an exit area. At first we thought about having the exit point be set from the start, and then create the rooms in the map so that they would eventually reach that point. But as we thought about it more and more, we realized that this was not how we wanted it. 
+
+We wanted the players to explore as much as possible, without having to think about where the exact point of the exit were. So what we came up with, was to have the "adventure" scale. Basically what that means, is that the player gets the choice to select how "adventurous" he or she is feeling, and have that decision factor into the generation of the game space. If the player is feeling adventurous, the dungeons will be generated with rooms that spread more out, and that has more options of directions that are accessible. And going back to the end point; we believe the game would be more fun if the exit is generated suddenly, when you enter a new room that was previously unexplored. And when the exit would appear, would in some way be connected to how adventurous the player was.
 
 With the ending condition now figured out, the thoughts on how we would generate other items in-game, like treasure, enemies, etc. arose. After brainstorming for quite some time, we came to the conclusion that these items and interactables should be dependent on the adventure-meter, but also be dependent on an element of luck and chance.
 Creating rooms that were dead ends, could significantly increase the chance for an encounter of some sort to happen.
 
 \section{Methods}
-Our algorithm starts off by creating a board element, then having a room spawn in the center of said board. The center room will contain the starting point for the player, and will have 4 doors leading out of it in all possible movement directions, North, East, South and West.
+Our algorithm starts off by creating a board element, then having a room spawn in the center of said board. The center room, see figure \ref{fig:startroom}, will contain the starting point for the player, and will have 4 doors leading out of it in all possible movement directions, North, East, South and West.
 After the board and starting room are initiated, the player object is generated and placed on the starting point. From here, all the elements that are now contained in the room will be drawn up on the screen and the player can now explore.
 
-When the player walks through the first door (any of the initial 4 doors), the algorithm creates a new room in that direction. 
 \begin{figure}[h]
 	\graphicspath{{figures/}}
 	\includegraphics[width = \columnwidth ]{StartLayout.png}
-	\caption{Behaviour tree for final AI. The top sequence is the entry point. The left branch returns true if there are no ghost nearby.}
-	\label{fig:behavTree}
+	\caption{Initial dungeon layout. A center room with the player token and 4 doors leading out from it.}
+	\label{fig:startroom}
 \end{figure}
-Since this is the first room that is generated, it will also contain an interactable spot where, if you walk on it, an option will appear on the screen that will allow the player to choose whether or not he or she wants the game to be adventurous or not.
+
+When the player walks through the first door (any of the initial 4 doors), the algorithm creates a new room in that direction. 
+Since this is the first room that is generated, it will also contain an interactable spot where, if you walk on it, an option will appear on the screen that will allow the player to choose whether or not he or she wants the game to be adventurous or not. Interacting with the spot, known as the dialog interaction spot, allows for the game to get player feedback on their desire for how they want to play the game.
 
 \begin{figure}[h]
 	\graphicspath{{figures/}}
 	\includegraphics[width = \columnwidth ]{DialogSet.png}
-	\caption{Behaviour tree for final AI. The top sequence is the entry point. The left branch returns true if there are no ghost nearby.}
-	\label{fig:behavTree}
+	\caption{Dungeon with dialog interaction point placed. The Interaction point is represented by the yellow circle.}
+	\label{fig:dialogset}
 \end{figure}
+\subsection{Adventureness of the player}
+The adventureness of the player is set based on the interaction with the dialog interaction spot. It is more a stand-in for deeper gameplay interaction, and serves as a point where the algorithm can get a value which determines the players mindset when playing the game. 
+
+The adventureness scale is used in several of the random algorithms to push the outcome towards the players wishes. A more adventurous player will have a higher adventureness score, whilst a lower score is awarded to less adventurous players.
+
+The two most important uses are for when to generate the exit and the number of doors in a newly generated room. 
+The exit placement chance is based on the adventureness of the player and how long the player has been playing, measured in terms of moves made.
+The actual chance also uses a combined value of how much a player have moved, compared to the distance from the center of the map.
+float chanceOfExit = 1 / (1 + Mathf.Exp(-turnCount * 1/(adventureScale*adventurenessCalc*timeScale+1))) 
 
 If the adventure-mode is selected, the system will then make it so there will be generated a lot more rooms before the end-point is reached. If the adventure mode is not selected, the dungeon that will be generated will be significantly smaller. 
 
+\subsection{A-star distance measure algorithm}
+\label{sec:astar}
 The rooms have a chance of making from 0 to 3 doors. The chance for which is based by using the A-Star algorithm to see how "far" the player has explored from the start. The further away you are, the more you have explored, and so the less doors will probably spawn. The exploration value will be bigger the closer you are to the start, as it yields the more possible directions to explore from.
 
 \begin{figure}[h]
@@ -548,8 +569,12 @@ Dungeon size reconfiguration
 \bibitem{IEEEhowto:kopka}
 H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
   0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
-\bibitem{behaTree}
-Chris Simpson, \emph{Behavior trees for AI: How they work}, http://www.gamasutra.com/blogs/ChrisSimpson/20140717/221339/ Behavior\_trees\_for\_AI\_How\_they\_work.php, Last visit: 09-10-2015
+\bibitem{SpaceHulkvid}
+Full Control and Games workshop, \url{http://www.spacehulk-game.com/}, Last visit: 13-12-2015
+\bibitem{SpaceHulkBoard}
+Games workshop, \url{http://www.games-workshop.com/en-AU/Space-Hulk}, Last visit: 13-12-2015
+\bibitem{Diablo2}
+Blizzard Entertainment, \url{http://eu.blizzard.com/en-gb/games/d2/}, Last visit: 13-12-2015
 \end{thebibliography}
 
 \end{document}
