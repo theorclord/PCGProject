@@ -16,6 +16,8 @@ public class GameController : MonoBehaviour {
 
     //Astar
     private int aStarDist;
+    private float adventurenessCalc;
+    private int totalMovement;
 
     private GameObject[,] gameBoard;
     private GameObject[,] interactables;
@@ -138,7 +140,7 @@ public class GameController : MonoBehaviour {
                 doorFound = true;
             }
         }
-        float chance = 1 / (1 + Mathf.Exp(-aStarDist * 0.1f * adventureScale + 2));
+        float chance = 1 / (1 + Mathf.Exp(-aStarDist * 0.2f * adventureScale*adventurenessCalc + 2));
         if (Random.Range(0f, 1f) <= chance && (doorFound || exitSet))
         {
             numdoors = 0;    
@@ -220,7 +222,8 @@ public class GameController : MonoBehaviour {
         visualizeBoard(board.RefMap);
 
         // Logic for when the player should find the exit
-        float chanceOfExit = 1 / (1 + Mathf.Exp(-turnCount * 1/(adventureScale*timeScale+1)));
+        //TODO change the impact of the adventure scale
+        float chanceOfExit = 1 / (1 + Mathf.Exp(-turnCount * 1/(adventureScale*adventurenessCalc*timeScale+1)));
         //Debug.Log("Exit chance " + chanceOfExit);
         // Sets the exit in the new room
         if (chanceOfExit > 0.999 && !exitSet)
@@ -361,7 +364,7 @@ public class GameController : MonoBehaviour {
     public void NextTurn()
     {
         turnCount++;
-
+        totalMovement += 10;
         //Astar test
         //Find entrance
         GameObject entrance = null;
@@ -395,9 +398,11 @@ public class GameController : MonoBehaviour {
         int disFromStart = AStar.distance(passable, (int)player.transform.position.x, (int)player.transform.position.y,
             (int)entrance.transform.position.x, (int)entrance.transform.position.y);
         aStarDist = disFromStart;
+        //Use a combination of AStar and total movement to update the adventureness. 
+        // The higher the value the more adventuress
+        adventurenessCalc = totalMovement / (aStarDist+1);
         Debug.Log("Astar distance from start " + disFromStart);
     }
-    
 
     /// <summary>
     /// Function responsible for the control of the door order

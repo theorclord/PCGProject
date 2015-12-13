@@ -34,13 +34,13 @@ public class DialogController : MonoBehaviour {
         {
             Debug.Log("You clicked yes");
             // Increase the adventure scale
-            gameCon.ChangeAdventureScale(0.5f);
+            gameCon.ChangeAdventureScale(0.4f);
             DialogCanvas.SetActive(false);
         } else
         {
             Debug.Log("You clicked no");
             // Decrease the adventure scale
-            gameCon.ChangeAdventureScale(-0.5f);
+            gameCon.ChangeAdventureScale(-0.4f);
             DialogCanvas.SetActive(false);
         }
     }
