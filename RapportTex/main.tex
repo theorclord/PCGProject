@@ -503,11 +503,13 @@ The value is calculated based on the how much the player moves around compared t
 
 \subsection{A-star distance measure algorithm}
 \label{sec:astar}
-In addition to our own algorithms, we use the A-star algorithms 
+In addition to our own algorithms, we use the A-star algorithm to determine the distance to the start of the dungeon. 
+
+The well known algorithm finds the path through a grid structure and calculates the fastest path to a given point from a current position. It uses a cost for each move it can make and tries to optimize its search towards a given target by minimizing the cost.
 
 \section{Results}
 \subsection{Did it work}
-We weren't able to implement all the features that we wanted, which were described in the introduction and background. Our original idea was too out of scope, with much too many goals that would be unreachable given the time we had for our project. Even though not all we wanted to do, was completed, we were able to implement the most important features; having a dungeon being created in real-time, allowing the players to explore the dungeons as they see fit. Whether they are feeling adventurous, or just want to have a quick map and be done with it. 
+We were not able to implement all the features that we wanted, which were described in the introduction and background. Our original idea was too out of scope, with much too many goals that would be unreachable given the time we had for our project. Even though not all we wanted to do, was completed, we were able to implement the most important features; having a dungeon being created in real-time, allowing the players to explore the dungeons as they see fit. Whether they are feeling adventurous, or just want to have a quick map and be done with it. 
 By utilizing the A-Star algorithm, we were able to make the rooms get different "adventure"-values based on how far away from the start they are, how much the players have explored, and how adventurous they have been. The chance for a room to spawn more doors, and in turn, more opportunities and choices for the player, are also based on the adventure-meter and the A-Star. If you for instance are far away from the start (have explored quite a bit), the chance to walk into a dead end are increased.
 
 The win condition is also based on how adventurous the player is. If they are feeling like exploring a huge dungeon, then the end-point will not spawn until the map "feels" like it has offered a lot of options and diversity.
