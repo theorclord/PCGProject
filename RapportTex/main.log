@@ -1,18 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.12.15)  14 DEC 2015 09:59
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2015.10.8)  14 DEC 2015 09:18
 entering extended mode
 **main.tex
-(E:\ITU\ProceduralContent\PCGProject\RapportTex\main.tex
-LaTeX2e <2011/06/27>
-Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
-abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
-croatian, czech, danish, dutch, esperanto, estonian, farsi, finnish, french, ga
-lician, german, german-x-2012-05-30, greek, gujarati, hindi, hungarian, iceland
-ic, indonesian, interlingua, irish, italian, kannada, kurmanji, latin, latvian,
- lithuanian, malayalam, marathi, mongolian, mongolianlmc, monogreek, ngerman, n
-german-x-2012-05-30, nynorsk, oriya, panjabi, pinyin, polish, portuguese, roman
-ian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swissgerm
-an, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, usengl
-ishmax, welsh, loaded.
+(main.tex
+LaTeX2e <2015/01/01> patch level 2
+Babel <3.9m> and hyphenation patterns for 69 languages loaded.
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\ieeetran\IEEEtran.cls"
 Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
 -- See the "IEEEtran_HOWTO" manual for usage information.
@@ -125,14 +116,14 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <24.09> not available
 \c@IEEEbiography=\count93
 \@IEEEtranrubishbin=\box27
 ) ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
-Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
-Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks15
 )
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
-Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+Package: graphics 2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\trig.sty"
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
@@ -140,7 +131,7 @@ Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\graphics.cfg"
 File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
 )
-Package graphics Info: Driver file: pdftex.def on input line 91.
+Package graphics Info: Driver file: pdftex.def on input line 94.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\pdftex-def\pdftex.def"
 File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
@@ -160,8 +151,7 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 LaTeX Info: Redefining \cite on input line 302.
 LaTeX Info: Redefining \nocite on input line 332.
 Package: cite 2015/02/27  v 5.5
-)
-(E:\ITU\ProceduralContent\PCGProject\RapportTex\main.aux
+) (main.aux
 
 LaTeX Warning: Label `fig:behavTree' multiply defined.
 
@@ -197,37 +187,37 @@ LaTeX Font Info:    ... okay on input line 287.
 \makeMPintoPDFobject=\count100
 \everyMPtoPDFconversion=\toks17
 )
-LaTeX Font Info:    Try loading font information for OT1+phv on input line 356.
+LaTeX Font Info:    Try loading font information for OT1+phv on input line 362.
 
  ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\ot1phv.fd"
 File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.05249> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 356.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 362.
 LaTeX Font Info:    Calculating math sizes for size <10.03749> on input line 39
-0.
+6.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.03749> on input line 390.
+(Font)              <10.03749> on input line 396.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7.0262> on input line 390.
+(Font)              <7.0262> on input line 396.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5.01874> on input line 390.
+(Font)              <5.01874> on input line 396.
 
 <figures/SpacehulkMap.png, id=1, 642.14906pt x 545.03625pt>
 File: figures/SpacehulkMap.png Graphic file (type png)
 
 <use figures/SpacehulkMap.png>
-Package pdftex.def Info: figures/SpacehulkMap.png used on input line 409.
+Package pdftex.def Info: figures/SpacehulkMap.png used on input line 415.
 (pdftex.def)             Requested size: 243.91125pt x 207.02444pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[1{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}
+[1{C:/Users/Mats/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 421--422
+Underfull \hbox (badness 10000) in paragraph at lines 427--428
 []\OT1/ptm/m/n/10.03749 We be-lieve that mak-ing this dun-geon gen-er-a-
  []
 
@@ -235,25 +225,25 @@ Underfull \hbox (badness 10000) in paragraph at lines 421--422
 File: figures/StartLayout.png Graphic file (type png)
 
 <use figures/StartLayout.png>
-Package pdftex.def Info: figures/StartLayout.png used on input line 445.
+Package pdftex.def Info: figures/StartLayout.png used on input line 451.
 (pdftex.def)             Requested size: 243.91125pt x 135.9519pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[2 <E:/ITU/ProceduralContent/PCGProject/RapportTex/figures/SpacehulkMap.png>]
+[2 <./figures/SpacehulkMap.png>]
 <figures/DialogSet.png, id=14, 999.735pt x 557.08125pt>
 File: figures/DialogSet.png Graphic file (type png)
 
 <use figures/DialogSet.png>
-Package pdftex.def Info: figures/DialogSet.png used on input line 455.
+Package pdftex.def Info: figures/DialogSet.png used on input line 461.
 (pdftex.def)             Requested size: 243.91125pt x 135.91232pt.
 
 <figures/DungeonLayout.png, id=15, 640.64343pt x 492.33937pt>
 File: figures/DungeonLayout.png Graphic file (type png)
 
 <use figures/DungeonLayout.png>
-Package pdftex.def Info: figures/DungeonLayout.png used on input line 464.
+Package pdftex.def Info: figures/DungeonLayout.png used on input line 470.
 (pdftex.def)             Requested size: 243.91125pt x 187.44398pt.
 
 
@@ -262,14 +252,13 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [3 <E:/ITU/ProceduralContent/PCGProject/RapportTex/figures/StartLayout.png> <E
-:/ITU/ProceduralContent/PCGProject/RapportTex/figures/DialogSet.png> <E:/ITU/Pr
-oceduralContent/PCGProject/RapportTex/figures/DungeonLayout.png>]
+ [3 <./figures/StartLayout.png> <./figures/DialogSet.png> <./figures/DungeonLay
+out.png>]
 <figures/BigDungeon.png, id=26, 544.28343pt x 401.24907pt>
 File: figures/BigDungeon.png Graphic file (type png)
 
 <use figures/BigDungeon.png>
-Package pdftex.def Info: figures/BigDungeon.png used on input line 523.
+Package pdftex.def Info: figures/BigDungeon.png used on input line 529.
 (pdftex.def)             Requested size: 243.91125pt x 179.80733pt.
 
 
@@ -277,50 +266,42 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 File: figures/DialogSet.png Graphic file (type png)
 <use figures/DialogSet.png>
-Package pdftex.def Info: figures/DialogSet.png used on input line 531.
+Package pdftex.def Info: figures/DialogSet.png used on input line 537.
 (pdftex.def)             Requested size: 243.91125pt x 135.91232pt.
- [4 <E:/ITU/ProceduralContent/PCGProject/RapportTex/figures/BigDungeon.png>]
+ [4 <./figures/BigDungeon.png>]
 <figures/BigDungeon2.png, id=30, 989.19562pt x 553.31718pt>
 File: figures/BigDungeon2.png Graphic file (type png)
 
 <use figures/BigDungeon2.png>
-Package pdftex.def Info: figures/BigDungeon2.png used on input line 542.
+Package pdftex.def Info: figures/BigDungeon2.png used on input line 548.
 (pdftex.def)             Requested size: 243.91125pt x 136.42929pt.
-Missing character: There is no Â in font ptmr7t!
-Missing character: There is no « in font ptmr7t!
-Missing character: There is no Â in font ptmr7t!
-Missing character: There is no » in font ptmr7t!
 
-Underfull \hbox (badness 1571) in paragraph at lines 559--563
-[]\OT1/ptm/m/n/10.03749 What are the strengths and short-com-ings of your
- []
-
-
-Underfull \hbox (badness 3209) in paragraph at lines 564--569
-[]\OT1/ptm/m/n/10.03749 Further de-vel-op-ment: NPC spawn-ing. NPC types,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 564--569
-\OT1/ptm/m/n/10.03749 groups, in-ter-ac-tion. Bet-ter con-nec-tions be-tween
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 610--611
+Underfull \hbox (badness 10000) in paragraph at lines 607--608
 []\OT1/ptm/m/n/8.03 Patrick Lester, \OT1/ptm/m/it/8.03 A* Pathfind-ing for Be-g
 in-ners\OT1/ptm/m/n/8.03 ,
  []
 
 
-Overfull \hbox (61.83508pt too wide) in paragraph at lines 610--611
+Overfull \hbox (61.83508pt too wide) in paragraph at lines 607--608
 \OT1/ptm/m/n/8.03 http://homepages.abdn.ac.uk/f.guerin/pages/teaching/CS1013/pr
 acticals/aStarTutorial.htm,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 614--615
+Underfull \hbox (badness 10000) in paragraph at lines 611--612
 []\OT1/ptm/m/n/8.03 Games work-shop, http://www.games-workshop.com/en-AU/Space-
 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 615--617
+[]\OT1/ptm/m/n/8.03 Roland van der Lin-den, Ri-cardo Lopes and Rafael
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 615--617
+\OT1/ptm/m/n/8.03 Bidarra \OT1/ptm/m/it/8.03 Pro-ce-du-ral gen-er-a-tion of dun
+-geons\OT1/ptm/m/n/8.03 , 2014,
  []
 
 
@@ -334,19 +315,18 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[5 <E:/ITU/ProceduralContent/PCGProject/RapportTex/figures/BigDungeon2.png>]
-(E:\ITU\ProceduralContent\PCGProject\RapportTex\main.aux)
+[5 <./figures/BigDungeon2.png>] (main.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 2144 strings out of 493921
- 35121 string characters out of 3144872
- 91768 words of memory out of 3000000
- 5457 multiletter control sequences out of 15000+200000
+ 2143 strings out of 493673
+ 34815 string characters out of 3141533
+ 98059 words of memory out of 3000000
+ 5511 multiletter control sequences out of 15000+200000
  38479 words of font info for 68 fonts, out of 3000000 for 9000
- 844 hyphenation exceptions out of 8191
+ 1028 hyphenation exceptions out of 8191
  27i,7n,20p,801b,245s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Progra
 m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program 
@@ -359,7 +339,7 @@ eX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/font
 s/type1/urw/times/utmbi8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/ur
 w/times/utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utm
 ri8a.pfb>
-Output written on main.pdf (5 pages, 701210 bytes).
+Output written on main.pdf (5 pages, 701048 bytes).
 PDF statistics:
  66 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
