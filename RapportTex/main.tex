@@ -518,36 +518,33 @@ The well known algorithm finds the path through a grid structure and calculates 
 The value were used to determine the how the player moves around in the dungeon and how close to the center the player moves
 
 \section{Results}
-\subsection{Did it work}
 We were not able to implement all the features that we wanted, which were described in the introduction and background. Our original idea was too out of scope, with much too many goals that would be unreachable given the time we had for our project. Even though not all we wanted to do, was completed, we were able to implement the most important features; having a dungeon being created in real-time, allowing the players to explore the dungeons as they see fit. Whether they are feeling adventurous, or just want to have a quick map and be done with it. 
+
 By utilizing the A-Star algorithm, we were able to make the rooms get different "adventure"-values based on how far away from the start they are, how much the players have explored, and how adventurous they have been. The chance for a room to spawn more doors, and in turn, more opportunities and choices for the player, are also based on the adventure-meter and the A-Star. If you for instance are far away from the start (have explored quite a bit), the chance to walk into a dead end are increased.
 
 The win condition is also based on how adventurous the player is. If they are feeling like exploring a huge dungeon, then the end-point will not spawn until the map "feels" like it has offered a lot of options and diversity.
+
+The end result of a long play can be seen in figure \ref{fig:bigdung}. This dungeon consist of winding turns, dead ends and lots of rooms. The player have already found the exit, but has not yet decided to end the map. You can see that the father from the center, the number of dead end increase, whilst there still is a few rooms which defies this. 
 
 \begin{figure}[h]
 	\graphicspath{{figures/}}
 	\includegraphics[width = \columnwidth ]{BigDungeon.png}
 	\caption{Picture of a massive dungeon created by adventurous player}
-	\label{fig:behavTree}
+	\label{fig:bigdung}
 \end{figure}
-\subsection{How well}
+\subsection{Challenges}
 There were a lot of debugging required in order to create the dungeons as we wanted them to be created. Things took more time than we originally planned, which forced us to narrow down our scope, in accordance with our project supervisor. We still wanted to have multiple choices for the player, something that would give the feel of adventure and exploration. So by adding the option for the player to enable "adventure-mode", gave us the sensation of creating bigger and more diverse dungeons.
-\begin{figure}[h]
-	\graphicspath{{figures/}}
-	\includegraphics[width = \columnwidth ]{DialogSet.png}
-	\caption{On this picture, you see the simple interface for selecting adventure mode or not.}
-	\label{fig:behavTree}
-\end{figure}
+
 Some of the issues that came up during development were that the generator itself wasn't acting as we wanted it to. Rooms were created with doors that would lead nowhere or into a wall. So during development, we had to restructure and create new algorithms for the generator to work. This took a lot of time. Too much time in fact. Because of us having to remake the generators so much, we decided to make a completely new one from scratch, that took the best features we knew worked, and utilized them in a new way. This turned out to be a great choice, which allowed us to fix many of those bugs we had with the doors and what not.
 
 Our finished product turned out to be very up to par with the feel we wanted to go for. We only use a simple interface, and graphics, although simple, are there only to let the player see which possibilities that are presented. 
-A fully generated dungeon will be quite huge, and as you can see from the next figure, the player will have had to do a lot of choices in order to make it. 
+A fully generated dungeon will be quite huge, and as you can see from figure \ref{fig:finishDung}, the player will have had to do a lot of choices in order to make it. 
 
 \begin{figure}[h]
 	\graphicspath{{figures/}}
 	\includegraphics[width = \columnwidth ]{BigDungeon2.png}
 	\caption{This is a full dungeon, all explored with no doors left to open.}
-	\label{fig:behavTree}
+	\label{fig:finishDung}
 \end{figure}
 As you can see from the last picture, all the walls are closed off, and the player has explored the entire dungeon. The bugs with doors overlapping were fixed so that one door might be removed if the player chooses to go a different direction. This also only amplifies the feeling of adventure and choice/change that we wanted our game to have.
 \section{Discussion}
