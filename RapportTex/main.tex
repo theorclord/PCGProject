@@ -300,11 +300,17 @@
 % use a multiple column layout for up to three different
 % affiliations
 \author{
-\IEEEauthorblockN{Mikkel Stolborg, Mats Stenhaug}
+\IEEEauthorblockN{Mikkel Stolborg}
 \IEEEauthorblockA{Games and Technology\\
 IT-University of Copenhagen\\
 Copenhagen, Denmark\\
 Email: msto@itu.dk}
+\and
+\IEEEauthorblockN{Mats Stenhaug}
+\IEEEauthorblockA{Games and Technology\\
+IT-University of Copenhagen\\
+Copenhagen, Denmark\\
+Email: msten@itu.dk}
 % Template for adding other people
 %\and
 %\IEEEauthorblockN{Homer Simpson}
@@ -358,7 +364,7 @@ Email: msto@itu.dk}
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
 \begin{abstract}
-In this project we create a dungeon generator which uses player input as base for the generation. As the player moves throughout a dungeon, the actions taken determines how the rest of the dungeon is generated.
+ In this project we create a dungeon generator which uses player input as base for the generation. As the player moves throughout a dungeon, the actions taken determines how the rest of the dungeon is generated.
 \end{abstract}
 
 % no keywords
@@ -556,22 +562,13 @@ Further work on this project could be the improvements mentioned above. More con
 The game could have a greater story driven feel for the players as the story itself could be generated from their own actions. 
 Further giving the player more the feeling that the game is being shaped due to their own actions.
 
-«What are the strengths and shortcomings of your method? 
-Why did you choose method X instead of Y? 
-How well would it generalize to other game genres? 
-How would you develop it further, if you had time?»
-
-Further development: 
-NPC spawning. 
-NPC types, groups, interaction.
-Better connections between doors/rooms/walls
-Dungeon size reconfiguration
 
 
 % use section* for acknowledgment
 \ifCLASSOPTIONcompsoc
   % The Computer Society usually uses the plural form
   \section*{Acknowledgments}
+  We would like to thank our supervisor for giving us guidance on where to go with our project, and for helping us narrow down our scope to fit something more suited for us.
 \else
   % regular IEEE prefers the singular form
   \section*{Acknowledgment}
@@ -614,6 +611,9 @@ Full Control and Games workshop, http://www.spacehulk-game.com/, Last visit: 13-
 Games workshop, http://www.games-workshop.com/en-AU/Space-Hulk, Last visit: 13-12-2015
 \bibitem{Diablo2}
 Blizzard Entertainment, http://eu.blizzard.com/en-gb/games/d2/, Last visit: 13-12-2015
+\bibitem{Dungeon PCG}
+Roland van der Linden, Ricardo Lopes and Rafael Bidarra
+\emph{Procedural generation of dungeons}, 2014, http://graphics.tudelft.nl/~rafa/myPapers/bidarra.TCIAIG.2014.pdf
 \end{thebibliography}
 
 \end{document}
