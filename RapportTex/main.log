@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2015.10.8)  14 DEC 2015 09:18
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2015.10.8)  14 DEC 2015 10:29
 entering extended mode
 **main.tex
 (main.tex
@@ -194,112 +194,107 @@ File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.05249> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 362.
-LaTeX Font Info:    Calculating math sizes for size <10.03749> on input line 39
+LaTeX Font Info:    Calculating math sizes for size <10.03749> on input line 40
 6.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.03749> on input line 396.
+(Font)              <10.03749> on input line 406.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7.0262> on input line 396.
+(Font)              <7.0262> on input line 406.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5.01874> on input line 396.
-
-<figures/SpacehulkMap.png, id=1, 642.14906pt x 545.03625pt>
-File: figures/SpacehulkMap.png Graphic file (type png)
-
-<use figures/SpacehulkMap.png>
-Package pdftex.def Info: figures/SpacehulkMap.png used on input line 415.
-(pdftex.def)             Requested size: 243.91125pt x 207.02444pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[1{C:/Users/Mats/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
+(Font)              <5.01874> on input line 406.
+ [1{C:/Users/Mats/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 427--428
+<figures/SpacehulkMap.png, id=9, 642.14906pt x 545.03625pt>
+File: figures/SpacehulkMap.png Graphic file (type png)
+
+<use figures/SpacehulkMap.png>
+Package pdftex.def Info: figures/SpacehulkMap.png used on input line 425.
+(pdftex.def)             Requested size: 243.91125pt x 207.02444pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 437--438
 []\OT1/ptm/m/n/10.03749 We be-lieve that mak-ing this dun-geon gen-er-a-
  []
 
-<figures/StartLayout.png, id=10, 996.72375pt x 555.57562pt>
+
+Underfull \vbox (badness 1389) has occurred while \output is active []
+
+ [2 <./figures/SpacehulkMap.png>]
+<figures/StartLayout.png, id=13, 996.72375pt x 555.57562pt>
 File: figures/StartLayout.png Graphic file (type png)
 
 <use figures/StartLayout.png>
-Package pdftex.def Info: figures/StartLayout.png used on input line 451.
+Package pdftex.def Info: figures/StartLayout.png used on input line 461.
 (pdftex.def)             Requested size: 243.91125pt x 135.9519pt.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[2 <./figures/SpacehulkMap.png>]
 <figures/DialogSet.png, id=14, 999.735pt x 557.08125pt>
 File: figures/DialogSet.png Graphic file (type png)
 
 <use figures/DialogSet.png>
-Package pdftex.def Info: figures/DialogSet.png used on input line 461.
+Package pdftex.def Info: figures/DialogSet.png used on input line 471.
 (pdftex.def)             Requested size: 243.91125pt x 135.91232pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 <figures/DungeonLayout.png, id=15, 640.64343pt x 492.33937pt>
 File: figures/DungeonLayout.png Graphic file (type png)
 
 <use figures/DungeonLayout.png>
-Package pdftex.def Info: figures/DungeonLayout.png used on input line 470.
+Package pdftex.def Info: figures/DungeonLayout.png used on input line 480.
 (pdftex.def)             Requested size: 243.91125pt x 187.44398pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [3 <./figures/StartLayout.png> <./figures/DialogSet.png> <./figures/DungeonLay
-out.png>]
-<figures/BigDungeon.png, id=26, 544.28343pt x 401.24907pt>
+[3 <./figures/StartLayout.png> <./figures/DialogSet.png> <./figures/DungeonLayo
+ut.png>] <figures/BigDungeon.png, id=20, 544.28343pt x 401.24907pt>
 File: figures/BigDungeon.png Graphic file (type png)
 
 <use figures/BigDungeon.png>
-Package pdftex.def Info: figures/BigDungeon.png used on input line 529.
+Package pdftex.def Info: figures/BigDungeon.png used on input line 539.
 (pdftex.def)             Requested size: 243.91125pt x 179.80733pt.
+File: figures/DialogSet.png Graphic file (type png)
+ <use figures/DialogSet.png>
+Package pdftex.def Info: figures/DialogSet.png used on input line 547.
+(pdftex.def)             Requested size: 243.91125pt x 135.91232pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-File: figures/DialogSet.png Graphic file (type png)
-<use figures/DialogSet.png>
-Package pdftex.def Info: figures/DialogSet.png used on input line 537.
-(pdftex.def)             Requested size: 243.91125pt x 135.91232pt.
- [4 <./figures/BigDungeon.png>]
+[4 <./figures/BigDungeon.png>]
 <figures/BigDungeon2.png, id=30, 989.19562pt x 553.31718pt>
 File: figures/BigDungeon2.png Graphic file (type png)
 
 <use figures/BigDungeon2.png>
-Package pdftex.def Info: figures/BigDungeon2.png used on input line 548.
+Package pdftex.def Info: figures/BigDungeon2.png used on input line 558.
 (pdftex.def)             Requested size: 243.91125pt x 136.42929pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 607--608
+Underfull \hbox (badness 10000) in paragraph at lines 617--618
 []\OT1/ptm/m/n/8.03 Patrick Lester, \OT1/ptm/m/it/8.03 A* Pathfind-ing for Be-g
 in-ners\OT1/ptm/m/n/8.03 ,
  []
 
 
-Overfull \hbox (61.83508pt too wide) in paragraph at lines 607--608
+Overfull \hbox (3.31326pt too wide) in paragraph at lines 617--618
 \OT1/ptm/m/n/8.03 http://homepages.abdn.ac.uk/f.guerin/pages/teaching/CS1013/pr
-acticals/aStarTutorial.htm,
+acticals/ 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 611--612
+Underfull \hbox (badness 10000) in paragraph at lines 623--624
 []\OT1/ptm/m/n/8.03 Games work-shop, http://www.games-workshop.com/en-AU/Space-
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 615--617
+Underfull \hbox (badness 10000) in paragraph at lines 627--629
 []\OT1/ptm/m/n/8.03 Roland van der Lin-den, Ri-cardo Lopes and Rafael
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 615--617
+Underfull \hbox (badness 10000) in paragraph at lines 627--629
 \OT1/ptm/m/n/8.03 Bidarra \OT1/ptm/m/it/8.03 Pro-ce-du-ral gen-er-a-tion of dun
 -geons\OT1/ptm/m/n/8.03 , 2014,
  []
@@ -323,7 +318,7 @@ LaTeX Warning: There were multiply-defined labels.
 Here is how much of TeX's memory you used:
  2143 strings out of 493673
  34815 string characters out of 3141533
- 98059 words of memory out of 3000000
+ 97059 words of memory out of 3000000
  5511 multiletter control sequences out of 15000+200000
  38479 words of font info for 68 fonts, out of 3000000 for 9000
  1028 hyphenation exceptions out of 8191
@@ -339,7 +334,7 @@ eX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/font
 s/type1/urw/times/utmbi8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/ur
 w/times/utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utm
 ri8a.pfb>
-Output written on main.pdf (5 pages, 701048 bytes).
+Output written on main.pdf (5 pages, 702700 bytes).
 PDF statistics:
  66 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
