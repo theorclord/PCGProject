@@ -364,7 +364,17 @@ Email: msten@itu.dk}
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
 \begin{abstract}
- In this project we create a dungeon generator which uses player input as base for the generation. As the player moves throughout a dungeon, the actions taken determines how the rest of the dungeon is generated.
+ In this document we will go through all the steps in our process of creating a dungeon generator by the use of 
+Procedural Content Generation. Our hope is to create one that uses player input as base for the generation itself.
+As the player moves through and explores a dungeon, the actions taken will determine how the rest of the dungeon will
+be generated. The concept of having experience driven generation and a generator that takes player input into account,
+is something that we, the group members of this project, are unfamiliar with, and therefore it will be interesting to
+see what we can accomplish with the time we have at our disposal. We will describe how we use the A-Star algorithm in 
+order to calculate the distance from the start point, which we use as a base for our exploration factor.
+By having an exploration factor in the generator, we can give the player more options, and make for more possibilities
+as to how a dungeon should be created when combined with player inputs such as direction selection and whether or not
+a player want to explore big scenarios or small ones. This document also goes through the algorithms we use for creating
+the board and layout, with descriptions of how an entire dungeon is generated.
 \end{abstract}
 
 % no keywords
@@ -601,7 +611,9 @@ Further giving the player more the feeling that the game is being shaped due to 
 Lawrence Johnson, Georgios N. Yannakakis, and Julian Togelius, \emph{Cellular automata for real-time generation
 of infinite cave levels}, 2010.
 \bibitem{Astar}
-Patrick Lester, \emph{A* Pathfinding for Beginners}, http://homepages.abdn.ac.uk/f.guerin/pages/teaching/CS1013/practicals/aStarTutorial.htm, Last visit: 13-12-2015
+Patrick Lester, \emph{A* Pathfinding for Beginners}, http://homepages.abdn.ac.uk/f.guerin/pages/teaching/CS1013/practicals/
+
+aStarTutorial.htm, Last visit: 13-12-2015
 \bibitem{SpaceHulkvid}
 Full Control and Games workshop, http://www.spacehulk-game.com/, Last visit: 13-12-2015
 \bibitem{SpaceHulkBoard}
