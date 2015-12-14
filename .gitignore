@@ -23,5 +23,4 @@ sysinfo.txt
 # Latex files
 *.aux
 *.out
-*.pdf
 *.gz

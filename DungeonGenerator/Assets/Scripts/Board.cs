@@ -784,7 +784,8 @@ public class Board {
 					Debug.Log("Door found at "+i+","+j+".");
 					//x-1
 					if(i-1>=0){
-						if(RefMap[i-1,j] == MAP_REF.UNUSED ){
+                        if (RefMap[i - 1, j] == MAP_REF.UNUSED || RefMap[i - 1, j] == MAP_REF.FLOOR)
+                        {
 							spaceFound = true;
 							sides++;
 							Debug.Log("Space found at "+(i-1)+","+j+".");
@@ -792,7 +793,8 @@ public class Board {
 					}
 					//x+1
 					if(i+1<xsize){
-						if(RefMap[i+1,j] == MAP_REF.UNUSED ){
+                        if (RefMap[i + 1, j] == MAP_REF.UNUSED || RefMap[i + 1, j] == MAP_REF.FLOOR)
+                        {
 							spaceFound = true;
 							sides++;
 							Debug.Log("Space found at "+(i+1)+","+j+".");
@@ -800,7 +802,8 @@ public class Board {
 					}
 					//y-1
 					if(j-1>=0){
-						if(RefMap[i,j-1] == MAP_REF.UNUSED ){
+                        if (RefMap[i, j - 1] == MAP_REF.UNUSED || RefMap[i, j - 1] == MAP_REF.FLOOR)
+                        {
 							spaceFound = true;
 							sides++;
 							Debug.Log("Space found at "+i+","+(j-1)+".");
@@ -808,7 +811,7 @@ public class Board {
 					}
 					//y+1
 					if(j+1<ysize){
-						if(RefMap[i,j+1] == MAP_REF.UNUSED ){
+						if(RefMap[i,j+1] == MAP_REF.UNUSED || RefMap[i,j+1] == MAP_REF.FLOOR){
 							spaceFound = true;
 							sides++;
 							Debug.Log("Space found at "+i+","+(j+1)+".");
